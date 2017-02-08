@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+	<head>
+	</head>
+	<body style="width:100vw; height:100vh; margin:0; padding:0;">
+		<iframe
+			id="url-iframe"
+			src=""
+			scrolling="no"
+			style="padding:0; margin:0; border:0; height:100vh; overflow:hidden; width:100vw;"
+		></iframe>
+		<script type="application/javascript">
+
+window.addEventListener('sos.loaded', function () {
+
+	var $iframe = $("#url-iframe");
+
+	function getUri() {
+		return sos.config.uri;
+	}
+
+	function loadHtml(uri, callback) {
+		$.ajax({
+			type: "HEAD",
+			url: uri,
+			crossDomain: true,
+			success: function (response) {
+				sos.offline.cache.saveFile('index.html', uri)
+				.then(function (htmlFile) {
+					callback(htmlFile.filePath, true);
+				});
+			},
+			error: function (response, textStatus, xhr) {
+				setTimeout(function () {
+					loadHtml(uri, callback);
+				}, 30e3);
+			}
+		});
+	}
+
+	function updateIframe(htmlFilePath) {
+		$iframe.attr("src", htmlFilePath);
+	}
+
+	function start() {
+		var uri = sos.config.uri;
+		loadHtml(uri, function (htmlFilePath) {
+			updateIframe(htmlFilePath);
+		});
+	}
+
+	sos.onReady(function () {
+		var headElement = window.document.head;
+		sos.offline.addFile({
+			"uri": "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js",
+			"uid": "jquery-2.2.4.min.js",
+			"type": sos.offline.types.javascript,
+			"flags": [sos.offline.flags.append(headElement)]
+		})
+		.then(start);
+	});
+});
+		</script>
+	</body>
+</html>

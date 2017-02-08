@@ -1,0 +1,12 @@
+{
+  "scope": "signageos",
+  "name": "bootstrap",
+  "version": "1.0.0",
+  "main": "index.html",
+  "dependencies": {
+    "front-applet": "1.0.2"
+  },
+  "defaultConfig": {
+    "uri": "https://signageos.io"
+  }
+}

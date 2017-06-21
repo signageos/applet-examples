@@ -1,0 +1,12 @@
+{
+  "name": "@signageos/applet-iframes",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": "https://github.com/signageos/applet-bootstrap",
+  "author": "signageOS.io",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.15.3",
+    "serve-static": "^1.12.3"
+  }
+}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>App Iframe TOP</title>
+</head>
+<body>
+	<script type="text/javascript">
+		window.WeinreServerURL = 'https://weinre.hugport.com';
+		window.WeinreServerId = 'abcd';
+	</script>
+	<script type="text/javascript">
+		window.addEventListener('message', function (event) {
+			setTimeout(function () { console.log('message', event); }, 1000);
+		});
+		window.addEventListener('sos.loaded', function () {
+			setTimeout(function () { console.log('sos.loaded'); }, 1000);
+			var headElement = document.getElementsByTagName("head")[0];
+
+			function addFilesSync(loadFiles, index) {
+			setTimeout(function () { console.log('sos.loadFilesSync', loadFiles, index); }, 1000);
+				index = typeof index === 'undefined' ? 0 : index;
+				if (typeof loadFiles[index] !== 'undefined') {
+					return new Promise(function (resolve, reject) {
+						sos.offline.addFile(loadFiles[index]).then(function () {
+						console.log(loadFiles[index])
+							addFilesSync(loadFiles, index + 1).then(resolve).catch(reject);
+						}); 
+					});
+				} else {
+					return Promise.resolve();
+				}
+			}
+
+			function startApp() {
+				var baseUrl = sos.config.baseUrl || 'http://localhost:3333';
+				console.log('app started', baseUrl);
+				makeIframe(baseUrl);
+			}
+
+			sos.onReady().then(function () {
+				var baseUrl = sos.config.baseUrl || 'http://localhost:3333';
+				console.log('sos ready', baseUrl);
+				var headFiles = [
+					{
+						"uri": "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js",
+						"uid": "jquery-2.2.4.min.js",
+						"type": sos.offline.types.javascript,
+						"flags": [sos.offline.flags.append(headElement)]
+					},
+					{
+						"uri": baseUrl + "/script.js",
+						"uid": "script.js",
+						"type": sos.offline.types.javascript,
+						"flags": [sos.offline.flags.append(headElement)]
+					}
+				];
+				addFilesSync(headFiles).then(startApp);
+			});
+		});
+
+	</script>
+	<script type="text/javascript" src="https://weinre.hugport.com/target/target-script-min.js"></script>
+</body>
+</html>

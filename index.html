@@ -1,65 +1,76 @@
 <!doctype html>
 <html>
 	<head>
+		<title>My first Applet</title>
 	</head>
-	<body style="width:100vw; height:100vh; margin:0; padding:0;">
-		<iframe
-			id="url-iframe"
-			src=""
-			scrolling="no"
-			style="padding:0; margin:0; border:0; height:100vh; overflow:hidden; width:100vw;"
-		></iframe>
-		<script type="application/javascript">
+	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+		<h1>Welcome to signageOS</h1>
+		<p id="index">... loading ...</p>
 
-window.addEventListener('sos.loaded', function () {
 
-	var $iframe = $("#url-iframe");
+		<!-- Your script should come as last in body tag -->
+		<!-- To allow transpile ES6+ to ES5 (JavaScript) use application/ecmascript instead of text/javascript (works on all supported platforms) -->
+		<script type="application/ecmascript">
 
-	function getUri() {
-		return sos.config.uri;
-	}
 
-	function loadHtml(uri, callback) {
-		$.ajax({
-			type: "HEAD",
-			url: uri,
-			crossDomain: true,
-			success: function (response) {
-				sos.offline.cache.saveFile('index.html', uri)
-				.then(function (htmlFile) {
-					callback(htmlFile.filePath, true);
-				});
-			},
-			error: function (response, textStatus, xhr) {
-				setTimeout(function () {
-					loadHtml(uri, callback);
-				}, 30e3);
-			}
-		});
-	}
+			// You need to wait for this event always (https://docs.signageos.io/api/sos-applet-api/#Basics)
+			window.addEventListener('sos.loaded', async function () {
+				const contentElement = document.getElementById('index');
+				console.log('sOS is loaded');
+				contentElement.innerHTML = 'sOS is loaded';
 
-	function updateIframe(htmlFilePath) {
-		$iframe.attr("src", htmlFilePath);
-	}
 
-	function start() {
-		var uri = sos.config.uri;
-		loadHtml(uri, function (htmlFilePath) {
-			updateIframe(htmlFilePath);
-		});
-	}
+				// Wait on sos data are ready (https://docs.signageos.io/api/sos-applet-api/#onReady)
+				await sos.onReady();
+				console.log('sOS is ready');
+				contentElement.innerHTML = 'sOS is ready';
 
-	sos.onReady(function () {
-		var headElement = window.document.head;
-		sos.offline.addFile({
-			"uri": "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js",
-			"uid": "jquery-2.2.4.min.js",
-			"type": sos.offline.types.javascript,
-			"flags": [sos.offline.flags.append(headElement)]
-		})
-		.then(start);
-	});
-});
+
+				// Allow use jQuery (or any other JS library) in offline (https://docs.signageos.io/api/sos-applet-api/#Offline_Applet_Resources)
+				await sos.offline.addFilesSync([
+					{
+						uri: "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js",
+						uid: "jquery-2.2.4.min.js",
+						type: sos.offline.types.javascript,
+						flags: [sos.offline.flags.append(document.body)],
+					},
+				]);
+
+
+				// Now, let's use jQuery in combination with global Promise
+				await new Promise((resolve) =>
+					jQuery(contentElement).fadeOut(2e3, () => resolve())
+				);
+
+
+				// Save some of your data localy & safely (https://docs.signageos.io/api/sos-applet-api/#Offline_Cache_for_storing_simple_data)
+				try {
+					// And use it any time
+					const firstLoadTimestamp = await sos.offline.cache.loadContent('first-load-timestamp');
+					contentElement.innerHTML = 'First time loaded: ' + new Date(parseInt(firstLoadTimestamp));
+				} catch (error) {
+					contentElement.innerHTML = 'This is loaded first time! Use REFRESH to show first load time.';
+					await sos.offline.cache.saveContent('first-load-timestamp', new Date().valueOf());
+				}
+				await new Promise((resolve) =>
+					jQuery(contentElement).fadeIn('slow', () => resolve())
+				);
+
+
+				// Store video to offline storage (https://docs.signageos.io/api/sos-applet-api/#Load_or_Save_specific_file_into_internal_memory)
+				const { filePath } = await sos.offline.cache.loadOrSaveFile('intro-video', 'https://hugstatic.blob.core.windows.net/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4');
+
+
+				// For video coordinations compution use document.body (https://docs.signageos.io/screen-width-and-height-on-webos-1/)
+				const videoAgruments = [filePath, 60, 100, document.body.offsetWidth - 2 * 60, Math.round((document.body.offsetWidth - 2 * 60) * (3 / 4))];
+				while (true) {
+					// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/sos-applet-api/#Play_video)
+					await sos.video.prepare(...videoAgruments);
+					await sos.video.play(...videoAgruments);
+					await sos.video.onceEnded(...videoAgruments); // https://docs.signageos.io/api/sos-applet-api/#onceEnded
+					await sos.video.stop(...videoAgruments);
+				}
+			});
 		</script>
 	</body>
 </html>

@@ -16,6 +16,7 @@ This repository contains sample applets code for every simple method documented 
 - [Restore](https://github.com/signageos/applet-bootstrap/blob/master/examples/restore/index.html) display area (videos, streams etc.)
 - [Offline Resources](https://github.com/signageos/applet-bootstrap/blob/master/examples/offline-resources/index.html) for saving & using libraries
 - [Iframes](https://github.com/signageos/applet-bootstrap/blob/master/examples/iframes/index.html) ([iframe](https://github.com/signageos/applet-bootstrap/blob/master/examples/iframes/iframe.html)) propagation of sos API
+- [Timing Triggers](https://github.com/signageos/applet-bootstrap/blob/master/examples/timing-triggers/index.html) pause & resume
 - [Commands](https://github.com/signageos/applet-bootstrap/blob/master/examples/command/index.html) for monitoring
 - [Web Browser](https://github.com/signageos/applet-bootstrap/blob/master/examples/browser/index.html) on touch devices
 - [Hardware LED](https://github.com/signageos/applet-bootstrap/blob/master/examples/hardware-led/index.html) for color control (some Philips)

@@ -1,66 +1,29 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>App Iframe TOP</title>
-</head>
-<body>
-	<script type="text/javascript">
-		window.WeinreServerURL = 'https://weinre.hugport.com';
-		window.WeinreServerId = 'abcd';
-	</script>
-	<script type="text/javascript">
-		window.addEventListener('message', function (event) {
-			setTimeout(function () { console.log('message', event); }, 1000);
-		});
-		window.addEventListener('sos.loaded', function () {
-			setTimeout(function () { console.log('sos.loaded'); }, 1000);
-			var headElement = document.getElementsByTagName("head")[0];
+	<head>
+		<title>Iframes</title>
+	</head>
+	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+		<h1>Iframes</h1>
+		<p id="index">... loading ...</p>
+		<iframe id="iframe" style="border: 0; position: absolute; display: none; width: 100%; height: 100%; left: 0; top: 0"></iframe>
 
-			function addFilesSync(loadFiles, index) {
-			setTimeout(function () { console.log('sos.loadFilesSync', loadFiles, index); }, 1000);
-				index = typeof index === 'undefined' ? 0 : index;
-				if (typeof loadFiles[index] !== 'undefined') {
-					return new Promise(function (resolve, reject) {
-						sos.offline.addFile(loadFiles[index]).then(function () {
-						console.log(loadFiles[index])
-							addFilesSync(loadFiles, index + 1).then(resolve).catch(reject);
-						}); 
-					});
-				} else {
-					return Promise.resolve();
-				}
-			}
 
-			function startApp() {
-				var baseUrl = sos.config.baseUrl || 'http://localhost:3333';
-				console.log('app started', baseUrl);
-				makeIframe(baseUrl);
-			}
+		<script type="application/ecmascript">
+			window.addEventListener('sos.loaded', async function () {
+				const contentElement = document.getElementById('index');
+				const iframeElement = document.getElementById('iframe');
+				await sos.onReady();
 
-			sos.onReady().then(function () {
-				var baseUrl = sos.config.baseUrl || 'http://localhost:3333';
-				console.log('sos ready', baseUrl);
-				var headFiles = [
-					{
-						"uri": "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js",
-						"uid": "jquery-2.2.4.min.js",
-						"type": sos.offline.types.javascript,
-						"flags": [sos.offline.flags.append(headElement)]
-					},
-					{
-						"uri": baseUrl + "/script.js",
-						"uid": "script.js",
-						"type": sos.offline.types.javascript,
-						"flags": [sos.offline.flags.append(headElement)]
-					}
-				];
-				addFilesSync(headFiles).then(startApp);
+				const iframeUri = 'https://cdn.rawgit.com/signageos/applet-bootstrap/master/examples/iframes/iframe.html';
+
+				const { filePath } = await sos.offline.cache.loadOrSaveFile('iframe', iframeUri);
+
+				contentElement.innerHTML = '';
+
+				iframeElement.src = filePath;
+				iframeElement.style.display = 'block';
 			});
-		});
-
-	</script>
-	<script type="text/javascript" src="https://weinre.hugport.com/target/target-script-min.js"></script>
-</body>
+		</script>
+	</body>
 </html>

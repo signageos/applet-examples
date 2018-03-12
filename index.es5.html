@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+	<head>
+		<title>My first Applet</title>
+	</head>
+	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+		<h1>Welcome to signageOS</h1>
+		<p id="index">... loading ...</p>
+
+
+		<!-- Your script should come as last in body tag -->
+		<script type="application/javascript">
+
+
+			// You need to wait for this event always (https://docs.signageos.io/api/sos-applet-api/#Basics)
+			window.addEventListener('sos.loaded', function () {
+				var contentElement = document.getElementById('index');
+				console.log('sOS is loaded');
+				contentElement.innerHTML = 'sOS is loaded';
+
+
+				// Wait on sos data are ready (https://docs.signageos.io/api/sos-applet-api/#onReady)
+				sos.onReady()
+				.then(function () {
+					console.log('sOS is ready');
+					contentElement.innerHTML = 'sOS is ready';
+
+
+					// Allow use jQuery (or any other JS library) in offline (https://docs.signageos.io/api/sos-applet-api/#Offline_Applet_Resources)
+					return sos.offline.addFilesSync([
+						{
+							uri: "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js",
+							uid: "jquery-2.2.4.min.js",
+							type: sos.offline.types.javascript,
+							flags: [sos.offline.flags.append(document.body)]
+						},
+					]);
+				})
+
+
+				.then(function () {
+					// Now, let's use jQuery in combination with global Promise
+					return new Promise(function (resolve) {
+						jQuery(contentElement).fadeOut(2e3, function () { resolve(); });
+					});
+				})
+
+
+				.then(function () {
+					// Save some of your data localy & safely (https://docs.signageos.io/api/sos-applet-api/#Offline_Cache_for_storing_simple_data)
+					return sos.offline.cache.loadContent('first-load-timestamp');
+				})
+
+
+				.then(
+					function (firstLoadTimestamp) {
+						// And use it any time
+						contentElement.innerHTML = 'First time loaded: ' + new Date(parseInt(firstLoadTimestamp));
+					},
+					function (error) {
+						contentElement.innerHTML = 'This is loaded first time! Use REFRESH to show first load time.';
+						return sos.offline.cache.saveContent('first-load-timestamp', new Date().valueOf());
+					}
+				)
+
+
+				.then(function () {
+					return new Promise(function (resolve) {
+						jQuery(contentElement).fadeIn('slow', function () { resolve(); });
+					});
+				})
+
+
+				.then(function () {
+					// Store video to offline storage (https://docs.signageos.io/api/sos-applet-api/#Load_or_Save_specific_file_into_internal_memory)
+					return sos.offline.cache.loadOrSaveFile('intro-video', 'https://hugstatic.blob.core.windows.net/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4');
+				})
+				.then(function (file) {
+					var filePath = file.filePath;
+
+
+					// For video coordinations compution use document.body (https://docs.signageos.io/screen-width-and-height-on-webos-1/)
+					var videoAgruments = [filePath, 60, 100, document.body.offsetWidth - 2 * 60, Math.round((document.body.offsetWidth - 2 * 60) * (3 / 4))];
+					function playBack() {
+						// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/sos-applet-api/#Play_video)
+						sos.video.prepare.apply(sos.video, videoAgruments)
+						.then(function () {
+							return sos.video.play.apply(sos.video, videoAgruments);
+						})
+						.then(function () {
+							return sos.video.onceEnded.apply(sos.video, videoAgruments); // https://docs.signageos.io/api/sos-applet-api/#onceEnded
+						})
+						.then(function () {
+							return sos.video.stop.apply(sos.video, videoAgruments);
+						})
+						.then(function () {
+							// Loop it infinitelly
+							playBack();
+						});
+					}
+
+					playBack();
+				});
+			});
+		</script>
+	</body>
+</html>

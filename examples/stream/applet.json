@@ -1,9 +1,9 @@
 {
   "scope": "signageos",
   "name": "stream",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.html",
   "dependencies": {
-    "front-applet": "1.0.29"
+    "front-applet": "1.0.31"
   }
 }

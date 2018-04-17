@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Sync Play</title>
+	</head>
+	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+		<h1>Sync Play</h1>
+		<p id="index">... loading ...</p>
+
+
+		<script type="application/ecmascript">
+			window.addEventListener('sos.loaded', async function () {
+				await sos.onReady();
+
+				const images = [
+					{ uid: 'image-1', uri: 'https://hugstatic.blob.core.windows.net/assets/android-benq-amy_bbd9afbc0655ceb6da790a80fbd90290.png', duration: 100 },
+					{ uid: 'image-2', uri: 'https://hugstatic.blob.core.windows.net/assets/android-nec-roberto_3f9b985e2214b59e3d1f296e69e86fdd.png', duration: 200 },
+					{ uid: 'image-3', uri: 'https://hugstatic.blob.core.windows.net/assets/android-panasonic-pikachu_347af960f123f7c56f5f967882108bdf.png', duration: 300 },
+				];
+
+				function wait(duration) {
+					return new Promise((resolve) => setTimeout(resolve, duration));
+				}
+
+				async function prepareImage (index) {
+					const image = images.find((image) => image.uid === uid);
+					const { filePath } = await sos.offline.cache.loadOrSaveFile(image.uid, image.uri);
+					const imageTag = document.createElement('img');
+					imageTag.id = image.uid;
+					imageTag.src = filePath;
+					imageTag.style.visibility = 'hidden';
+					document.body.appendChild(imageTag);
+				}
+
+				async function playImage (index) {
+					const imageTag = document.getElementById(uid);
+					imageTag.style.visibility = 'visible';
+				}
+
+				async function stopImage(index) {
+					const imageTag = document.getElementById(uid);
+					if (imageTag) {
+						imageTag.parentElement.removeChild(imageTag);
+					} else {
+						console.warning('attempting to stop image but no image exists: ' + uid);
+					}
+				}
+
+				let currentLeadIndex = 0;
+				while (true) {
+					const currentIndex = await sos.sync.tickAndWait(currentLeadIndex);
+					await prepareImage(currentIndex);
+					await playImage(currentIndex);
+					await wait(images[currentIndex].duration);
+					await stopImage(currentIndex);
+					currentLeadIndex = (currentLeadIndex + 1) % images.length;
+				}
+			});
+		</script>
+	</body>
+</html>

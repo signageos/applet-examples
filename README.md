@@ -20,3 +20,7 @@ This repository contains sample applets code for every simple method documented 
 - [Commands](https://github.com/signageos/applet-examples/blob/master/examples/command/index.html) for monitoring
 - [Web Browser](https://github.com/signageos/applet-examples/blob/master/examples/browser/index.html) on touch devices
 - [Hardware LED](https://github.com/signageos/applet-examples/blob/master/examples/hardware-led/index.html) for color control (some Philips)
+- [Sync Video](https://github.com/signageos/applet-examples/blob/master/examples/sync-video/index.html) for playing a list of videos in sync on multiple devices
+- [Sync Mixed Content](https://github.com/signageos/applet-examples/blob/master/examples/sync-mixed-content/index.html) for playing a list of videos and images in sync on multiple devices
+- [Videowall on 2 screens](https://github.com/signageos/applet-examples/blob/master/examples/videowall-2screens/index.html) for playing a videowall horizontally across 2 screens
+- [Videowall on 4 screens](https://github.com/signageos/applet-examples/blob/master/examples/videowall-4screens/index.html) for playing a videowall across 4 screens

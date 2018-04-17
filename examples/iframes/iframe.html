@@ -14,7 +14,7 @@
 				var videoAgruments;
 				sos.onReady()
 				.then(function () {
-					var videoUri = 'https://hugstatic.blob.core.windows.net/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4';
+					var videoUri = sos.config.videoUri || 'https://hugstatic.blob.core.windows.net/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4';
 					return sos.offline.cache.loadOrSaveFile('video', videoUri);
 				})
 				.then(function (file) {

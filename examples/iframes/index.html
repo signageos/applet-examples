@@ -15,7 +15,7 @@
 				const iframeElement = document.getElementById('iframe');
 				await sos.onReady();
 
-				const iframeUri = 'https://cdn.rawgit.com/signageos/applet-examples/master/examples/iframes/iframe.html';
+				const iframeUri = sos.config.iframeUri || 'https://cdn.rawgit.com/signageos/applet-examples/master/examples/iframes/iframe.html';
 
 				const { filePath } = await sos.offline.cache.loadOrSaveFile('iframe', iframeUri);
 

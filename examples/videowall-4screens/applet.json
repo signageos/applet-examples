@@ -1,0 +1,9 @@
+{
+  "scope": "signageos",
+  "name": "videowall-4screens",
+  "version": "1.0.0",
+  "main": "index.html",
+  "dependencies": {
+    "front-applet": "1.0.32"
+  }
+}

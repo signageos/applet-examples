@@ -24,3 +24,4 @@ This repository contains sample applets code for every simple method documented 
 - [Sync Mixed Content](https://github.com/signageos/applet-examples/blob/master/examples/sync-mixed-content/index.html) for playing a list of videos and images in sync on multiple devices
 - [Videowall on 2 screens](https://github.com/signageos/applet-examples/blob/master/examples/videowall-2screens/index.html) for playing a videowall horizontally across 2 screens
 - [Videowall on 4 screens](https://github.com/signageos/applet-examples/blob/master/examples/videowall-4screens/index.html) for playing a videowall across 4 screens
+- [Remote control key UP binding](https://github.com/signageos/applet-examples/blob/master/examples/remote-control/index.html) for bind pressing keys on remote control

@@ -15,6 +15,7 @@ This repository contains sample applets code for every simple method documented 
 - [HDMI Streams](https://github.com/signageos/applet-examples/blob/master/examples/stream-hdmi-port/index.html)
 - [Restore](https://github.com/signageos/applet-examples/blob/master/examples/restore/index.html) display area (videos, streams etc.)
 - [Offline Resources](https://github.com/signageos/applet-examples/blob/master/examples/offline-resources/index.html) for saving & using libraries
+- [Offline Files](https://github.com/signageos/applet-examples/blob/master/examples/offline-files/index.html) for managing files
 - [Iframes](https://github.com/signageos/applet-examples/blob/master/examples/iframes/index.html) ([iframe](https://github.com/signageos/applet-examples/blob/master/examples/iframes/iframe.html)) propagation of sos API
 - [Timing Triggers](https://github.com/signageos/applet-examples/blob/master/examples/timing-triggers/index.html) pause & resume
 - [Commands](https://github.com/signageos/applet-examples/blob/master/examples/command/index.html) for monitoring

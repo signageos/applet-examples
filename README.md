@@ -20,7 +20,8 @@ This repository contains sample applets code for every simple method documented 
 - [MD5 checksum](https://github.com/signageos/applet-examples/blob/master/examples/md5-checksum/index.html) for offline stored files
 - [Iframes](https://github.com/signageos/applet-examples/blob/master/examples/iframes/index.html) ([iframe](https://github.com/signageos/applet-examples/blob/master/examples/iframes/iframe.html)) propagation of sos API
 - [Timing Triggers](https://github.com/signageos/applet-examples/blob/master/examples/timing-triggers/index.html) pause & resume
-- [Commands](https://github.com/signageos/applet-examples/blob/master/examples/command/index.html) for monitoring
+- [Commands Sending](https://github.com/signageos/applet-examples/blob/master/examples/command/sending/index.html) for monitoring
+- [Commands Receiving](https://github.com/signageos/applet-examples/blob/master/examples/command/receiving/index.html) for monitoring
 - [Web Browser](https://github.com/signageos/applet-examples/blob/master/examples/browser/index.html) on touch devices
 - [Hardware LED](https://github.com/signageos/applet-examples/blob/master/examples/hardware-led/index.html) for color control (some Philips)
 - [Sync Video](https://github.com/signageos/applet-examples/blob/master/examples/sync-video/index.html) for playing a list of videos in sync on multiple devices

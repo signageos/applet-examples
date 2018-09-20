@@ -1,0 +1,9 @@
+{
+  "scope": "signageos",
+  "name": "offline-zip-decompress",
+  "version": "1.0.0",
+  "main": "index.html",
+  "dependencies": {
+    "front-applet": "2.1.0"
+  }
+}

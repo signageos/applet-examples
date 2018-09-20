@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Offline ZIP decompress</title>
+	</head>
+	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+		<h1>Offline ZIP decompress</h1>
+		<pre id="index">... loading ...</pre>
+		<iframe id="iframe-1" src="" style="width: 400px; height: 30px"></iframe>
+		<iframe id="iframe-2" src="" style="width: 400px; height: 30px"></iframe>
+		<iframe id="iframe-3" src="" style="width: 400px; height: 30px"></iframe>
+		<iframe id="iframe-4" src="" style="width: 400px; height: 30px"></iframe>
+
+		<script type="application/ecmascript">
+			window.addEventListener('sos.loaded', async function () {
+				const contentElement = document.getElementById('index');
+				await sos.onReady();
+
+				contentElement.innerHTML = 'Loading ZIP file\n';
+				await sos.offline.cache.loadOrSaveFile('my-folder/test.zip', 'https://hugstatic.blob.core.windows.net/assets/applet/offline-zip-decompress/test.zip');
+
+				contentElement.innerHTML += 'Decompressing ZIP file\n';
+				await sos.offline.cache.decompressFile('my-folder/test.zip', 'my-folder/test', 'zip');
+
+				contentElement.innerHTML += 'Loading decompressed files\n';
+				const file1 = await sos.offline.cache.loadFile('my-folder/test/my-file1');
+				const file2 = await sos.offline.cache.loadFile('my-folder/test/my-file2');
+				const file3 = await sos.offline.cache.loadFile('my-folder/test/my-folder/my-file3');
+				const file4 = await sos.offline.cache.loadFile('my-folder/test/my-folder/sub-folder/my-file4');
+
+				const iframe1 = document.getElementById('iframe-1');
+				iframe1.src = file1.filePath;
+				contentElement.innerHTML += `File1 ${file1.filePath} loaded in iframe-1\n`;
+				await new Promise((resolve) => iframe1.onload = resolve);
+				console.log(`File1 content: ${iframe1.contentWindow.document.body.innerText}`);
+
+				const iframe2 = document.getElementById('iframe-2');
+				iframe2.src = file2.filePath;
+				contentElement.innerHTML += `File2 ${file2.filePath} loaded in iframe-2\n`;
+				await new Promise((resolve) => iframe2.onload = resolve);
+				console.log(`File2 content: ${iframe2.contentWindow.document.body.innerText}`);
+
+				const iframe3 = document.getElementById('iframe-3');
+				iframe3.src = file3.filePath;
+				contentElement.innerHTML += `File3 ${file3.filePath} loaded in iframe-3\n`;
+				await new Promise((resolve) => iframe3.onload = resolve);
+				console.log(`File3 content: ${iframe3.contentWindow.document.body.innerText}`);
+
+				const iframe4 = document.getElementById('iframe-4');
+				iframe4.src = file4.filePath;
+				contentElement.innerHTML += `File4 ${file4.filePath} loaded in iframe-4\n`;
+				await new Promise((resolve) => iframe4.onload = resolve);
+				console.log(`File4 content: ${iframe4.contentWindow.document.body.innerText}`);
+			});
+		</script>
+	</body>
+</html>

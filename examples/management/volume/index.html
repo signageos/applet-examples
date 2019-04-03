@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Management Volume</title>
+	</head>
+	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+		<h1>Management Volume</h1>
+		<p id="index">... loading ...</p>
+		<button id="half-volume-btn">Set volume to 50</button>
+		<button id="full-volume-btn">Set volume to 100</button>
+
+
+		<script type="application/ecmascript">
+			window.addEventListener('sos.loaded', async function () {
+				const contentElement = document.getElementById('index');
+				const halfVolumeButton = document.getElementById('half-volume-btn');
+				const fullVolumeButton = document.getElementById('full-volume-btn');
+				await sos.onReady();
+
+				const volumeWatch = async () => {
+					const volume = await sos.management.audio.getVolume();
+					contentElement.innerHTML = `Volume: ${volume}`;
+
+					setTimeout(() => {
+						volumeWatch();						
+					}, 500);
+				};
+				volumeWatch();
+
+				if (await sos.management.supports('SET_VOLUME')) {
+					halfVolumeButton.onclick = async () => {
+						await sos.management.audio.setVolume(50);
+					};
+
+					fullVolumeButton.onclick = async () => {
+						await sos.management.audio.setVolume(100);
+					};
+				} else {
+					contentElement.innerHTML = 'Volume management is not supported.';
+				}
+			});
+		</script>
+	</body>
+</html>

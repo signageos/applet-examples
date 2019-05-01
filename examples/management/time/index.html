@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Management Time</title>
+	</head>
+	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+		<h1>Management Time</h1>
+		<p id="index">... loading ...</p>
+		<button id="fixed-time-btn">Set time to 10:00 AM</button>
+		<button id="timezone-time-btn">Set time to 3:00 PM in Amsterdam</button>
+
+
+		<script type="application/ecmascript">
+			window.addEventListener('sos.loaded', async function () {
+				const contentElement = document.getElementById('index');
+				const fixedTimeButton = document.getElementById('fixed-time-btn');
+				const timezoneTimeButton = document.getElementById('timezone-time-btn');
+				await sos.onReady();
+
+				const timeWatch = async () => {
+					const time = await sos.management.time.get();
+					contentElement.innerHTML = `
+						Time: ${time.currentDate.toLocalString()}<br/>
+						Timezone: ${time.timezone}<br/>
+					`;
+
+					setTimeout(() => {
+						brightnessWatch();						
+					}, 500);
+				};
+				timeWatch();
+
+				if (await sos.management.supports('SET_TIME')) {
+					fixedTimeButton.onclick = async () => {
+						const date = new Date();
+						date.setHours(10, 00);
+						await sos.management.time.set(date);
+					}
+
+					timezoneTimeButton.onclick = async () => {
+						const date = new Date();
+						date.setHours(15, 00);
+						await sos.management.time.set(
+							date,
+							'Europe/Amsterdam'
+						);
+					}
+				} else {
+					contentElement.innerHTML = 'Time management is not supported.';
+				}
+			});
+		</script>
+	</body>
+</html>

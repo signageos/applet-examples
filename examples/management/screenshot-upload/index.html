@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Management Screenshot Upload</title>
+	</head>
+	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+		<h1>Management Screenshot Upload</h1>
+		<p id="time"></p>
+		<p id="index">... loading ...</p>
+
+
+		<script type="application/ecmascript">
+			const startTime = () => {
+				const timeElement = document.getElementById('time')
+				const currentTime = new Date();
+
+				timeElement.innerHTML = currentTime.toLocaleString();
+
+				setTimeout(() => {
+					startTime()
+				}, 500);
+			};
+			startTime();
+
+			window.addEventListener('sos.loaded', async function () {
+				const contentElement = document.getElementById('index');
+				await sos.onReady();
+
+				if (await sos.management.supports('SCREENSHOT_UPLOAD')) {
+					const screenshotUrl = await sos.management.screen.takeAndUploadScreenshot('https://upload-screenshot.your-cms.com');
+					const screenshotTakenAt = new Date();
+
+					contentElement.innerHTML = `
+						<img 
+							src="${screenshotUrl}"
+							alt="Screenshot taken at ${screenshotTakenAt.toLocaleString()}"
+							style="width:40vh;"
+						/>
+					`;
+				} else {
+					contentElement.innerHTML = 'Not Supported';
+				}
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Management Firmware</title>
+	</head>
+	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+		<h1>Management Firmware</h1>
+		<p id="index">... loading ...</p>
+		<button id="upgrade-btn">Upgrade</button>
+
+		<script type="application/ecmascript">
+			window.addEventListener('sos.loaded', async function () {
+				const contentElement = document.getElementById('index');
+				const upgradeButton = document.getElementById('upgrade-btn');
+				await sos.onReady();
+
+				const firmwareVersion = await sos.management.firmware.getVersion();
+				contentElement.innerHTML = `Current firmware: ${firmwareVersion}`;	
+
+				if (await sos.management.supports('FIRMWARE_UPGRADE')) {
+					upgradeButton.onclick = async () => {
+						await sos.management.firmware.upgrade(
+							'https://cdn.your-cms.com/tizen/pmf/fw/2080_4.bem',
+							'T-HKMLAKUC-2080.4'
+						);
+					};
+				} else {
+					contentElement.innerHTML = `
+						Current firmware: ${firmwareVersion}<br/>
+						Firmware upgrade is not supported.<br/>
+					`;
+				}
+			});
+		</script>
+	</body>
+</html>

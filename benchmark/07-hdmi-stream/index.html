@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+	<head>
+		<title>07-HDMI-Stream</title>
+	</head>
+	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+		<h1>07-HDMI-Stream</h1>
+		<p id="index">... loading ...</p>
+
+
+		<script type="application/ecmascript">
+			window.addEventListener('sos.loaded', async function () {
+				const contentElement = document.getElementById('index');
+				await sos.onReady(); // Wait until signageOS app is loaded and ready
+
+				// Set properties like ID and URL for stream
+				const stream = { uid: 'stream-1', uri: 'internal://hdmi1' };
+
+				// Set url, resolution on screen (full screen) - (https://docs.signageos.io/api/js/js-video-stream#play-stream)
+				stream.agruments = [stream.uri, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
+
+				// Remove loading title
+				contentElement.innerHTML = '';
+
+				// Play stream forever (https://docs.signageos.io/api/js/js-video-stream#play-stream)
+				await sos.stream.play(...stream.agruments);
+
+				// If stream is disconnected, stop the stream (https://docs.signageos.io/api/js/js-video-inputs-internal-ports)
+				sos.stream.onDisconnected(async (event) => {
+					contentElement.innerHTML = 'HDMI was disconnected';
+					await sos.stream.stop(...stream.agruments);
+				});
+
+				// If HDMI is successfully connected, start the stream (https://docs.signageos.io/api/js/js-video-inputs-internal-ports)
+				sos.stream.onConnected(async (event) => {
+					contentElement.innerHTML = '';
+					await sos.stream.play(...stream.agruments);
+				});
+			});
+		</script>
+	</body>
+</html>

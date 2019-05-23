@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+	<head>
+		<title>07-02-b zones-2-videos-portrait</title>
+	</head>
+	<body style="text-align: center; background-color: #000000; color: #ffffff; margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+		<h1>07-02-b zones-2-videos-portrait</h1>
+		<p id="index">... loading ...</p>
+
+
+		<script type="application/ecmascript">
+			window.addEventListener('sos.loaded', async function () {
+				const contentElement = document.getElementById('index');
+				await sos.onReady(); // Wait until signageOS app is loaded and ready
+
+				// Videos that will be downloaded and prepared for playing
+				const videoSet1 = [
+					{ uid: 'video0', x: 0, y: 0, width: 100, height: 25, uri: 'https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4' },
+					{ uid: 'video1', x: 0, y: 0, width: 100, height: 25, uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4' },
+					{ uid: 'video2', x: 0, y: 0, width: 100, height: 25, uri: 'https://static.signageos.io/assets/test-videos-07_AME/video-test-07_15s_1920x1080_1228118eb0b39f7311f9c83a0f4cd5dc.mp4' },
+					{ uid: 'video3', x: 0, y: 0, width: 100, height: 25, uri: 'https://static.signageos.io/assets/test-videos-08_AME/video-test-08_15s_1920x1080_eb8f37b04d4dc8f8e26d80e66a2eb71a.mp4' },
+					{ uid: 'video4', x: 0, y: 0, width: 100, height: 25, uri: 'https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1920x1080_19c539e7982228ae0527409aeadb5b88.mp4' },
+                ];
+				
+				// Every video has set position and resolution on screen
+                const videoSet2 = [
+					{ uid: 'video5', x: 0, y: 25, width: 100, height: 25, uri: 'https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1920x1080_88f90af5fa281d7efb8eae17848e71d9.mp4' },
+					{ uid: 'video6', x: 0, y: 25, width: 100, height: 25, uri: 'https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_1920x1080_0f110996c51d8c77933b1ab9fecfb61f.mp4' },
+					{ uid: 'video7', x: 0, y: 25, width: 100, height: 25, uri: 'https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1920x1080_19c539e7982228ae0527409aeadb5b88.mp4' },
+					{ uid: 'video8', x: 0, y: 25, width: 100, height: 25, uri: 'https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4' },
+					{ uid: 'video9', x: 0, y: 25, width: 100, height: 25, uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4' },
+				];
+
+                // Store video to offline storage for set 1 (https://docs.signageos.io/api/js/js-offline-cache-media-files)
+				for (const video of videoSet1) {
+					const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
+					video.filePath = filePath;
+                }
+                
+                // Store video to offline storage for set 2 (https://docs.signageos.io/api/js/js-offline-cache-media-files)
+                for (const video of videoSet2) {
+					const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
+					video.filePath = filePath;
+				}
+
+				// Set video properties for proper play on screen
+				for (const video of videoSet1) {
+					video.agruments = [
+						video.filePath,
+						Math.round(document.body.offsetWidth * video.x / 100), 
+						Math.round(document.body.offsetHeight * video.y / 100),
+						Math.round(document.body.offsetWidth * video.width / 100),
+						Math.round(document.body.offsetHeight * video.height / 100),
+					];
+                }
+				
+				// Set video properties for proper play on screen
+                for (const video of videoSet2) {
+					video.agruments = [
+						video.filePath,
+						Math.round(document.body.offsetWidth * video.x / 100), 
+						Math.round(document.body.offsetHeight * video.y / 100),
+						Math.round(document.body.offsetWidth * video.width / 100),
+						Math.round(document.body.offsetHeight * video.height / 100),
+					];
+				}
+
+				// When is all prepared, remove loading title and play videos
+				contentElement.innerHTML = '';
+
+				for (let i = 0; true; i = (i + 1) % videoSet1.length) {
+					const previousVideoSet1 = videoSet1[(i + videoSet1.length - 1) % videoSet1.length];
+					const currentVideoSet1 = videoSet1[i];
+					const nextVideoSet1 = videoSet1[(i + 1) % videoSet1.length];
+
+					const previousVideoSet2 = videoSet2[(i + videoSet2.length - 1) % videoSet2.length];
+					const currentVideoSet2 = videoSet2[i];
+					const nextVideoSet2 = videoSet2[(i + 1) % videoSet2.length];
+
+					// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/sos-applet-api/#Play_video)
+					await sos.video.play(...currentVideoSet1.agruments);
+					await sos.video.play(...currentVideoSet2.agruments);
+					currentVideoSet1.playing = true;
+					currentVideoSet2.playing = true;
+
+					// If previous video is playing, stop it
+					if (previousVideoSet1.playing || previousVideoSet2.playing) {
+						await sos.video.stop(...previousVideoSet1.agruments);
+						await sos.video.stop(...previousVideoSet2.agruments);
+						previousVideoSet1.playing = false;
+						previousVideoSet2.playing = false;
+					}
+
+					// Prepare next video for gappless playback
+					await sos.video.prepare(...nextVideoSet1.agruments);
+					await sos.video.prepare(...nextVideoSet2.agruments);
+					await sos.video.onceEnded(...currentVideoSet1.agruments); // https://docs.signageos.io/api/sos-applet-api/#onceEnded
+					await sos.video.onceEnded(...currentVideoSet2.agruments);
+				}
+			
+			});
+		</script>
+	</body>
+</html>

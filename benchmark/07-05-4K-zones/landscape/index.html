@@ -2,37 +2,21 @@
 <html>
 
 <head>
-	<title>01-01-a Full-Screen-Landscape</title>
+	<title>07-05-a 4K Zones Landscape</title>
 </head>
 
 <body>
-	<h1 id="title">01-01-a</h1>
+	<h1 id="title">7-05-a</h1>
 	<h2 id="displayInfo"></h2>
 	<p id="index">... loading ...</p>
 	<div id="htmlContent"></div>
 
 	<script type="application/ecmascript">
 		window.addEventListener('sos.loaded', async function () {
-
-			// Load static files
-			var files = [
-				{
-					"uri": "https://signageostest.blob.core.windows.net/test/applet-examples/benchmark-styles.css?v=1.0.0",
-					"uid": "benchmark-styles.css-v1.0.0",
-					"type": sos.offline.types.css,
-					"flags": [sos.offline.flags.append(document.head)]
-				}
-			];
-			await sos.offline.addFiles(files);
-
-			const titleElement = document.getElementById('title');
-			const displayInfoElement = document.getElementById('displayInfo');
-			const indexElement = document.getElementById('index');
-			const htmlContentElement = document.getElementById('htmlContent');
-
+			const contentElement = document.getElementById('index');
 			await sos.onReady(); // Wait until signageOS app is loaded and ready
-			
-			//Get display details
+
+			// Get display details
 			try {
 				const fw = await sos.management.firmware.getVersion();
 				const pl = await sos.management.app.getType();
@@ -43,13 +27,22 @@
 				console.log(e);
 			}
 
+			// load HTML5 content
+			fetch('https://www.signageos.io/html-content.html')
+				.then(function (response) {
+					return response.text();
+				}).then(function (data) {
+					const htmlContentDiv = document.getElementById('htmlContent');
+					htmlContentDiv.innerHTML = data;
+				});
+
 			// Videos that will be downloaded and prepared for playing
 			const videos = [
-				{ uid: 'video-1', uri: 'https://static.signageos.io/assets/test-videos-circle_AME/circle_15s_1920x1080.mp4' },
-				{ uid: 'video-2', uri: 'https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_1920x1080.mp4' },
-				{ uid: 'video-3', uri: 'https://static.signageos.io/assets/test-videos-layers_AME/layers_15s_1920x1080.mp4' },
-				{ uid: 'video-4', uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080.mp4' },
-				{ uid: 'video-5', uri: 'https://static.signageos.io/assets/test-videos-08_AME/video-test-08_15s_1920x1080.mp4' },
+				{ uid: 'video-1', x: 480, y: 270, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-circle_AME/circle_15s_3840x2160.mp4' },
+				{ uid: 'video-2', x: 480, y: 270, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_3840x2160.mp4' },
+				{ uid: 'video-3', x: 480, y: 270, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-layers_AME/layers_15s_3840x2160.mp4' },
+				{ uid: 'video-4', x: 480, y: 270, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_3840x2160.mp4' },
+				{ uid: 'video-5', x: 480, y: 270, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-08_AME/video-test-08_15s_3840x2160.mp4' },
 			];
 
 			for (const video of videos) {
@@ -60,7 +53,13 @@
 
 			// Set video properties for proper play on screen
 			for (const video of videos) {
-				video.agruments = [video.filePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
+				video.agruments = [
+					video.filePath,
+					video.x,
+					video.y,
+					Math.round(document.body.offsetWidth * video.width / 100),
+					Math.round(document.body.offsetHeight * video.height / 100),
+				];
 			}
 
 			titleElement.innerHTML = '';

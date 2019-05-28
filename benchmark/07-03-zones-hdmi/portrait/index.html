@@ -1,48 +1,89 @@
 <!doctype html>
 <html>
-	<head>
-		<title>07-03-b Zones HDMI</title>
-	</head>
-	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-		<h1>07-03-b Zones HDMI</h1>
-		<p id="index">... loading ...</p>
 
+<head>
+	<title>07-03-b Zones HDMI</title>
+</head>
 
-		<script type="application/ecmascript">
-			window.addEventListener('sos.loaded', async function () {
-				const contentElement = document.getElementById('index');
-				await sos.onReady(); // Wait until signageOS app is loaded and ready
+<body>
+	<h1 id="title">7-03-b</h1>
+	<h2 id="displayInfo"></h2>
+	<p id="index">... loading ...</p>
+	<div id="htmlContent"></div>
+	
+	<script type="application/ecmascript">
+		window.addEventListener('sos.loaded', async function () {
+			
+			// Load static files
+			var files = [
+				{
+					"uri": "https://signageostest.blob.core.windows.net/test/applet-examples/benchmark-styles.css?v=1.0.0",
+					"uid": "benchmark-styles.css-v1.0.0",
+					"type": sos.offline.types.css,
+					"flags": [sos.offline.flags.append(document.head)]
+				}
+			];
+			await sos.offline.addFiles(files);
 
-				// Set properties like ID and URL for stream
-				const stream = { uid: 'stream-1', x: 0, y: 25, width: 50, height: 50, uri: 'internal://hdmi1' };
+			const titleElement = document.getElementById('title');
+			const displayInfoElement = document.getElementById('displayInfo');
+			const indexElement = document.getElementById('index');
+			const htmlContentElement = document.getElementById('htmlContent');
 
-				// Set url, resolution on screen (full screen) - (https://docs.signageos.io/api/js/js-video-stream#play-stream)
-                stream.agruments = [
-                        stream.uri,
-						Math.round(document.body.offsetWidth * video.x / 100), 
-						Math.round(document.body.offsetHeight * video.y / 100),
-						Math.round(document.body.offsetWidth * video.width / 100),
-						Math.round(document.body.offsetHeight * video.height / 100),
-					];
+			await sos.onReady(); // Wait until signageOS app is loaded and ready
+			
+			//Get display details
+			try {
+				const fw = await sos.management.firmware.getVersion();
+				const pl = await sos.management.app.getType();
+				const model = await sos.management.getModel();
+				const displayInfo = document.getElementById('displayInfo');
+				displayInfo.innerHTML = "Platform: " + pl + " Model: " + model + " FW: " + fw;
+			} catch (e) {
+				console.log(e);
+			}
 
-				// Remove loading title
-				contentElement.innerHTML = '';
-
-				// Play stream forever (https://docs.signageos.io/api/js/js-video-stream#play-stream)
-				await sos.stream.play(...stream.agruments);
-
-				// If stream is disconnected, stop the stream (https://docs.signageos.io/api/js/js-video-inputs-internal-ports)
-				sos.stream.onDisconnected(async (event) => {
-					contentElement.innerHTML = 'HDMI was disconnected';
-					await sos.stream.stop(...stream.agruments);
+			// load HTML5 content
+			fetch('https://www.signageos.io/html-content.html')
+				.then(function (response) {
+					return response.text();
+				}).then(function (data) {
+					const htmlContentDiv = document.getElementById('htmlContent');
+					htmlContentDiv.innerHTML = data;
 				});
+			// Set properties like ID and URL for stream
+			const stream = { uid: 'stream-1', x: 0, y: 25, width: 50, height: 50, uri: 'internal://hdmi1' };
 
-				// If HDMI is successfully connected, start the stream (https://docs.signageos.io/api/js/js-video-inputs-internal-ports)
-				sos.stream.onConnected(async (event) => {
-					contentElement.innerHTML = '';
-					await sos.stream.play(...stream.agruments);
-				});
+			// Set url, resolution on screen (full screen) - (https://docs.signageos.io/api/js/js-video-stream#play-stream)
+			stream.agruments = [
+				stream.uri,
+				Math.round(document.body.offsetWidth * video.x / 100),
+				Math.round(document.body.offsetHeight * video.y / 100),
+				Math.round(document.body.offsetWidth * video.width / 100),
+				Math.round(document.body.offsetHeight * video.height / 100),
+			];
+
+			// Remove loading title
+			titleElement.innerHTML = '';
+			displayInfoElement.innerHTML = '';
+			indexElement.innerHTML = '';
+			htmlContentElement.innerHTML = '';
+
+			// Play stream forever (https://docs.signageos.io/api/js/js-video-stream#play-stream)
+			await sos.stream.play(...stream.agruments);
+
+			// If stream is disconnected, stop the stream (https://docs.signageos.io/api/js/js-video-inputs-internal-ports)
+			sos.stream.onDisconnected(async (event) => {
+				contentElement.innerHTML = 'HDMI was disconnected';
+				await sos.stream.stop(...stream.agruments);
 			});
-		</script>
-	</body>
+
+			// If HDMI is successfully connected, start the stream (https://docs.signageos.io/api/js/js-video-inputs-internal-ports)
+			sos.stream.onConnected(async (event) => {
+				await sos.stream.play(...stream.agruments);
+			});
+		});
+	</script>
+</body>
+
 </html>

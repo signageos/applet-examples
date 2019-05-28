@@ -2,14 +2,15 @@
 <html>
 
 <head>
-	<title>04-01-a 3-videos-landscape</title>
+	<title>07-05-b 4K Zones Portrait</title>
 </head>
 
 <body>
-	<h1 id="title">4-01-a</h1>
+	<h1 id="title">7-05-b</h1>
 	<h2 id="displayInfo"></h2>
 	<p id="index">... loading ...</p>
 	<div id="htmlContent"></div>
+
 
 	<script type="application/ecmascript">
 		window.addEventListener('sos.loaded', async function () {
@@ -43,11 +44,22 @@
 				console.log(e);
 			}
 
+			// load HTML5 content
+			fetch('https://www.signageos.io/html-content.html')
+				.then(function (response) {
+					return response.text();
+				}).then(function (data) {
+					const htmlContentDiv = document.getElementById('htmlContent');
+					htmlContentDiv.innerHTML = data;
+				});
+
 			// Videos that will be downloaded and prepared for playing
 			const videos = [
-				{ uid: 'video0', x: 0, y: 0, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-circle_AME/circle_15s_1920x1080.mp4' },
-				{ uid: 'video1', x: 50, y: 0, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080.mp4' },
-				{ uid: 'video2', x: 0, y: 50, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080.mp4' },
+				{ uid: 'video-1', x: 270, y: 480, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-circle_AME/circle_15s_2160x3840.mp4' },
+				{ uid: 'video-2', x: 270, y: 480, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_2160x3840.mp4' },
+				{ uid: 'video-3', x: 270, y: 480, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-layers_AME/layers_15s_2160x3840.mp4' },
+				{ uid: 'video-4', x: 270, y: 480, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_2160x3840.mp4' },
+				{ uid: 'video-5', x: 270, y: 480, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-08_AME/video-test-08_15s_2160x3840.mp4' },
 			];
 
 			for (const video of videos) {
@@ -60,33 +72,32 @@
 			for (const video of videos) {
 				video.agruments = [
 					video.filePath,
-					Math.round(document.body.offsetWidth * video.x / 100),
-					Math.round(document.body.offsetHeight * video.y / 100),
+					video.x,
+					video.y,
 					Math.round(document.body.offsetWidth * video.width / 100),
 					Math.round(document.body.offsetHeight * video.height / 100),
 				];
 			}
 
-			// When is all prepared, remove loading title and play videos
 			titleElement.innerHTML = '';
 			displayInfoElement.innerHTML = '';
 			indexElement.innerHTML = '';
 			htmlContentElement.innerHTML = '';
 
-			while (true) {
-				const promises = [];
-				for (let i = 0; i < Math.min(3, videos.length); i++) { // In this applet whe have 4 videos on same screen
-					promises.push((async function () {
-						const currentVideo = videos[i];
+			for (let i = 0; true; i = (i + 1) % videos.length) {
+				const previousVideo = videos[(i + videos.length - 1) % videos.length];
+				const currentVideo = videos[i];
+				const nextVideo = videos[(i + 1) % videos.length];
 
-						// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/js/js-video)
-						await sos.video.prepare(...currentVideo.agruments);
-						await sos.video.play(...currentVideo.agruments);
-						await sos.video.onceEnded(...currentVideo.agruments); // Wait until video ends
-						await sos.video.stop(...currentVideo.agruments); // Stop the video
-					})());
+				// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/js/js-video)
+				await sos.video.play(...currentVideo.agruments);
+				currentVideo.playing = true;
+				if (previousVideo.playing) {
+					await sos.video.stop(...previousVideo.agruments);
+					previousVideo.playing = false;
 				}
-				await Promise.all(promises);
+				await sos.video.prepare(...nextVideo.agruments); // Before the first video end, prepare the second one
+				await sos.video.onceEnded(...currentVideo.agruments); // Wait until video ends
 			}
 		});
 	</script>

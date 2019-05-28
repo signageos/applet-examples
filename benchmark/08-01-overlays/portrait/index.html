@@ -1,84 +1,100 @@
 <!doctype html>
 <html>
-	<head>
-		<title>08-01-b Overlay Portrait</title>
-    </head>
-	<body style="text-align: center; color: #ffffff;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-		<h1 id="title">08-01-b Overlay Portrait</h1>
-        <p id="index">... loading ...</p>
 
-        <!-- Div containers for gif images -->
-		<div id="image1"></div>
-		<div id="image2"></div>
+<head>
+	<title>08-01-b Overlay Portrait</title>
+</head>
 
-		<script type="application/ecmascript">
-			window.addEventListener('sos.loaded', async function () {
-				await sos.onReady(); // Wait until signageOS app is loaded and ready
+<body class="overlay">
+	<h1 id="title">08-01-b</h1>
+	<h2 id="displayInfo"></h2>
+	<p id="index">... loading ...</p>
+	<div id="htmlContent"></div>
 
-				// Create some content objects
-				const contentElement = document.getElementById('index');
-				const contentTitle = document.getElementById('title');
+	<script type="application/ecmascript">
+		window.addEventListener('sos.loaded', async function () {
 
-				// Videos that will be downloaded and prepared for playing
-				const videos = [
-					{ uid: 'video1', uri: 'https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1080x1920_35ce4618ddf2c320b5b7f81cb8b1c61f.mp4' },
-                  	{ uid: 'video2', uri: 'https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1080x1920_e3ff5dd66b347c8957e9a7f8bac078bb.mp4' },
-                    { uid: 'video3', uri: 'https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1080x1920_4841debb924bcd0168a58b120bd31561.mp4' },
-				];
-
-				for (const video of videos) {
-					// Store video to offline storage (https://docs.signageos.io/api/js/js-offline-cache-media-files)
-					const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
-					video.filePath = filePath;
+			// Load static files
+			var files = [
+				{
+					"uri": "https://signageostest.blob.core.windows.net/test/applet-examples/benchmark-styles.css?v=1.0.0",
+					"uid": "benchmark-styles.css-v1.0.0",
+					"type": sos.offline.types.css,
+					"flags": [sos.offline.flags.append(document.head)]
 				}
+			];
+			await sos.offline.addFiles(files);
 
-				// Set video properties for proper play on screen
-				for (const video of videos) {
-					video.agruments = [video.filePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
+			const titleElement = document.getElementById('title');
+			const displayInfoElement = document.getElementById('displayInfo');
+			const indexElement = document.getElementById('index');
+			const htmlContentElement = document.getElementById('htmlContent');
+
+			await sos.onReady(); // Wait until signageOS app is loaded and ready
+			
+			//Get display details
+			try {
+				const fw = await sos.management.firmware.getVersion();
+				const pl = await sos.management.app.getType();
+				const model = await sos.management.getModel();
+				const displayInfo = document.getElementById('displayInfo');
+				displayInfo.innerHTML = "Platform: " + pl + " Model: " + model + " FW: " + fw;
+			} catch (e) {
+				console.log(e);
+			}
+
+			// load HTML5 content
+			fetch('https://www.signageos.io/html-content.html')
+				.then(function (response) {
+					return response.text();
+				}).then(function (data) {
+					const htmlContentDiv = document.getElementById('htmlContent');
+					htmlContentDiv.innerHTML = data;
+				});
+
+			// Videos that will be downloaded and prepared for playing
+			const videos = [
+				{ uid: 'video-1', uri: 'https://static.signageos.io/assets/test-videos-circle_AME/circle_15s_1080x1920.mp4' },
+				{ uid: 'video-2', uri: 'https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_1080x1920.mp4' },
+				{ uid: 'video-3', uri: 'https://static.signageos.io/assets/test-videos-layers_AME/layers_15s_1080x1920.mp4' },
+				{ uid: 'video-4', uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1080x1920.mp4' },
+				{ uid: 'video-5', uri: 'https://static.signageos.io/assets/test-videos-08_AME/video-test-08_15s_1080x1920.mp4' },
+			];
+
+			for (const video of videos) {
+				// Store video to offline storage (https://docs.signageos.io/api/js/js-offline-cache-media-files)
+				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
+				video.filePath = filePath;
+			}
+
+			// Set video properties for proper play on screen
+			for (const video of videos) {
+				video.agruments = [video.filePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
+			}
+
+			// Remove main title and loading title
+			titleElement.innerHTML = '';
+			displayInfoElement.innerHTML = '';
+			indexElement.innerHTML = '';
+			htmlContentElement.innerHTML = '';
+
+			for (let i = 0; true; i = (i + 1) % videos.length) {
+				const previousVideo = videos[(i + videos.length - 1) % videos.length];
+				const currentVideo = videos[i];
+				const nextVideo = videos[(i + 1) % videos.length];
+
+				// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/js/js-video)
+				await sos.video.play(...currentVideo.agruments);
+				currentVideo.playing = true;
+				if (previousVideo.playing) {
+					await sos.video.stop(...previousVideo.agruments);
+					previousVideo.playing = false;
 				}
+				await sos.video.prepare(...nextVideo.agruments); // Before end first video prepare second
+				await sos.video.onceEnded(...currentVideo.agruments); // Wait until video ends
+			}
+		});
+	</script>
+</body>
 
-				// Remove main title and loading title
-				contentElement.innerHTML = '';
-				contentTitle.innerHTML = '';
-
-				// Create first image on screen
-				let img = document.createElement("img");
-				img.src = "https://media.giphy.com/media/2wgZ6aYRq3z9H0oNBl/giphy.gif";
-				img.style.zIndex = "400";
-				img.style.position = "absolute";
-				img.style.width = "25%";
-				img.style.bottom = "10px";
-				img.style.right = "10px";
-				let src = document.getElementById("image1");
-				src.appendChild(img);
-
-				// Create second image on screen
-                let priceAlert = document.createElement('img');
-                priceAlert.src = "https://media2.giphy.com/media/1zRdorQ0dWKuz6ZhfO/giphy.gif?cid=790b76115ce2c82e65714c794933dc78&rid=giphy.gif";
-				priceAlert.style.zIndex = "400";
-				priceAlert.style.position = "absolute";
-				priceAlert.style.width = "20%";
-				priceAlert.style.bottom = "15px";
-				priceAlert.style.left = "10px";
-				let priceDiv = document.getElementById('image2');
-				priceDiv.appendChild(priceAlert);
-
-				for (let i = 0; true; i = (i + 1) % videos.length) {
-					const previousVideo = videos[(i + videos.length - 1) % videos.length];
-					const currentVideo = videos[i];
-					const nextVideo = videos[(i + 1) % videos.length];
-
-					// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/js/js-video)
-					await sos.video.play(...currentVideo.agruments);
-                    currentVideo.playing = true;
-					if (previousVideo.playing) {
-						await sos.video.stop(...previousVideo.agruments);
-						previousVideo.playing = false;
-					}
-					await sos.video.prepare(...nextVideo.agruments); // Before end first video prepare second
-					await sos.video.onceEnded(...currentVideo.agruments); // Wait until video ends
-				}
-			});
-		</script>
-	</body>
 </html>

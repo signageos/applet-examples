@@ -96,25 +96,32 @@
 				];
 			}
 
-			async function playSet1() {
-				for (let i = 0; true; i = (i + 1) % videoSet1.length) {
-					const previousVideoSet = videoSet1[(i + videoSet1.length - 1) % videoSet1.length];
-					const currentVideoSet = videoSet1[i];
-					const nextVideoSet = videoSet1[(i + 1) % videoSet1.length];
+			// When is all prepared, remove loading title and play videos
+			titleElement.innerHTML = '';
+			displayInfoElement.innerHTML = '';
+			indexElement.innerHTML = '';
 
-					// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/sos-applet-api/#Play_video)
-					await sos.video.play(...currentVideoSet.agruments);
-					currentVideoSet.playing = true;
+			for (let i = 0; true; i = (i + 1) % videoSet1.length) {
+				const previousVideoSet1 = videoSet1[(i + videoSet1.length - 1) % videoSet1.length];
+				const currentVideoSet1 = videoSet1[i];
+				const nextVideoSet1 = videoSet1[(i + 1) % videoSet1.length];
 
-					// If previous video is playing, stop it
-					if (previousVideoSet.playing) {
-						await sos.video.stop(...previousVideoSet.agruments);
-						previousVideoSet.playing = false;
-					}
+				const previousVideoSet2 = videoSet2[(i + videoSet2.length - 1) % videoSet2.length];
+				const currentVideoSet2 = videoSet2[i];
+				const nextVideoSet2 = videoSet2[(i + 1) % videoSet2.length];
 
-					// Prepare next video for gappless playback
-					await sos.video.prepare(...nextVideoSet.agruments);
-					await sos.video.onceEnded(...currentVideoSet.agruments); // https://docs.signageos.io/api/sos-applet-api/#onceEnded
+				// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/sos-applet-api/#Play_video)
+				await sos.video.play(...currentVideoSet1.agruments);
+				await sos.video.play(...currentVideoSet2.agruments);
+				currentVideoSet1.playing = true;
+				currentVideoSet2.playing = true;
+
+				// If previous video is playing, stop it
+				if (previousVideoSet1.playing || previousVideoSet2.playing) {
+					await sos.video.stop(...previousVideoSet1.agruments);
+					await sos.video.stop(...previousVideoSet2.agruments);
+					previousVideoSet1.playing = false;
+					previousVideoSet2.playing = false;
 				}
 			}
 

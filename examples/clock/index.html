@@ -643,12 +643,32 @@
                     }
                   
                   
-                    const standUpTime = '10:30';
+                    const standUpTime = sos.config.standUpTime || '10:30';
 
                     const contentElement = document.getElementById('index');
                     const imageElement = document.getElementById('standup-image');
                     const audioElement = document.getElementById('standup-audio');
                     const titleElement = document.getElementById('standup-title');
+
+                    const audioSrcs = [
+                        'https://hugstatic.blob.core.windows.net/assets/dev/old-fashioned-school-bell-daniel_simon.mp3',
+                        'https://hugstatic.blob.core.windows.net/assets/dev/Fire-Alarm-SoundBible.com-78848779.mp3',
+                        'https://hugstatic.blob.core.windows.net/assets/dev/Alien_AlarmDrum-KevanGC-893953959.mp3',
+                        'https://hugstatic.blob.core.windows.net/assets/dev/BusySignal-SoundBible.com-1695161320.mp3',
+                        'https://hugstatic.blob.core.windows.net/assets/dev/Fire_pager-jason-1283464858.mp3',
+                        'https://hugstatic.blob.core.windows.net/assets/dev/foghorn-daniel_simon.mp3',
+                        'https://hugstatic.blob.core.windows.net/assets/dev/Japanese-Temple-Bell-Small-SoundBible.com-113624364.mp3',
+                        'https://hugstatic.blob.core.windows.net/assets/dev/Loud_Alarm_Clock_Buzzer-Muk1984-493547174.mp3',
+                        'https://hugstatic.blob.core.windows.net/assets/dev/Plectron_tones-Brad-1090204421.mp3',
+                        'https://hugstatic.blob.core.windows.net/assets/dev/Rooster-SoundBible.com-1114473528.mp3',
+                        'https://hugstatic.blob.core.windows.net/assets/dev/Siren-SoundBible.com-1094437108.mp3',
+                        'https://hugstatic.blob.core.windows.net/assets/dev/Tornado_Siren_II-Delilah-747233690.mp3',
+                    ];
+                    let audioSrc = audioSrcs[Math.floor(Math.random() * new Date().valueOf() % audioSrcs.length)];
+                    setInterval(
+                        () => audioSrc = audioSrcs[Math.floor(Math.random() * new Date().valueOf() % audioSrcs.length)],
+                        60 * 60 * 1e3,
+                    );
 
                     async function checkTime() {
                         const [hours, minutes] = standUpTime.split(':');
@@ -676,7 +696,6 @@
                             imageElement.src = gifSrc;
                             imageElement.style.display = 'block';
                             titleElement.style.display = 'block';
-                            const audioSrc = 'https://hugstatic.blob.core.windows.net/assets/dev/old-fashioned-school-bell-daniel_simon.mp3';
                             if (audioElement.src !== audioSrc) {
                                 audioElement.src = audioSrc;
                                 audioElement.autoplay = 'autoplay';

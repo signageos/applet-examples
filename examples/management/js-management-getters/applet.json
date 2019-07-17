@@ -1,6 +1,6 @@
 {
   "scope": "signageos",
-  "name": "management-je-getters",
+  "name": "management-js-getters",
   "version": "1.0.0",
   "main": "index.html",
   "dependencies": {

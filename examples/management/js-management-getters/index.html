@@ -5,20 +5,17 @@
 	</head>
 	<body style="text-align: center; background-color: #18182c; color: #ffffff">
 		<h1>JS Management Getters</h1>
-		<div id="index">... loading ...</p>
+		<div id="index">... loading ...</div>
 
 
-		<!-- Your script should come as last in body tag -->
-		<!-- To allow transpile ES6+ to ES5 (JavaScript) use application/ecmascript instead of text/javascript (works on all supported platforms) -->
 		<script type="application/ecmascript">
-
-
-			// You need to wait for this event always (https://docs.signageos.io/api/sos-applet-api/#Basics)
 			window.addEventListener('sos.loaded', async function () {
 				const contentElement = document.getElementById('index');
+
 				// Wait on sos data are ready (https://docs.signageos.io/api/sos-applet-api/#onReady)
 				await sos.onReady();
 				contentElement.innerHTML = "Display version: " + sos.display.version + "<br>";
+				
               	try{
                   let model = await sos.management.getModel();
                   contentElement.innerHTML += "Model: " + model + "<br>";

@@ -2,11 +2,11 @@
 <html>
 
 <head>
-	<title>05-01-a HDMI-Full-Screen</title>
+	<title>07-03-a Zones HDMI</title>
 </head>
 
 <body>
-	<h1 id="title">5-01-a</h1>
+	<h1 id="title">7-03-a</h1>
 	<h2 id="displayInfo"></h2>
 	<p id="index">... loading ...</p>
 	<div id="htmlContent"></div>
@@ -43,17 +43,24 @@
 				console.log(e);
 			}
 
+			// load HTML5 content
+			fetch('https://www.signageos.io/html-content.html')
+				.then(function (response) {
+					return response.text();
+				}).then(function (data) {
+					const htmlContentDiv = document.getElementById('htmlContent');
+					htmlContentDiv.innerHTML = data;
+				});
 			// Set properties like ID and URL for stream
 			const stream = { uid: 'stream-1', uri: 'internal://hdmi1' };
 
 			// Set url, resolution on screen (full screen) - (https://docs.signageos.io/api/js/js-video-stream#play-stream)
-			stream.agruments = [stream.uri, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
+			stream.agruments = [stream.uri, 200, 200, 1200, 800];
 
 			// Remove loading title
 			titleElement.innerHTML = '';
 			displayInfoElement.innerHTML = '';
 			indexElement.innerHTML = '';
-			htmlContentElement.innerHTML = '';
 
 			// Play stream forever (https://docs.signageos.io/api/js/js-video-stream#play-stream)
 			await sos.stream.play(...stream.agruments);

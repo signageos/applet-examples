@@ -2,15 +2,14 @@
 <html>
 
 <head>
-	<title>02-01-a 2-videos-landscape</title>
+	<title>07-02-a zones-2-videos-landscape</title>
 </head>
 
 <body>
-	<h1 id="title">2-01-a</h1>
+	<h1 id="title">7-02-a</h1>
 	<h2 id="displayInfo"></h2>
 	<p id="index">... loading ...</p>
 	<div id="htmlContent"></div>
-
 
 	<script type="application/ecmascript">
 		window.addEventListener('sos.loaded', async function () {
@@ -44,21 +43,31 @@
 				console.log(e);
 			}
 
+			// load HTML5 content
+			fetch('https://www.signageos.io/html-content.html')
+				.then(function (response) {
+					return response.text();
+				}).then(function (data) {
+					const htmlContentDiv = document.getElementById('htmlContent');
+					htmlContentDiv.innerHTML = data;
+				});
+
 			// Videos that will be downloaded and prepared for playing
 			const videoSet1 = [
-				{ uid: 'video-1', x: 0, y: 0, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1920x1080_19c539e7982228ae0527409aeadb5b88.mp4' },
-				{ uid: 'video-2', x: 0, y: 0, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1920x1080_88f90af5fa281d7efb8eae17848e71d9.mp4' },
-				{ uid: 'video-3', x: 0, y: 0, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4' },
-				{ uid: 'video-4', x: 0, y: 0, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-08_AME/video-test-08_15s_1920x1080_eb8f37b04d4dc8f8e26d80e66a2eb71a.mp4' },
-				{ uid: 'video-5', x: 0, y: 0, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4' },
+				{ uid: 'video0', x: 0, y: 25, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4' },
+				{ uid: 'video1', x: 0, y: 25, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4' },
+				{ uid: 'video2', x: 0, y: 25, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-08_AME/video-test-08_15s_1920x1080_eb8f37b04d4dc8f8e26d80e66a2eb71a.mp4' },
+				{ uid: 'video3', x: 0, y: 25, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_1920x1080_0f110996c51d8c77933b1ab9fecfb61f.mp4' },
+				{ uid: 'video4', x: 0, y: 25, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-06_AME/video-test-06_15s_1920x1080_6bad9be8f365760ae505dab34582978b.mp4' },
 			];
 
+			// Every video has set position and resolution on screen
 			const videoSet2 = [
-				{ uid: 'video-6', x: 50, y: 0, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4' },
-				{ uid: 'video-7', x: 50, y: 0, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_1920x1080_0f110996c51d8c77933b1ab9fecfb61f.mp4' },
-				{ uid: 'video-8', x: 50, y: 0, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1920x1080_19c539e7982228ae0527409aeadb5b88.mp4' },
-				{ uid: 'video-9', x: 50, y: 0, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1920x1080_88f90af5fa281d7efb8eae17848e71d9.mp4' },
-				{ uid: 'video-10', x: 50, y: 0, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4' },
+				{ uid: 'video5', x: 50, y: 25, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4' },
+				{ uid: 'video6', x: 50, y: 25, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-08_AME/video-test-08_15s_1920x1080_eb8f37b04d4dc8f8e26d80e66a2eb71a.mp4' },
+				{ uid: 'video7', x: 50, y: 25, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1920x1080_19c539e7982228ae0527409aeadb5b88.mp4' },
+				{ uid: 'video8', x: 50, y: 25, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4' },
+				{ uid: 'video9', x: 50, y: 25, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_1920x1080_0f110996c51d8c77933b1ab9fecfb61f.mp4' },
 			];
 
 			// Store video to offline storage for set 1 (https://docs.signageos.io/api/js/js-offline-cache-media-files)
@@ -91,7 +100,6 @@
 			titleElement.innerHTML = '';
 			displayInfoElement.innerHTML = '';
 			indexElement.innerHTML = '';
-			htmlContentElement.innerHTML = '';
 
 			async function playSet1() {
 				for (let i = 0; true; i = (i + 1) % videoSet1.length) {
@@ -139,6 +147,7 @@
 
 			// Play everything
 			Promise.all([playSet1(), playSet2()]);
+
 		});
 	</script>
 </body>

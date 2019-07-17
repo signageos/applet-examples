@@ -1,53 +1,90 @@
 <!doctype html>
 <html>
-	<head>
-		<title>01-01-a Full-Screen-Landscape</title>
-	</head>
-	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-		<h1>01-01-a Full-Screen-Landscape</h1>
-		<p id="index">... loading ...</p>
 
+<head>
+	<title>01-01-a Full-Screen-Landscape</title>
+</head>
 
-		<script type="application/ecmascript">
-			window.addEventListener('sos.loaded', async function () {
-				const contentElement = document.getElementById('index');
-				await sos.onReady(); // Wait until signageOS app is loaded and ready
+<body>
+	<h1 id="title">01-01-a</h1>
+	<h2 id="displayInfo"></h2>
+	<p id="index">... loading ...</p>
+	<div id="htmlContent"></div>
 
-				// Videos that will be downloaded and prepared for playing
-				const videos = [
-					{ uid: 'video-1', uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4' },
-					{ uid: 'video-2', uri: 'https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_1920x1080_0f110996c51d8c77933b1ab9fecfb61f.mp4' },
-				];
+	<script type="application/ecmascript">
+		window.addEventListener('sos.loaded', async function () {
 
-				for (const video of videos) {
-					// Store video to offline storage (https://docs.signageos.io/api/js/js-offline-cache-media-files)
-					const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
-					video.filePath = filePath;
+			// Load static files
+			let files = [
+				{
+					"uri": "https://signageostest.blob.core.windows.net/test/applet-examples/benchmark-styles.css?v=1.0.0",
+					"uid": "benchmark-styles.css-v1.0.0",
+					"type": sos.offline.types.css,
+					"flags": [sos.offline.flags.append(document.head)]
 				}
+			];
+			await sos.offline.addFiles(files);
 
-				// Set video properties for proper play on screen
-				for (const video of videos) {
-					video.agruments = [video.filePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
+			const titleElement = document.getElementById('title');
+			const displayInfoElement = document.getElementById('displayInfo');
+			const indexElement = document.getElementById('index');
+			const htmlContentElement = document.getElementById('htmlContent');
+
+			await sos.onReady(); // Wait until signageOS app is loaded and ready
+			
+			//Get display details
+			try {
+				const fw = await sos.management.firmware.getVersion();
+				const pl = await sos.management.app.getType();
+				const model = await sos.management.getModel();
+				const displayInfo = document.getElementById('displayInfo');
+				displayInfo.innerHTML = "Platform: " + pl + " Model: " + model + " FW: " + fw;
+			} catch (e) {
+				console.log(e);
+			}
+
+			// Videos that will be downloaded and prepared for playing
+			const videos = [
+				{ uid: 'video-1', uri: 'https://hugstatic.blob.core.windows.net/assets/test-videos-circle_AME/circle_15s_1920x1080_c32f55b932a8df2e39265b04a90d9837.mp4' },
+				{ uid: 'video-2', uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4' },
+				{ uid: 'video-3', uri: 'https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1920x1080_88f90af5fa281d7efb8eae17848e71d9.mp4' },
+				{ uid: 'video-4', uri: 'https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_1920x1080_0f110996c51d8c77933b1ab9fecfb61f.mp4' },
+				{ uid: 'video-5', uri: 'https://static.signageos.io/assets/test-videos-06_AME/video-test-06_15s_1920x1080_6bad9be8f365760ae505dab34582978b.mp4' },
+			];
+
+			for (const video of videos) {
+				// Store video to offline storage (https://docs.signageos.io/api/js/js-offline-cache-media-files)
+				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
+				video.filePath = filePath;
+			}
+
+			// Set video properties for proper play on screen
+			for (const video of videos) {
+				video.agruments = [video.filePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
+			}
+
+			titleElement.innerHTML = '';
+			displayInfoElement.innerHTML = '';
+			indexElement.innerHTML = '';
+			htmlContentElement.innerHTML = '';
+
+			for (let i = 0; true; i = (i + 1) % videos.length) {
+				const previousVideo = videos[(i + videos.length - 1) % videos.length];
+				const currentVideo = videos[i];
+				const nextVideo = videos[(i + 1) % videos.length];
+
+				// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/js/js-video)
+				await sos.video.play(...currentVideo.agruments);
+				currentVideo.playing = true;
+				if (previousVideo.playing) {
+					await sos.video.stop(...previousVideo.agruments);
+					previousVideo.playing = false;
 				}
+				await sos.video.prepare(...nextVideo.agruments); // Before the first video end, prepare the second one
+				await sos.video.onceEnded(...currentVideo.agruments); // Wait until video ends
+			}
+		});
+	</script>
+</body>
 
-				contentElement.innerHTML = '';
-
-				for (let i = 0; true; i = (i + 1) % videos.length) {
-					const previousVideo = videos[(i + videos.length - 1) % videos.length];
-					const currentVideo = videos[i];
-					const nextVideo = videos[(i + 1) % videos.length];
-
-					// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/js/js-video)
-					await sos.video.play(...currentVideo.agruments);
-					currentVideo.playing = true;
-					if (previousVideo.playing) {
-						await sos.video.stop(...previousVideo.agruments);
-						previousVideo.playing = false;
-					}
-					await sos.video.prepare(...nextVideo.agruments); // Before the first video end, prepare the second one
-					await sos.video.onceEnded(...currentVideo.agruments); // Wait until video ends
-				}
-			});
-		</script>
-	</body>
 </html>

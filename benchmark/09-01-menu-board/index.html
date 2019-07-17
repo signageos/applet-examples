@@ -1,89 +1,122 @@
 <!doctype html>
 <html>
+
 <head>
-    <title>09-01-a Videowall-1x2</title>
+	<title>09-01-a Videowall-1x2</title>
 </head>
-<body style="text-align: center; background-color: #f4d03f; color: #333333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-<h1>09-01-a Videowall-1x2</h1>
-<p id="index"></p>
 
+<body>
+	<h1 id="title">9-01-a</h1>
+	<h2 id="displayInfo"></h2>
+	<p id="index">... loading ...</p>
+	<div id="htmlContent"></div>
 
-<script type="application/ecmascript">
-	window.addEventListener('sos.loaded', async function () {
-		const contentElement = document.getElementById('index');
-		await sos.onReady(); // Wait until signageOS app is loaded and ready
+	<script type="application/ecmascript">
+		window.addEventListener('sos.loaded', async function () {
+			
+			// Load static files
+			let files = [
+				{
+					"uri": "https://signageostest.blob.core.windows.net/test/applet-examples/benchmark-styles.css?v=1.0.0",
+					"uid": "benchmark-styles.css-v1.0.0",
+					"type": sos.offline.types.css,
+					"flags": [sos.offline.flags.append(document.head)]
+				}
+			];
+			await sos.offline.addFiles(files);
 
-		contentElement.innerHTML = '...syncing...';
+			const titleElement = document.getElementById('title');
+			const displayInfoElement = document.getElementById('displayInfo');
+			const indexElement = document.getElementById('index');
+			const htmlContentElement = document.getElementById('htmlContent');
 
-		// Connect to the sync server and initialize the sync group
-		// How to use selfhosted synchronizer (https://docs.signageos.io/knowledge-base/how-to-install-synchronizer-on-prem)
-		const syncServerUri = sos.config.sync_server || undefined;
-		const syncGroup = sos.config.sync_group;
-        
-		// Connect all devices by IP/URL into one group (https://docs.signageos.io/api/js/js-sync-playback)
-		await sos.sync.connect(syncServerUri);
-		await sos.sync.init(syncGroup);
+			await sos.onReady(); // Wait until signageOS app is loaded and ready
+			
+			//Get display details
+			try {
+				const fw = await sos.management.firmware.getVersion();
+				const pl = await sos.management.app.getType();
+				const model = await sos.management.getModel();
+				const displayInfo = document.getElementById('displayInfo');
+				displayInfo.innerHTML = "Platform: " + pl + " Model: " + model + " FW: " + fw;
+			} catch (e) {
+				console.log(e);
+			}
+			indexElement.innerHTML = '...syncing...';
 
-		contentElement.innerHTML = '...loading videos...';
+			// Connect to the sync server and initialize the sync group
+			// How to use selfhosted synchronizer (https://docs.signageos.io/knowledge-base/how-to-install-synchronizer-on-prem)
+			const syncServerUri = sos.config.sync_server || undefined;
+			const syncGroup = sos.config.sync_group;
 
-		// Videos for the video wall are sliced in pre-production into separate segments, each segment for each device in the matrix
-		const videosLeft = [
-			{ uid: 'video-1', uri: 'https://hugstatic.blob.core.windows.net/assets/videowall1/videowall1-left_145ee3fa78a472f39dcca5b70d65e98b.mp4' },
-			{ uid: 'video-2', uri: 'https://hugstatic.blob.core.windows.net/assets/videowall2/videowall2-left_cd0fe378929adffd4f85642bd70a7100.mp4' },
-			{ uid: 'video-3', uri: 'https://hugstatic.blob.core.windows.net/assets/videowall3/videowall3-left_4ac1f73046523ea729d0b6654dca58a6.mp4' },
-		];
-		const videosRight = [
-			{ uid: 'video-1', uri: 'https://hugstatic.blob.core.windows.net/assets/videowall1/videowall1-right_17fd879fa10927de5ccfa80f5e464b4f.mp4' },
-			{ uid: 'video-2', uri: 'https://hugstatic.blob.core.windows.net/assets/videowall2/videowall2-right_b0183cc35cb2c575546c9a63421db11a.mp4' },
-			{ uid: 'video-3', uri: 'https://hugstatic.blob.core.windows.net/assets/videowall3/videowall3-right_367c6dd00ba0bbeffb77899d87c6acc3.mp4' },
-		];
+			// Connect all devices by IP/URL into one group (https://docs.signageos.io/api/js/js-sync-playback)
+			await sos.sync.connect(syncServerUri);
+			await sos.sync.init(syncGroup);
 
-		// Based on the configuration, choose the correct set of videos
-		const videos = sos.config.placement === 'right' ? videosRight : videosLeft;
+			indexElement.innerHTML = '...loading videos...';
 
-		for (const video of videos) {
-			// Store video to offline storage (https://docs.signageos.io/api/js/js-offline-cache-media-files)
-			const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
-			video.filePath = filePath;
-			video.agruments = [video.filePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
-		}
+			// Videos for the video wall are sliced in pre-production into separate segments, each segment for each device in the matrix
+			const videosLeft = [
+				{ uid: 'video-1', uri: 'https://hugstatic.blob.core.windows.net/assets/videowall1/videowall1-left_145ee3fa78a472f39dcca5b70d65e98b.mp4' },
+				{ uid: 'video-2', uri: 'https://hugstatic.blob.core.windows.net/assets/videowall2/videowall2-left_cd0fe378929adffd4f85642bd70a7100.mp4' },
+				{ uid: 'video-3', uri: 'https://hugstatic.blob.core.windows.net/assets/videowall3/videowall3-left_4ac1f73046523ea729d0b6654dca58a6.mp4' },
+			];
+			const videosRight = [
+				{ uid: 'video-1', uri: 'https://hugstatic.blob.core.windows.net/assets/videowall1/videowall1-right_17fd879fa10927de5ccfa80f5e464b4f.mp4' },
+				{ uid: 'video-2', uri: 'https://hugstatic.blob.core.windows.net/assets/videowall2/videowall2-right_b0183cc35cb2c575546c9a63421db11a.mp4' },
+				{ uid: 'video-3', uri: 'https://hugstatic.blob.core.windows.net/assets/videowall3/videowall3-right_367c6dd00ba0bbeffb77899d87c6acc3.mp4' },
+			];
 
-		contentElement.innerHTML = '';
+			// Based on the configuration, choose the correct set of videos
+			const videos = sos.config.placement === 'right' ? videosRight : videosLeft;
 
-		let previousVideoIndex;
-		let currentVideoIndex = 0;
-
-		while (true) {
-			const previousVideo = typeof previousVideoIndex === 'undefined' ? undefined : videos[previousVideoIndex];
-			const currentVideo = videos[currentVideoIndex];
-
-			// Wait until is the same video loaded on another device (in sync group)
-			const realCurrentVideoUid = await sos.sync.wait(currentVideo.uid, syncGroup);
-			const realCurrentVideoIndex = videos.findIndex((video) => video.uid === realCurrentVideoUid);
-			const realCurrentVideo = videos[realCurrentVideoIndex];
-
-			// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/js/js-video)
-			await sos.video.play(...realCurrentVideo.agruments);
-			if (previousVideo) {
-				await sos.video.stop(...previousVideo.agruments);
+			for (const video of videos) {
+				// Store video to offline storage (https://docs.signageos.io/api/js/js-offline-cache-media-files)
+				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
+				video.filePath = filePath;
+				video.agruments = [video.filePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
 			}
 
-			// Create promise for waiting on end of the video (https://docs.signageos.io/api/js/js-video)
-			const endedPromise = sos.video.onceEnded(...realCurrentVideo.agruments);
+			titleElement.innerHTML = '';
+			displayInfoElement.innerHTML = '';
+			indexElement.innerHTML = '';
+			htmlContentElement.innerHTML = '';
 
-			const nextVideoIndex = (realCurrentVideoIndex + 1) % videos.length;
-			const nextVideo = videos[nextVideoIndex];
-            
-			// Prepare next video for gapless playback
-			await sos.video.prepare(...nextVideo.agruments);
+			let previousVideoIndex;
+			let currentVideoIndex = 0;
 
-			// Now wait on end of video
-			await endedPromise;
+			while (true) {
+				const previousVideo = typeof previousVideoIndex === 'undefined' ? undefined : videos[previousVideoIndex];
+				const currentVideo = videos[currentVideoIndex];
 
-			previousVideoIndex = realCurrentVideoIndex;
-			currentVideoIndex = nextVideoIndex;
-		}
-	});
-</script>
+				// Wait until is the same video loaded on another device (in sync group)
+				const realCurrentVideoUid = await sos.sync.wait(currentVideo.uid, syncGroup);
+				const realCurrentVideoIndex = videos.findIndex((video) => video.uid === realCurrentVideoUid);
+				const realCurrentVideo = videos[realCurrentVideoIndex];
+
+				// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/js/js-video)
+				await sos.video.play(...realCurrentVideo.agruments);
+				if (previousVideo) {
+					await sos.video.stop(...previousVideo.agruments);
+				}
+
+				// Create promise for waiting on end of the video (https://docs.signageos.io/api/js/js-video)
+				const endedPromise = sos.video.onceEnded(...realCurrentVideo.agruments);
+
+				const nextVideoIndex = (realCurrentVideoIndex + 1) % videos.length;
+				const nextVideo = videos[nextVideoIndex];
+
+				// Prepare next video for gapless playback
+				await sos.video.prepare(...nextVideo.agruments);
+
+				// Now wait on end of video
+				await endedPromise;
+
+				previousVideoIndex = realCurrentVideoIndex;
+				currentVideoIndex = nextVideoIndex;
+			}
+		});
+	</script>
 </body>
+
 </html>

@@ -2,11 +2,11 @@
 <html>
 
 <head>
-	<title>04-02-b 4-videos-portrait</title>
+	<title>07-01-a Zones Landscape</title>
 </head>
 
 <body>
-	<h1 id="title">4-02-b</h1>
+	<h1 id="title">7-01-a</h1>
 	<h2 id="displayInfo"></h2>
 	<p id="index">... loading ...</p>
 	<div id="htmlContent"></div>
@@ -43,13 +43,22 @@
 				console.log(e);
 			}
 
+			// load HTML5 content
+			fetch('https://www.signageos.io/html-content.html')
+				.then(function (response) {
+					return response.text();
+				}).then(function (data) {
+					const htmlContentDiv = document.getElementById('htmlContent');
+					htmlContentDiv.innerHTML = data;
+				});
+
 			// Videos that will be downloaded and prepared for playing
 			const videos = [
-				// Divide video on screen in percentages ex. x:50 = 50% in screen
-				{ uid: 'video0', x: 0, y: 0, width: 100, height: 25, uri: 'https://static.signageos.io/assets/test-videos-06_AME/video-test-06_15s_1080x1920_7c0f255304ee7f685f1d659f498975c5.mp4' },
-				{ uid: 'video1', x: 0, y: 25, width: 100, height: 25, uri: 'https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1080x1920_4841debb924bcd0168a58b120bd31561.mp4' },
-				{ uid: 'video2', x: 0, y: 50, width: 100, height: 25, uri: 'https://static.signageos.io/assets/test-videos-07_AME/video-test-07_15s_1080x1920_0595b73bc2bab7de737860dc4e800e1a.mp4' },
-				{ uid: 'video3', x: 0, y: 75, width: 100, height: 25, uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1080x1920_009b0dbbd96092b218dcf056f6f0ec0f.mp4' },
+				{ uid: 'video-1', x: 480, y: 270, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4' },
+				{ uid: 'video-2', x: 480, y: 270, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-06_AME/video-test-06_15s_1920x1080_6bad9be8f365760ae505dab34582978b.mp4' },
+				{ uid: 'video-3', x: 480, y: 270, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-07_AME/video-test-07_15s_1920x1080_1228118eb0b39f7311f9c83a0f4cd5dc.mp4' },
+				{ uid: 'video-4', x: 480, y: 270, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4' },
+				{ uid: 'video-5', x: 480, y: 270, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1920x1080_88f90af5fa281d7efb8eae17848e71d9.mp4' },
 			];
 
 			for (const video of videos) {
@@ -62,33 +71,31 @@
 			for (const video of videos) {
 				video.agruments = [
 					video.filePath,
-					Math.round(document.body.offsetWidth * video.x / 100),
-					Math.round(document.body.offsetHeight * video.y / 100),
+					video.x,
+					video.y,
 					Math.round(document.body.offsetWidth * video.width / 100),
 					Math.round(document.body.offsetHeight * video.height / 100),
 				];
 			}
 
-			// When is all prepared, remove loading title and play videos
 			titleElement.innerHTML = '';
 			displayInfoElement.innerHTML = '';
 			indexElement.innerHTML = '';
-			htmlContentElement.innerHTML = '';
 
-			while (true) {
-				const promises = [];
-				for (let i = 0; i < Math.min(4, videos.length); i++) { // In this applet whe have 4 videos on same screen
-					promises.push((async function () {
-						const currentVideo = videos[i];
+			for (let i = 0; true; i = (i + 1) % videos.length) {
+				const previousVideo = videos[(i + videos.length - 1) % videos.length];
+				const currentVideo = videos[i];
+				const nextVideo = videos[(i + 1) % videos.length];
 
-						// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/js/js-video)
-						await sos.video.prepare(...currentVideo.agruments); // Prepare video for play
-						await sos.video.play(...currentVideo.agruments);
-						await sos.video.onceEnded(...currentVideo.agruments); // Wait until video ends
-						await sos.video.stop(...currentVideo.agruments); // Stop the video
-					})());
+				// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/js/js-video)
+				await sos.video.play(...currentVideo.agruments);
+				currentVideo.playing = true;
+				if (previousVideo.playing) {
+					await sos.video.stop(...previousVideo.agruments);
+					previousVideo.playing = false;
 				}
-				await Promise.all(promises);
+				await sos.video.prepare(...nextVideo.agruments); // Before the first video end, prepare the second one
+				await sos.video.onceEnded(...currentVideo.agruments); // Wait until video ends
 			}
 		});
 	</script>

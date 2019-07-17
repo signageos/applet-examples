@@ -1,60 +1,94 @@
 <!doctype html>
 <html>
-	<head>
-		<title>03-01-b 2-videos-overflow-portrait</title>
-	</head>
-	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-		<h1>03-01-b 2-videos-overflow-portrait</h1>
-		<p id="index">... loading ...</p>
 
+<head>
+	<title>03-01-b 2-videos-overflow-portrait</title>
+</head>
 
-		<script type="application/ecmascript">
-			window.addEventListener('sos.loaded', async function () {
-				const contentElement = document.getElementById('index');
-				await sos.onReady(); // Wait until signageOS app is loaded and ready
+<body>
+	<h1 id="title">3-01-b</h1>
+	<h2 id="displayInfo"></h2>
+	<p id="index">... loading ...</p>
+	<div id="htmlContent"></div>
 
-				// Videos that will be downloaded and prepared for playing 
-				const videos = [
-					{ uid: 'video0', x: 0, y: 0, width: 100, height: 100, uri: 'https://static.signageos.io/assets/test-videos-07_AME/video-test-07_15s_1080x1920_0595b73bc2bab7de737860dc4e800e1a.mp4' },
-					{ uid: 'video1', x: 70, y: 70, width: 30, height: 30, uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1080x1920_009b0dbbd96092b218dcf056f6f0ec0f.mp4' },
+	<script type="application/ecmascript">
+		window.addEventListener('sos.loaded', async function () {
+			
+			// Load static files
+			let files = [
+				{
+					"uri": "https://signageostest.blob.core.windows.net/test/applet-examples/benchmark-styles.css?v=1.0.0",
+					"uid": "benchmark-styles.css-v1.0.0",
+					"type": sos.offline.types.css,
+					"flags": [sos.offline.flags.append(document.head)]
+				}
+			];
+			await sos.offline.addFiles(files);
+
+			const titleElement = document.getElementById('title');
+			const displayInfoElement = document.getElementById('displayInfo');
+			const indexElement = document.getElementById('index');
+			const htmlContentElement = document.getElementById('htmlContent');
+
+			await sos.onReady(); // Wait until signageOS app is loaded and ready
+			
+			//Get display details
+			try {
+				const fw = await sos.management.firmware.getVersion();
+				const pl = await sos.management.app.getType();
+				const model = await sos.management.getModel();
+				const displayInfo = document.getElementById('displayInfo');
+				displayInfo.innerHTML = "Platform: " + pl + " Model: " + model + " FW: " + fw;
+			} catch (e) {
+				console.log(e);
+			}
+
+			// Videos that will be downloaded and prepared for playing 
+			const videos = [
+				{ uid: 'video0', x: 0, y: 0, width: 100, height: 100, uri: 'https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1080x1920_35ce4618ddf2c320b5b7f81cb8b1c61f.mp4' },
+				{ uid: 'video1', x: 70, y: 70, width: 30, height: 30, uri: 'https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1080x1920_e3ff5dd66b347c8957e9a7f8bac078bb.mp4' },
+			];
+
+			for (const video of videos) {
+				// Store video to offline storage (https://docs.signageos.io/api/js/js-offline-cache-media-files)
+				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
+				video.filePath = filePath;
+			}
+
+			// Set video properties for proper play on screen
+			for (const video of videos) {
+				video.agruments = [
+					video.filePath,
+					Math.round(document.body.offsetWidth * video.x / 100),
+					Math.round(document.body.offsetHeight * video.y / 100),
+					Math.round(document.body.offsetWidth * video.width / 100),
+					Math.round(document.body.offsetHeight * video.height / 100),
 				];
+			}
 
-				for (const video of videos) {
-					// Store video to offline storage (https://docs.signageos.io/api/js/js-offline-cache-media-files)
-					const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
-					video.filePath = filePath;
+			// When is all prepared, remove loading title and play videos
+			titleElement.innerHTML = '';
+			displayInfoElement.innerHTML = '';
+			indexElement.innerHTML = '';
+			htmlContentElement.innerHTML = '';
+
+			while (true) {
+				const promises = [];
+				for (let i = 0; i < Math.min(2, videos.length); i++) { // In this applet whe have 4 videos on same screen
+					promises.push((async function () {
+						const currentVideo = videos[i];
+
+						// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/js/js-video)
+						await sos.video.prepare(...currentVideo.agruments);
+						await sos.video.play(...currentVideo.agruments);
+						await sos.video.onceEnded(...currentVideo.agruments); // Wait until video ends
+						await sos.video.stop(...currentVideo.agruments); // Stop the video
+					})());
 				}
+				await Promise.all(promises);
+			}
+		});
+	</script>
+</body>
 
-				// Set video properties for proper play on screen
-				for (const video of videos) {
-					video.agruments = [
-						video.filePath,
-						Math.round(document.body.offsetWidth * video.x / 100), 
-						Math.round(document.body.offsetHeight * video.y / 100),
-						Math.round(document.body.offsetWidth * video.width / 100),
-						Math.round(document.body.offsetHeight * video.height / 100),
-					];
-				}
-
-				// When is all prepared, remove loading title and play videos
-				contentElement.innerHTML = '';
-
-				while (true) {
-					const promises = [];
-					for (let i = 0; i < Math.min(2, videos.length); i++) { // In this applet whe have 4 videos on same screen
-						promises.push((async function () {
-							const currentVideo = videos[i];
-
-							// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/js/js-video)
-							await sos.video.prepare(...currentVideo.agruments);
-							await sos.video.play(...currentVideo.agruments);
-							await sos.video.onceEnded(...currentVideo.agruments); // Wait until video ends
-							await sos.video.stop(...currentVideo.agruments); // Stop the video
-						})());
-					}
-					await Promise.all(promises);
-				}
-			});
-		</script>
-	</body>
 </html>

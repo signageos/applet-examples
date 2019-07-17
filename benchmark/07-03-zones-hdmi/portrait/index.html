@@ -2,15 +2,15 @@
 <html>
 
 <head>
-	<title>05-01-a HDMI-Full-Screen</title>
+	<title>07-03-b Zones HDMI</title>
 </head>
 
 <body>
-	<h1 id="title">5-01-a</h1>
+	<h1 id="title">7-03-b</h1>
 	<h2 id="displayInfo"></h2>
 	<p id="index">... loading ...</p>
 	<div id="htmlContent"></div>
-
+	
 	<script type="application/ecmascript">
 		window.addEventListener('sos.loaded', async function () {
 			
@@ -43,17 +43,30 @@
 				console.log(e);
 			}
 
+			// load HTML5 content
+			fetch('https://www.signageos.io/html-content.html')
+				.then(function (response) {
+					return response.text();
+				}).then(function (data) {
+					const htmlContentDiv = document.getElementById('htmlContent');
+					htmlContentDiv.innerHTML = data;
+				});
 			// Set properties like ID and URL for stream
-			const stream = { uid: 'stream-1', uri: 'internal://hdmi1' };
+			const stream = { uid: 'stream-1', x: 0, y: 25, width: 50, height: 50, uri: 'internal://hdmi1' };
 
 			// Set url, resolution on screen (full screen) - (https://docs.signageos.io/api/js/js-video-stream#play-stream)
-			stream.agruments = [stream.uri, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
+			stream.agruments = [
+				stream.uri,
+				Math.round(document.body.offsetWidth * stream.x / 100),
+				Math.round(document.body.offsetHeight * stream.y / 100),
+				Math.round(document.body.offsetWidth * stream.width / 100),
+				Math.round(document.body.offsetHeight * stream.height / 100),
+			];
 
 			// Remove loading title
 			titleElement.innerHTML = '';
 			displayInfoElement.innerHTML = '';
 			indexElement.innerHTML = '';
-			htmlContentElement.innerHTML = '';
 
 			// Play stream forever (https://docs.signageos.io/api/js/js-video-stream#play-stream)
 			await sos.stream.play(...stream.agruments);

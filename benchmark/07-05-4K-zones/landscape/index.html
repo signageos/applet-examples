@@ -13,10 +13,26 @@
 
 	<script type="application/ecmascript">
 		window.addEventListener('sos.loaded', async function () {
-			const contentElement = document.getElementById('index');
+
+			// Load static files
+			let files = [
+				{
+					"uri": "https://signageostest.blob.core.windows.net/test/applet-examples/benchmark-styles.css?v=1.0.0",
+					"uid": "benchmark-styles.css-v1.0.0",
+					"type": sos.offline.types.css,
+					"flags": [sos.offline.flags.append(document.head)]
+				}
+			];
+			await sos.offline.addFiles(files);
+
+			const titleElement = document.getElementById('title');
+			const displayInfoElement = document.getElementById('displayInfo');
+			const indexElement = document.getElementById('index');
+			const htmlContentElement = document.getElementById('htmlContent');
+
 			await sos.onReady(); // Wait until signageOS app is loaded and ready
 
-			// Get display details
+			//Get display details
 			try {
 				const fw = await sos.management.firmware.getVersion();
 				const pl = await sos.management.app.getType();

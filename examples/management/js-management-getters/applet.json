@@ -4,6 +4,6 @@
   "version": "1.0.0",
   "main": "index.html",
   "dependencies": {
-    "front-applet": "3.2.0"
+    "front-applet": "3.3.0"
   }
 }

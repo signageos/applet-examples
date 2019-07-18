@@ -11,7 +11,7 @@
 		<script type="application/ecmascript">
 			window.addEventListener('sos.loaded', async function () {
 				const contentElement = document.getElementById('index');
-				const delay = ms => new Promise(res => setTimeout(res, ms));
+				const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 				// Wait on sos data are ready (https://docs.signageos.io/api/sos-appconst-api/#onReady)
 				await sos.onReady();

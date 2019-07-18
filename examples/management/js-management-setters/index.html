@@ -24,7 +24,7 @@
 					contentElement.innerHTML += "Disable Remote Control: NOT WORKING <br>";
 				}
 
-                await delay(1000);
+				await delay(1000);
 
 				try {
 					const enableRemoteControl = await sos.management.remoteControl.enable();
@@ -48,16 +48,16 @@
 				}
 				
 				try {
-					const powerOff = await sos.management.screen.powerOff();
+					const poweredOff = await sos.management.screen.powerOff();
 					contentElement.innerHTML += "Power Off: OK <br>";
 				} catch (e) {
 					contentElement.innerHTML += "Power Off: NOT WORKING <br>";
 				}
 
-                await delay(5000);
+				await delay(5000);
 
 				try {
-					const powerOn = await sos.management.screen.powerOn();
+					const poweredOn = await sos.management.screen.powerOn();
 					contentElement.innerHTML += "Power On: OK <br>";
 				} catch (e) {
 					contentElement.innerHTML += "Power On: NOT WORKING <br>";

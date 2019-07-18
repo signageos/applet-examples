@@ -1,0 +1,9 @@
+{
+  "scope": "signageos",
+  "name": "management-js-setters",
+  "version": "1.0.0",
+  "main": "index.html",
+  "dependencies": {
+    "front-applet": "3.3.0"
+  }
+}

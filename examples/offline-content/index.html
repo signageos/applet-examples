@@ -20,7 +20,7 @@
 				}
 
 				try {
-					const loadedContent = sos.offline.cache.loadContent('TestKey')
+					const loadedContent = await sos.offline.cache.loadContent('TestKey')
 					contentElement.innerHTML += "Saved value: " + loadedContent + "<br>";
 				} catch (e) {
 					contentElement.innerHTML += "Saved value: NOT WORKING <br>";

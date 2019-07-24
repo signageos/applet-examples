@@ -16,6 +16,7 @@ This repository contains sample applets code for every simple method documented 
 - [Restore](https://github.com/signageos/applet-examples/blob/master/examples/restore/index.html) display area (videos, streams etc.)
 - [Offline Resources](https://github.com/signageos/applet-examples/blob/master/examples/offline-resources/index.html) for saving & using libraries
 - [Offline Files](https://github.com/signageos/applet-examples/blob/master/examples/offline-files/index.html) for managing files
+- [File System API](https://github.com/signageos/applet-examples/blob/master/examples/file-system/index.html) for full featured FS manipulation
 - [MD5 checksum](https://github.com/signageos/applet-examples/blob/master/examples/md5-checksum/index.html) for offline stored files
 - [Iframes](https://github.com/signageos/applet-examples/blob/master/examples/iframes/index.html) ([iframe](https://github.com/signageos/applet-examples/blob/master/examples/iframes/iframe.html)) propagation of sos API
 - [Timing Triggers](https://github.com/signageos/applet-examples/blob/master/examples/timing-triggers/index.html) pause & resume

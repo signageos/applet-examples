@@ -116,6 +116,12 @@
 					// Property filePath.filePath contains string representation of path separated by slash / for nested files (or dirs)
 					contentElement.innerHTML += `- ${filePath.filePath} <br />`;
 				}
+
+				// For access file in your HTML applet or more information on file
+				const file = await sos.fileSystem.getFile({ storageUnit: internalStorageUnit, filePath: 'test-dir/test.zip' });
+				contentElement.innerHTML += `HTML access URL: ${file.localUri}<br />`;
+				// All other properties are optional (depends on platform support)
+				contentElement.innerHTML += `File detailed info: ${JSON.stringify(file)}<br />`;
 			});
 		</script>
 	</body>

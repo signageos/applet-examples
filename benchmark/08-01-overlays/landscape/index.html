@@ -17,6 +17,12 @@
 			// Load static files
 			let files = [
 				{
+					uid: 'libs/fetch-2.0.4.min.js',
+					uri: 'https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.min.js',
+					type: sos.offline.types.javascript,
+					flags: [sos.offline.flags.append(document.body)],
+				},
+				{
 					"uri": "https://signageostest.blob.core.windows.net/test/applet-examples/benchmark-styles.css?v=1.0.0",
 					"uid": "benchmark-styles.css-v1.0.0",
 					"type": sos.offline.types.css,

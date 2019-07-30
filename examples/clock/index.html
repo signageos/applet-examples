@@ -396,6 +396,12 @@
             sos.onReady().then(function () {
                 var files = [
                     {
+                        uid: 'libs/fetch-2.0.4.min.js',
+                        uri: 'https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.min.js',
+                        type: sos.offline.types.javascript,
+                        flags: [sos.offline.flags.append(document.body)],
+                    },
+                    {
                         "uri": "https://momentjs.com/downloads/moment-with-locales.min.js",
                         "uid": "momentjs",
                         "type": sos.offline.types.javascript,

@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "main": "index.html",
   "dependencies": {
-    "front-applet": "1.0.29"
-  }
+    "front-applet": "1.4.0"
+  },
+  "tests": ["*.spec.js"]
 }

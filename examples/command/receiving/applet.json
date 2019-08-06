@@ -1,9 +1,9 @@
 {
   "scope": "signageos",
-  "name": "command",
+  "name": "command-receiving",
   "version": "1.0.0",
   "main": "index.html",
   "dependencies": {
-    "front-applet": "1.0.29"
+    "front-applet": "2.0.0"
   }
 }

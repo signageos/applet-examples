@@ -1,5 +1,5 @@
 
-const sos = require('@signageos/test');
+const sos = require('@signageos/sdk');
 const should = require('should');
 
 describe('Command.Receiving', () => {

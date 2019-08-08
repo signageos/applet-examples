@@ -70,8 +70,8 @@
 				contentElement.innerHTML += `Log file written <br />`;
 
 				// Written file can be read (coming soon)
-				//const logFileContent = await sos.fileSystem.readFile({ storageUnit: internalStorageUnit, filePath: 'test-dir/log.txt' });
-				//contentElement.innerHTML += `Log file contains: <pre>${logFileContent}</pre> <br />`;
+				const logFileContent = await sos.fileSystem.readFile({ storageUnit: internalStorageUnit, filePath: 'test-dir/log.txt' });
+				contentElement.innerHTML += `Log file contains: <pre>${logFileContent}</pre> <br />`;
 
 				// Any file (or dir) can be moved or renamed to existing directory
 				await sos.fileSystem.moveFile(

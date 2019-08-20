@@ -32,11 +32,11 @@
 			
 			//Get display details
 			try {
-				const fw = await sos.management.firmware.getVersion();
-				const pl = await sos.management.app.getType();
+				const firmware = await sos.management.firmware.getVersion();
+				const platform = await sos.management.app.getType();
 				const model = await sos.management.getModel();
 				const displayInfo = document.getElementById('displayInfo');
-				displayInfo.innerHTML = "Platform: " + pl + " Model: " + model + " FW: " + fw;
+				displayInfo.innerHTML = "Platform: " + platform + " Model: " + model + " FW: " + firmware;
 			} catch (e) {
 				console.log(e);
 			}

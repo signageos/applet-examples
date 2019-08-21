@@ -21,7 +21,7 @@
 				});
 
 				contentElement.innerHTML = 'Loading ZIP file\n';
-				await sos.offline.cache.loadOrSaveFile('my-folder/test.zip', 'https://hugstatic.blob.core.windows.net/assets/applet/offline-zip-decompress/test.zip');
+				await sos.offline.cache.loadOrSaveFile('my-folder/test.zip', 'https://static.signageos.io/assets/applet/offline-zip-decompress/test.zip');
 
 				contentElement.innerHTML += 'Decompressing ZIP file\n';
 				await sos.offline.cache.decompressFile('my-folder/test.zip', 'my-folder/test', 'zip');

@@ -13,7 +13,7 @@
 				const contentElement = document.getElementById('index');
 				await sos.onReady();
 
-				const video = { uid: 'video-1', uri: 'https://hugstatic.blob.core.windows.net/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4' };
+				const video = { uid: 'video-1', uri: 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4' };
 
 				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
 				video.filePath = filePath;

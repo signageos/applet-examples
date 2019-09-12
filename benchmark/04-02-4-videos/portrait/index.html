@@ -62,10 +62,10 @@
 			for (const video of videos) {
 				video.agruments = [
 					video.filePath,
-					Math.round(document.body.offsetWidth * video.x / 100),
-					Math.round(document.body.offsetHeight * video.y / 100),
-					Math.round(document.body.offsetWidth * video.width / 100),
-					Math.round(document.body.offsetHeight * video.height / 100),
+					Math.floor(document.body.offsetWidth * video.x / 100),
+					Math.floor(document.body.offsetHeight * video.y / 100),
+					Math.floor(document.body.offsetWidth * video.width / 100),
+					Math.floor(document.body.offsetHeight * video.height / 100),
 				];
 			}
 

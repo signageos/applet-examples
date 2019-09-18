@@ -51,6 +51,7 @@
 				{ uid: 'video-4', uri: 'https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_2160x3840_984597d95517004a9befb2425719f651.mp4' },
 				{ uid: 'video-5', uri: 'https://static.signageos.io/assets/test-videos-06_AME/video-test-06_15s_2160x3840_a3d45a9cce6333646433f35d9559f022.mp4' },
 			];
+          
 
 			for (const video of videos) {
 				// Store video to offline storage (https://docs.signageos.io/api/js/js-offline-cache-media-files)
@@ -60,14 +61,16 @@
 
 			// Set video properties for proper play on screen
 			for (const video of videos) {
-				video.agruments = [video.filePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
+				video.agruments = [video.filePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight, { '4k': true }];
 			}
 
 			titleElement.innerHTML = '';
 			displayInfoElement.innerHTML = '';
 			indexElement.innerHTML = '';
 			htmlContentElement.innerHTML = '';
-
+          	
+            await sos.video.prepare(...videos[0].agruments); // Before the first video end, prepare the second one
+          
 			for (let i = 0; true; i = (i + 1) % videos.length) {
 				const previousVideo = videos[(i + videos.length - 1) % videos.length];
 				const currentVideo = videos[i];

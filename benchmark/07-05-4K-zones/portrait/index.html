@@ -50,7 +50,7 @@
 			}
 
 			// load HTML5 content
-			fetch('https://www.signageos.io/html-content.html')
+			fetch('https://1.signageos.io/assets/dev/html-content.html')
 				.then(function (response) {
 					return response.text();
 				}).then(function (data) {
@@ -81,12 +81,15 @@
 					video.y,
 					Math.floor(document.body.offsetWidth * video.width / 100),
 					Math.floor(document.body.offsetHeight * video.height / 100),
+					{ '4k': true }
 				];
 			}
 
 			titleElement.innerHTML = '';
 			displayInfoElement.innerHTML = '';
 			indexElement.innerHTML = '';
+
+			await sos.video.prepare(...videos[0].agruments); // Before the first video starts, call prepare
 
 			for (let i = 0; true; i = (i + 1) % videos.length) {
 				const previousVideo = videos[(i + videos.length - 1) % videos.length];

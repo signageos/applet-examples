@@ -60,14 +60,16 @@
 
 			// Set video properties for proper play on screen
 			for (const video of videos) {
-				video.agruments = [video.filePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
+				video.agruments = [video.filePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight, { '4k': true }];
 			}
 
 			titleElement.innerHTML = '';
 			displayInfoElement.innerHTML = '';
 			indexElement.innerHTML = '';
 			htmlContentElement.innerHTML = '';
-
+		  	
+			await sos.video.prepare(...videos[0].agruments); // Before the first video end, prepare the second one
+		  
 			for (let i = 0; true; i = (i + 1) % videos.length) {
 				const previousVideo = videos[(i + videos.length - 1) % videos.length];
 				const currentVideo = videos[i];

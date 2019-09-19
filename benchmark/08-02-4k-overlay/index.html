@@ -50,7 +50,7 @@
 			}
 
 			// load HTML5 content
-			fetch('https://www.signageos.io/html-content.html')
+			fetch('https://1.signageos.io/assets/dev/html-content.html')
 				.then(function (response) {
 					return response.text();
 				}).then(function (data) {
@@ -75,7 +75,7 @@
 
 			// Set video properties for proper play on screen
 			for (const video of videos) {
-				video.agruments = [video.filePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
+				video.agruments = [video.filePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight, { '4k': true, background: true }];
 			}
 
 			// Remove main title and loading title
@@ -84,7 +84,7 @@
 			indexElement.innerHTML = '';
 
 			const currentVideo = videos[0];
-			await sos.video.prepare(...currentVideo.agruments, { background: true }); // Prepare first video
+			await sos.video.prepare(...videos[0].agruments); // Prepare first video
 
 			for (let i = 0; true; i = (i + 1) % videos.length) {
 				const previousVideo = videos[(i + videos.length - 1) % videos.length];
@@ -98,7 +98,7 @@
 					await sos.video.stop(...previousVideo.agruments);
 					previousVideo.playing = false;
 				}
-				await sos.video.prepare(...nextVideo.agruments, { background: true }); // Before end first video prepare second
+				await sos.video.prepare(...nextVideo.agruments); // Before end first video prepare second
 				await sos.video.onceEnded(...currentVideo.agruments); // Wait until video ends
 			}
 		});

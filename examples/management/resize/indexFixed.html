@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Management Resize</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Management Resize</h1>
+	<p id="index">... loading ...</p>
+	<button id="land-full-btn">Change to landscape Full HD</button>
+	<button id="port-ready-btn">Change to portrait HD Ready</button>
+
+
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			const landscapeButton = document.getElementById('land-full-btn');
+			const portraitButton = document.getElementById('port-ready-btn');
+			await sos.onReady();
+
+			if (await sos.management.supports('SCREEN_RESIZE')) {
+				landscapeButton.onclick = async () => {
+					await sos.management.screen.resize(
+						"https://cdn.your-cms.com/tizen/1.0.4",
+						"LANDSCAPE",
+						"FULL_HD",
+						"1.0.4"
+					);
+				};
+
+				portraitButton.onclick = async () => {
+					await sos.management.screen.resize(
+						"https://cdn.your-cms.com/tizen/1.0.4",
+						"PORTRAIT",
+						"HD_READY",
+						"1.0.4"
+					);
+				};
+			} else {
+				contentElement.innerHTML = 'Screen resize is not supported.';
+			}
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
+</html>

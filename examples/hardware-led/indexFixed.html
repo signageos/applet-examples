@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Hardware LED</title>
+	<style>
+		.button {
+			position: relative;
+			display: inline-block;
+			width: 150px;
+			height: 150px;
+			border: none;
+			margin: 10px;
+			text-align: center;
+			font-size: 160%;
+		}
+
+		a {
+			text-decoration: none;
+			line-height: 150px;
+			color: #fff;
+		}
+	</style>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Hardware LED</h1>
+	<p id="index">... loading ...</p>
+
+
+	<div id="color-buttons" style="text-align: center; display: none">
+		<a href="#" class="button" style="background-color: #c23616" onclick="setColor('#c23616')">RED</a>
+		<a href="#" class="button" style="background-color: #0097e6" onclick="setColor('#0097e6')">BLUE</a>
+		<a href="#" class="button" style="background-color: #44bd32" onclick="setColor('#44bd32')">GREEN</a>
+		<a href="#" class="button" style="background-color: #f5f6fa; color: #000;" onclick="setColor('#f5f6fa')">WHITE</a>
+		<a href="#" class="button" style="background-color: #2f3640" onclick="setColor('#2f3640')">BLACK</a>
+		<a href="#" class="button" style="background-color: #718093" onclick="setColor(null)">disable</a>
+		<div id="current-color"></div>
+	</div>
+
+
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			const colorButtonsElement = document.getElementById('color-buttons');
+			await sos.onReady();
+
+			contentElement.innerHTML = '';
+
+			colorButtonsElement.style.display = 'inline-block';
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
+</html>

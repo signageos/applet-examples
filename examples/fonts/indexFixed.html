@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Fonts</title>
+
+	<style>
+		.montserrat {
+			font-family: 'Montserrat';
+		}
+
+		.montserratBold {
+			font-family: 'MontserratBold';
+		}
+	</style>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;" lang="en">
+
+	<p class="montserratBold" style="font-size: 14px;">The quick brown fox jumps over the lazy dog</p>
+	<p class="montserrat" style="font-size: 14px;">The quick brown fox jumps over the lazy dog</p>
+	<p style="font-size: 14px;">The quick brown fox jumps over the lazy dog</p>
+
+	<p class="montserratBold" style="font-size: 18px;">The quick brown fox jumps over the lazy dog</p>
+	<p class="montserrat" style="font-size: 18px;">The quick brown fox jumps over the lazy dog</p>
+	<p style="font-size: 18px;">The quick brown fox jumps over the lazy dog</p>
+
+	<p class="montserratBold" style="font-size: 24px;">The quick brown fox jumps over the lazy dog</p>
+	<p class="montserrat" style="font-size: 24px;">The quick brown fox jumps over the lazy dog</p>
+	<p style="font-size: 24px;">The quick brown fox jumps over the lazy dog</p>
+
+	<p class="montserratBold" style="font-size: 30px;">The quick brown fox jumps over the lazy dog</p>
+	<p class="montserrat" style="font-size: 30px;">The quick brown fox jumps over the lazy dog</p>
+	<p style="font-size: 30px;">The quick brown fox jumps over the lazy dog</p>
+
+	<p class="montserratBold" style="font-size: 36px;">The quick brown fox jumps over the lazy dog</p>
+	<p class="montserrat" style="font-size: 36px;">The quick brown fox jumps over the lazy dog</p>
+	<p style="font-size: 36px;">The quick brown fox jumps over the lazy dog</p>
+
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			await sos.onReady();
+
+			const montserratBold = {
+				uid: 'font-montserrat-bold',
+				fontFamily: 'MontserratBold',
+				formats: {
+					woff2: 'https://static.signageos.io/assets/Montserrat-Bold.woff2',
+					woff: 'https://static.signageos.io/assets/Montserrat-Bold.woff',
+					svg: 'https://static.signageos.io/assets/Montserrat-Bold.svg',
+					ttf: 'https://static.signageos.io/assets/Montserrat-Bold.ttf',
+					eot: 'https://static.signageos.io/assets/Montserrat-Bold.eot',
+				},
+				append: document.head
+			};
+			const montserratRegular = {
+				uid: 'font-montserrat-regular',
+				fontFamily: 'Montserrat',
+				formats: {
+					woff2: 'https://static.signageos.io/assets/Montserrat-Regular.woff2',
+					woff: 'https://static.signageos.io/assets/Montserrat-Regular.woff',
+					svg: 'https://static.signageos.io/assets/Montserrat-Regular.svg',
+					ttf: 'https://static.signageos.io/assets/Montserrat-Regular.ttf',
+					eot: 'https://static.signageos.io/assets/Montserrat-Regular.eot',
+				},
+				append: document.head
+			};
+
+			await sos.offline.addFont(montserratBold);
+			await sos.offline.addFont(montserratRegular);
+			console.log('Font face was created and was appended to document.head element');
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
+</html>

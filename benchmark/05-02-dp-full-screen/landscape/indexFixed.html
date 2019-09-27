@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>05-02-a DisplayPort-Full-Screen</title>
+</head>
+
+<body>
+	<h1 id="title">5-02-a</h1>
+	<h2 id="displayInfo"></h2>
+	<p id="index">... loading ...</p>
+	<div id="htmlContent"></div>
+
+	<script type="application/ecmascript">
+		async function startApplet() {
+
+			// Load static files
+			let files = [{
+				"uri": "https://signageostest.blob.core.windows.net/test/applet-examples/benchmark-styles.css?v=1.0.0",
+				"uid": "benchmark-styles.css-v1.0.0",
+				"type": sos.offline.types.css,
+				"flags": [sos.offline.flags.append(document.head)]
+			}];
+			await sos.offline.addFiles(files);
+			const titleElement = document.getElementById('title');
+			const displayInfoElement = document.getElementById('displayInfo');
+			const indexElement = document.getElementById('index');
+			const htmlContentElement = document.getElementById('htmlContent');
+			await sos.onReady(); // Wait until signageOS app is loaded and ready
+
+			//Get display details
+			try {
+				const firmware = await sos.management.firmware.getVersion();
+				const platform = await sos.management.app.getType();
+				const model = await sos.management.getModel();
+				const displayInfo = document.getElementById('displayInfo');
+				displayInfo.innerHTML = "Platform: " + platform + " Model: " + model + " FW: " + firmware;
+			} catch (e) {
+				console.log(e);
+			}
+
+			// Set properties like ID and URL for stream
+			const stream = {
+				uid: 'stream-1',
+				uri: 'internal://dp'
+			};
+
+			// Set url, resolution on screen (full screen) - (https://docs.signageos.io/api/js/js-video-stream#play-stream)
+			stream.agruments = [stream.uri, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
+
+			// Remove loading title
+			titleElement.innerHTML = '';
+			displayInfoElement.innerHTML = '';
+			indexElement.innerHTML = '';
+			htmlContentElement.innerHTML = '';
+
+			// Play stream forever (https://docs.signageos.io/api/js/js-video-stream#play-stream)
+			await sos.stream.play(...stream.agruments);
+
+			// If stream is disconnected, stop the stream (https://docs.signageos.io/api/js/js-video-inputs-internal-ports)
+			sos.stream.onDisconnected(async (event) => {
+				displayInfoElement.innerHTML = 'DP was disconnected';
+				await sos.stream.stop(...stream.agruments);
+			});
+
+			// If DP is successfully connected, start the stream (https://docs.signageos.io/api/js/js-video-inputs-internal-ports)
+			sos.stream.onConnected(async (event) => {
+				await sos.stream.play(...stream.agruments);
+			});
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
+</html>

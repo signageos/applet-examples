@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Management System Reboot</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Management System Reboot</h1>
+	<p id="index">... loading ...</p>
+	<button id="reboot-btn">Reboot now</button>
+
+
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const startCountDown = async (countDown = 5) => {
+				const contentElement = document.getElementById('index');
+
+				if (countDown <= 0) {
+					contentElement.innerHTML = 'Rebooting...';
+
+					await sos.management.power.systemReboot();
+				} else {
+					contentElement.innerHTML = `Reboots in ${countDown}`;
+
+					setTimeout(() => {
+						startCountDown(countDown - 1)
+					}, 1000);
+				}
+			};
+
+			const contentElement = document.getElementById('index');
+			const rebootButton = document.getElementById('reboot-btn');
+			await sos.onReady();
+
+			if (await sos.management.supports('SYSTEM_REBOOT')) {
+				startCountDown();
+
+				rebootButton.onclick = async () => {
+					contentElement.innerHTML = 'Rebooting...';
+					await sos.management.power.systemReboot();
+				};
+			} else {
+				contentElement.innerHTML = 'Not Supported';
+			}
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
+</html>

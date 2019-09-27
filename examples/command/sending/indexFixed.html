@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Commands Sending</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Commands Sending</h1>
+	<p id="index">... loading ...</p>
+
+
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			await sos.onReady();
+
+			contentElement.innerHTML = '';
+
+			for (let i = 0; i < 10; i++) {
+				// Send commands to be safely stored for reports, monitoring etc. even when goes offline (https://docs.signageos.io/api/sos-applet-api/#Command_Dispatching)
+				await sos.command.dispatch({
+					type: 'Loop.Item.Iterate',
+					iteration: i,
+				});
+				contentElement.innerHTML = `Iteration: ${i}`;
+				await new Promise((resolve) => setTimeout(resolve, 1e3));
+			}
+
+			contentElement.innerHTML = `Iterations done.`;
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
+</html>

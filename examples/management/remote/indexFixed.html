@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Management Remote</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Management Remote</h1>
+	<p id="index">... loading ...</p>
+	<button id="enable-btn">Enable</button>
+	<button id="disable-btn">Disable</button>
+
+
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			const enableButton = document.getElementById('enable-btn');
+			const disableButton = document.getElementById('disable-btn');
+			await sos.onReady();
+
+			const isRemoteEnabled = await sos.management.remoteControl.isEnabled();
+			contentElement.innerHTML = `Enabled: ${isRemoteEnabled}`;
+
+			if (await sos.management.supports('SET_REMOTE_CONTROL_ENABLED')) {
+				enableButton.onclick = async () => {
+					await sos.management.remoteControl.enable();
+
+					const isRemoteEnabled = await sos.management.remoteControl.isEnabled();
+					contentElement.innerHTML = `Enabled: ${isRemoteEnabled}`;
+				};
+
+				disableButton.onclick = async () => {
+					await sos.management.remoteControl.disable();
+
+					const isRemoteEnabled = await sos.management.remoteControl.isEnabled();
+					contentElement.innerHTML = `Enabled: ${isRemoteEnabled}`;
+				};
+			} else {
+				contentElement.innerHTML = `
+						Enabled: ${isRemoteEnabled}<br/>
+						Managing remote is not supported.<br/>
+					`;
+			}
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
+</html>

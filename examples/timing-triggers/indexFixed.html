@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Timing Triggers</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Timing Triggers</h1>
+	<p id="index">... loading ...</p>
+	<button id="pause-button" style="display: none; width: 300px; height: 50px; font-size: 20px">Pause</button>
+
+
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			const buttonElement = document.getElementById('pause-button');
+			await sos.onReady();
+
+			contentElement.innerHTML = '';
+
+			let paused = false;
+
+			buttonElement.addEventListener('click', async (event) => {
+				event.preventDefault();
+
+				// Pause or Resume timing triggers (https://docs.signageos.io/api/sos-applet-api/#Triggers)
+				if (paused) {
+					await sos.timing.triggers.resume();
+					paused = false;
+					buttonElement.innerHTML = 'Pause';
+					contentElement.innerHTML = '';
+				} else {
+					await sos.timing.triggers.pause();
+					paused = true;
+					buttonElement.innerHTML = 'Resume';
+					contentElement.innerHTML = `Timing triggers paused`;
+				}
+			});
+
+			buttonElement.style.display = 'inline-block';
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
+</html>

@@ -1,47 +1,54 @@
 <!doctype html>
 <html>
-	<head>
-		<title>Management App Restart</title>
-	</head>
-	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-		<h1>Management App Restart</h1>
-		<p id="index">... loading ...</p>
-		<button id="restart-btn">Restart now</button>
+
+<head>
+	<title>Management App Restart</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Management App Restart</h1>
+	<p id="index">... loading ...</p>
+	<button id="restart-btn">Restart now</button>
 
 
-		<script type="application/ecmascript">
-			window.addEventListener('sos.loaded', async function () {
-				const startCountDown = async (countDown = 5) => {
-					const contentElement = document.getElementById('index');
-
-					if (countDown <= 0) {
-						contentElement.innerHTML = 'Restarting...';
-
-						await sos.management.power.systemReboot();
-					} else {
-						contentElement.innerHTML = `Restarts in ${countDown}`;
-
-						setTimeout(() => {
-							startCountDown(countDown-1)
-						}, 1000);
-					}
-				};
-
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const startCountDown = async (countDown = 5) => {
 				const contentElement = document.getElementById('index');
-				const restartButton = document.getElementById('restart-btn');
-				await sos.onReady();
 
-				if (await sos.management.supports('APP_RESTART')) {
-					startCountDown();
-					
-					restartButton.onclick = async () => {
- 						contentElement.innerHTML = 'Restarting...';
-						await sos.management.power.systemReboot();
-					};
+				if (countDown <= 0) {
+					contentElement.innerHTML = 'Restarting...';
+
+					await sos.management.power.systemReboot();
 				} else {
-					contentElement.innerHTML = 'Not Supported';
+					contentElement.innerHTML = `Restarts in ${countDown}`;
+
+					setTimeout(() => {
+						startCountDown(countDown - 1)
+					}, 1000);
 				}
-			});
-		</script>
-	</body>
+			};
+
+			const contentElement = document.getElementById('index');
+			const restartButton = document.getElementById('restart-btn');
+			await sos.onReady();
+
+			if (await sos.management.supports('APP_RESTART')) {
+				startCountDown();
+
+				restartButton.onclick = async () => {
+					contentElement.innerHTML = 'Restarting...';
+					await sos.management.power.systemReboot();
+				};
+			} else {
+				contentElement.innerHTML = 'Not Supported';
+			}
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
 </html>

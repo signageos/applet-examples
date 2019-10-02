@@ -1,29 +1,36 @@
 <!doctype html>
 <html>
-	<head>
-		<title>Commands Receiving</title>
-	</head>
-	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-		<h1>Commands Receiving</h1>
-		<p id="index">... loading ...</p>
+
+<head>
+	<title>Commands Receiving</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Commands Receiving</h1>
+	<p id="index">... loading ...</p>
 
 
-		<script type="application/ecmascript">
-			window.addEventListener('sos.loaded', async function () {
-				const contentElement = document.getElementById('index');
-				await sos.onReady();
-				console.log('sOS is ready');
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			await sos.onReady();
+			console.log('sOS is ready');
 
-				let callsCount = 0;
-				contentElement.innerHTML = 'sOS is ready';
-				// Send commands to be safely stored for reports, monitoring etc. even when goes offline (https://docs.signageos.io/api/sos-applet-api/#Command_Receiving)
-				sos.command.onCommand((commandEvent) => {
-					if (commandEvent.command.type === 'CountIt') {
-						callsCount++;
-						contentElement.innerHTML = `Calls count: ${callsCount}`;
-					}
-				});
+			let callsCount = 0;
+			contentElement.innerHTML = 'sOS is ready';
+			// Send commands to be safely stored for reports, monitoring etc. even when goes offline (https://docs.signageos.io/api/sos-applet-api/#Command_Receiving)
+			sos.command.onCommand((commandEvent) => {
+				if (commandEvent.command.type === 'CountIt') {
+					callsCount++;
+					contentElement.innerHTML = `Calls count: ${callsCount}`;
+				}
 			});
-		</script>
-	</body>
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
 </html>

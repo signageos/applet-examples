@@ -1,40 +1,47 @@
 <!doctype html>
 <html>
-	<head>
-		<title>Management Timer</title>
-	</head>
-	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-		<h1>Management Timer</h1>
-		<p id="index">... loading ...</p>
-		<button id="timer-btn">Set timer</button>
+
+<head>
+	<title>Management Timer</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Management Timer</h1>
+	<p id="index">... loading ...</p>
+	<button id="timer-btn">Set timer</button>
 
 
-		<script type="application/ecmascript">
-			window.addEventListener('sos.loaded', async function () {
-				const contentElement = document.getElementById('index');
-				const timerButton = document.getElementById('timer-btn');
-				await sos.onReady();
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			const timerButton = document.getElementById('timer-btn');
+			await sos.onReady();
 
-				if (await sos.management.supports('TIMERS_NATIVE')) {					
-					timerButton.onclick = async () => {
-						const timeOnInTwoMinutes = new Date(Date.now() + 120000);
-						const timeOffInFiveMinutes = new Date(Date.now() + 300000);
-						const timeOn = `${timeOnInTwoMinutes.getHours()}:${timeOnInTwoMinutes.getMinutes()}`;
-						const timeOff = `${timeOnInFiveMinutes.getHours()}:${timeOnInFiveMinutes.getMinutes()}`;
+			if (await sos.management.supports('TIMERS_NATIVE')) {
+				timerButton.onclick = async () => {
+					const timeOnInTwoMinutes = new Date(Date.now() + 120000);
+					const timeOffInFiveMinutes = new Date(Date.now() + 300000);
+					const timeOn = `${timeOnInTwoMinutes.getHours()}:${timeOnInTwoMinutes.getMinutes()}`;
+					const timeOff = `${timeOnInFiveMinutes.getHours()}:${timeOnInFiveMinutes.getMinutes()}`;
 
- 						contentElement.innerHTML = 'Timer set';
-						await sos.management.power.setTimer(
-							'TIMER_1',
-							timeOn,
-							timeOff,
-							['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'],
-							50
-						);
-					};
-				} else {
-					contentElement.innerHTML = 'Not Supported';
-				}
-			});
-		</script>
-	</body>
+					contentElement.innerHTML = 'Timer set';
+					await sos.management.power.setTimer(
+						'TIMER_1',
+						timeOn,
+						timeOff,
+						['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'],
+						50
+					);
+				};
+			} else {
+				contentElement.innerHTML = 'Not Supported';
+			}
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
 </html>

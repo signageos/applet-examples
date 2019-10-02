@@ -1,29 +1,38 @@
 <!doctype html>
 <html>
-	<head>
-		<title>Iframes</title>
-	</head>
-	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-		<h1>Iframes</h1>
-		<p id="index">... loading ...</p>
-		<iframe id="iframe" style="border: 0; position: absolute; display: none; width: 100%; height: 100%; left: 0; top: 0"></iframe>
+
+<head>
+	<title>Iframes</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Iframes</h1>
+	<p id="index">... loading ...</p>
+	<iframe id="iframe" style="border: 0; position: absolute; display: none; width: 100%; height: 100%; left: 0; top: 0"></iframe>
 
 
-		<script type="application/ecmascript">
-			window.addEventListener('sos.loaded', async function () {
-				const contentElement = document.getElementById('index');
-				const iframeElement = document.getElementById('iframe');
-				await sos.onReady();
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			const iframeElement = document.getElementById('iframe');
+			await sos.onReady();
 
-				const iframeUri = sos.config.iframeUri || 'https://raw.githubusercontent.com/signageos/applet-examples/master/examples/iframes/iframe.html';
+			const iframeUri = sos.config.iframeUri || 'https://raw.githubusercontent.com/signageos/applet-examples/master/examples/iframes/iframe.html';
 
-				const { filePath } = await sos.offline.cache.loadOrSaveFile('iframe.html', iframeUri);
+			const {
+				filePath
+			} = await sos.offline.cache.loadOrSaveFile('iframe.html', iframeUri);
 
-				contentElement.innerHTML = '';
+			contentElement.innerHTML = '';
 
-				iframeElement.src = filePath;
-				iframeElement.style.display = 'block';
-			});
-		</script>
-	</body>
+			iframeElement.src = filePath;
+			iframeElement.style.display = 'block';
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
 </html>

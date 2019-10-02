@@ -11,10 +11,7 @@
 		<!-- Your script should come as last in body tag -->
 		<!-- To allow transpile ES6+ to ES5 (JavaScript) use application/ecmascript instead of text/javascript (works on all supported platforms) -->
 		<script type="application/ecmascript">
-
-
-			// You need to wait for this event always (https://docs.signageos.io/api/sos-applet-api/#Basics)
-			window.addEventListener('sos.loaded', async function () {
+			async function startApplet() {
 				const contentElement = document.getElementById('index');
 				console.log('sOS is loaded');
 				contentElement.innerHTML = 'sOS is loaded';
@@ -70,7 +67,12 @@
 					await sos.video.onceEnded(...videoAgruments); // https://docs.signageos.io/api/sos-applet-api/#onceEnded
 					await sos.video.stop(...videoAgruments);
 				}
-			});
+			}
+
+			// Needed check for distinction between sos open and platform in box
+			typeof sos !== 'undefined' ?
+				startApplet() :
+				window.addEventListener('sos.loaded', startApplet);
 		</script>
 	</body>
 </html>

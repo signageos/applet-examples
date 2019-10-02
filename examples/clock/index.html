@@ -2,719 +2,719 @@
 <html>
 
 <head>
-    <title>My first Applet</title>
+	<title>My first Applet</title>
 </head>
 
 <body style="text-align: center; background-color: #F4D03F; color: #333">
-    <style>
-        body {
-            margin: 0;
-        }
+	<style>
+		body {
+			margin: 0;
+		}
 
-        .demo-container.clocks {
-            background: #18182c;
-            padding: 0;
-            width: 100%;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
+		.demo-container.clocks {
+			background: #18182c;
+			padding: 0;
+			width: 100%;
+			height: 100vh;
+			margin: 0;
+			overflow: hidden;
+		}
 
-        .clock {
-            border-radius: 50%;
-            background: radial-gradient(#000, #000 0.1em, #fff 0.1em, #fff), #fff;
-            display: inline-block;
-            margin: 1%;
-            padding-bottom: 15%;
-            position: relative;
-            top: 50%;
-            width: 15%;
-            opacity: 0;
-            transform: translateY(-40%);
-        }
+		.clock {
+			border-radius: 50%;
+			background: radial-gradient(#000, #000 0.1em, #fff 0.1em, #fff), #fff;
+			display: inline-block;
+			margin: 1%;
+			padding-bottom: 15%;
+			position: relative;
+			top: 50%;
+			width: 15%;
+			opacity: 0;
+			transform: translateY(-40%);
+		}
 
-        .clock.show {
-            opacity: 1;
-            transform: translateY(-50%);
-            transition: all 2.5s 0.5s cubic-bezier(.12, 1.03, .34, 1);
-        }
+		.clock.show {
+			opacity: 1;
+			transform: translateY(-50%);
+			transition: all 2.5s 0.5s cubic-bezier(.12, 1.03, .34, 1);
+		}
 
-        .clock::after {
-            background: red;
-            border-radius: 50%;
-            content: "";
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 4%;
-            height: 4%;
-            z-index: 10;
-        }
+		.clock::after {
+			background: red;
+			border-radius: 50%;
+			content: "";
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			width: 4%;
+			height: 4%;
+			z-index: 10;
+		}
 
-        .minutes-container,
-        .hours-container,
-        .seconds-container {
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-        }
+		.minutes-container,
+		.hours-container,
+		.seconds-container {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+		}
 
-        .hours-container {
-            animation: rotate 43200s infinite linear;
-        }
+		.hours-container {
+			animation: rotate 43200s infinite linear;
+		}
 
-        .linear .minutes-container {
-                animation: rotate 3600s infinite linear;
-        }
+		.linear .minutes-container {
+			animation: rotate 3600s infinite linear;
+		}
 
-        .linear .seconds-container {
-                animation: rotate 60s infinite linear;
-        }
+		.linear .seconds-container {
+			animation: rotate 60s infinite linear;
+		}
 
-        .steps .minutes-container {
-                animation: rotate 3600s infinite steps(60);
-        }
+		.steps .minutes-container {
+			animation: rotate 3600s infinite steps(60);
+		}
 
-        .steps .seconds-container {
-                animation: rotate 60s infinite steps(60);
-        }
+		.steps .seconds-container {
+			animation: rotate 60s infinite steps(60);
+		}
 
-        .local.steps .minutes-container {
-                animation: none;
-        }
+		.local.steps .minutes-container {
+			animation: none;
+		}
 
-        .bounce .minutes-container {
-                transition: transform 0.3s cubic-bezier(.4, 2.08, .55, .44);
-        }
+		.bounce .minutes-container {
+			transition: transform 0.3s cubic-bezier(.4, 2.08, .55, .44);
+		}
 
-        .bounce .seconds-container {
-                transition: transform 0.2s cubic-bezier(.4, 2.08, .55, .44);
-        }
+		.bounce .seconds-container {
+			transition: transform 0.2s cubic-bezier(.4, 2.08, .55, .44);
+		}
 
-        .hours {
-            background: #000;
-            width: 3.5%;
-            height: 40%;
-            position: absolute;
-            left: 48.25%;
-            top: 22%;
-            transform-origin: 50% 71%;
-        }
+		.hours {
+			background: #000;
+			width: 3.5%;
+			height: 40%;
+			position: absolute;
+			left: 48.25%;
+			top: 22%;
+			transform-origin: 50% 71%;
+		}
 
-        .minutes {
-            background: #000;
-            width: 3.5%;
-            height: 55%;
-            position: absolute;
-            left: 48.25%;
-            top: 7%;
-            transform-origin: 50% 78.5%;
-        }
+		.minutes {
+			background: #000;
+			width: 3.5%;
+			height: 55%;
+			position: absolute;
+			left: 48.25%;
+			top: 7%;
+			transform-origin: 50% 78.5%;
+		}
 
-        .seconds {
-            background: red;
-            width: 1.5%;
-            height: 42%;
-            position: absolute;
-            left: 49.25%;
-            top: 20%;
-            transform-origin: 50% 71%;
-            z-index: 8;
-        }
+		.seconds {
+			background: red;
+			width: 1.5%;
+			height: 42%;
+			position: absolute;
+			left: 49.25%;
+			top: 20%;
+			transform-origin: 50% 71%;
+			z-index: 8;
+		}
 
-        .label {
-            background: #fff;
-            border-radius: 0.25em;
-            color: #000;
-            font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Helvetica, Arial, sans-serif;
-            font-size: 2.3em;
-            font-weight: bold;
-            text-transform: uppercase;
-            padding: 0.5em 0.75em 0.25em;
-            position: absolute;
-            top: -4em;
-            left: 50%;
-            transform: translate(-50%, 0);
-        }
+		.label {
+			background: #fff;
+			border-radius: 0.25em;
+			color: #000;
+			font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Helvetica, Arial, sans-serif;
+			font-size: 2.3em;
+			font-weight: bold;
+			text-transform: uppercase;
+			padding: 0.5em 0.75em 0.25em;
+			position: absolute;
+			top: -4em;
+			left: 50%;
+			transform: translate(-50%, 0);
+		}
 
-        .label.morning {
-            background: #ffffff;
-        }
+		.label.morning {
+			background: #ffffff;
+		}
 
-        .label.afternoon {
-            background: #ffffff;
-        }
+		.label.afternoon {
+			background: #ffffff;
+		}
 
-        .label.night {
-            background: #000000;
-            color: #ffffff;
-        }
+		.label.night {
+			background: #000000;
+			color: #ffffff;
+		}
 
-        .diff-container {
-            position: absolute;
-            left: 0;
-            width: 100%;
-            top: 106%;
-            font-size: 3em;
-            color: #fff;
-            font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Helvetica, Arial, sans-serif;
-        }
+		.diff-container {
+			position: absolute;
+			left: 0;
+			width: 100%;
+			top: 106%;
+			font-size: 3em;
+			color: #fff;
+			font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Helvetica, Arial, sans-serif;
+		}
 
-        @keyframes rotate {
-            100% {
-                transform: rotateZ(360deg);
-            }
-        }
+		@keyframes rotate {
+			100% {
+				transform: rotateZ(360deg);
+			}
+		}
 
-        .clock.station {
-            background: #fff url("https://cssanimation.rocks/images/posts/clocks/ios_clock.svg") no-repeat center;
-            background-size: 90%;
-            box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2) inset;
-        }
+		.clock.station {
+			background: #fff url("https://cssanimation.rocks/images/posts/clocks/ios_clock.svg") no-repeat center;
+			background-size: 90%;
+			box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2) inset;
+		}
 
-        .clock.station .seconds::before {
-            background: red;
-            border-radius: 50%;
-            content: "";
-            position: absolute;
-            top: -9%;
-            left: -200%;
-            height: 18%;
-            width: 500%;
-        }
+		.clock.station .seconds::before {
+			background: red;
+			border-radius: 50%;
+			content: "";
+			position: absolute;
+			top: -9%;
+			left: -200%;
+			height: 18%;
+			width: 500%;
+		}
 
-        .clock.ios7 {
-            background: #fff url(/assets/images/posts/clocks/ios_clock.svg) no-repeat center;
-            background-size: 88%;
-        }
+		.clock.ios7 {
+			background: #fff url(/assets/images/posts/clocks/ios_clock.svg) no-repeat center;
+			background-size: 88%;
+		}
 
-        .clock.ios7:before {
-            background: black;
-            border-radius: 50%;
-            content: "";
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 6%;
-            height: 6%;
-            z-index: 0;
-        }
+		.clock.ios7:before {
+			background: black;
+			border-radius: 50%;
+			content: "";
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			width: 6%;
+			height: 6%;
+			z-index: 0;
+		}
 
-        .clock.ios7:after {
-            width: 2%;
-            height: 2%;
-        }
+		.clock.ios7:after {
+			width: 2%;
+			height: 2%;
+		}
 
-        .clock.ios7 .seconds {
-            border-radius: 200%/10%;
-            height: 30%;
-            left: 49.5%;
-            top: 20%;
-            width: 1%;
-            transform-origin: 50% 100%;
-        }
+		.clock.ios7 .seconds {
+			border-radius: 200%/10%;
+			height: 30%;
+			left: 49.5%;
+			top: 20%;
+			width: 1%;
+			transform-origin: 50% 100%;
+		}
 
-        .clock.ios7 .minutes {
-            border-radius: 150%/10%;
-            width: 2%;
-            height: 35%;
-            left: 49%;
-            top: 15%;
-            transform-origin: 50% 100%;
-        }
+		.clock.ios7 .minutes {
+			border-radius: 150%/10%;
+			width: 2%;
+			height: 35%;
+			left: 49%;
+			top: 15%;
+			transform-origin: 50% 100%;
+		}
 
-        .clock.ios7 .hours {
-            border-radius: 85%/10%;
-            width: 2%;
-            height: 20%;
-            left: 49%;
-            top: 30%;
-            transform-origin: 50% 100%;
-        }
+		.clock.ios7 .hours {
+			border-radius: 85%/10%;
+			width: 2%;
+			height: 20%;
+			left: 49%;
+			top: 30%;
+			transform-origin: 50% 100%;
+		}
 
 
-        .clock.simple {
-            background: #fff url(/assets/images/posts/clocks/ios_clock.svg) no-repeat center;
-            background-size: 88%;
-        }
+		.clock.simple {
+			background: #fff url(/assets/images/posts/clocks/ios_clock.svg) no-repeat center;
+			background-size: 88%;
+		}
 
-        .clock.simple:after {
-            background-color: #000;
-            width: 5%;
-            height: 5%;
-        }
+		.clock.simple:after {
+			background-color: #000;
+			width: 5%;
+			height: 5%;
+		}
 
-        .clock.simple .seconds {
-            background-color: #000;
-            height: 45%;
-            left: 49.5%;
-            top: 14%;
-            width: 1%;
-            transform-origin: 50% 80%;
-        }
+		.clock.simple .seconds {
+			background-color: #000;
+			height: 45%;
+			left: 49.5%;
+			top: 14%;
+			width: 1%;
+			transform-origin: 50% 80%;
+		}
 
-        .clock.simple .minutes {
-            width: 2%;
-            height: 40%;
-            left: 49%;
-            top: 10%;
-            transform-origin: 50% 100%;
-        }
+		.clock.simple .minutes {
+			width: 2%;
+			height: 40%;
+			left: 49%;
+			top: 10%;
+			transform-origin: 50% 100%;
+		}
 
-        .clock.simple .hours {
-            width: 2.5%;
-            height: 20%;
-            left: 48.75%;
-            top: 30%;
-            transform-origin: 50% 100%;
-        }
+		.clock.simple .hours {
+			width: 2.5%;
+			height: 20%;
+			left: 48.75%;
+			top: 30%;
+			transform-origin: 50% 100%;
+		}
 
-        .hours.angled {
-            transform: rotateZ(-40deg);
-        }
+		.hours.angled {
+			transform: rotateZ(-40deg);
+		}
 
-        .minutes.angled {
-            transform: rotateZ(40deg);
-        }
+		.minutes.angled {
+			transform: rotateZ(40deg);
+		}
 
-        #index {
-            z-index: 50;
-            position: absolute;
-            top: 0px;
-            left: 50%;
-            margin-left: -400px;
-            width: 800px;
-            color: lightgrey;
-        }
+		#index {
+			z-index: 50;
+			position: absolute;
+			top: 0px;
+			left: 50%;
+			margin-left: -400px;
+			width: 800px;
+			color: lightgrey;
+		}
 
-        #standup-image {
-            display: none;
-            position: absolute;
-            z-index: 60;
-            top: 0px;
-            width: 100%;
-            height: 100%;
-        }
+		#standup-image {
+			display: none;
+			position: absolute;
+			z-index: 60;
+			top: 0px;
+			width: 100%;
+			height: 100%;
+		}
 
-        #standup-title {
-            display: none;
-            position: absolute;
-            z-index: 61;
-            top: 0px;
-            width: 100%;
-            height: 100%;
-            font-size: 12rem;
-            color: white;
-        }
+		#standup-title {
+			display: none;
+			position: absolute;
+			z-index: 61;
+			top: 0px;
+			width: 100%;
+			height: 100%;
+			font-size: 12rem;
+			color: white;
+		}
 
-        #standup-audio {
-            visibility: hidden;
-        }
-    </style>
-    <div class="demo-container clocks active bounce">
-        <article class="clock station js-los-angeles">
-            <section class="label">San Francisco</section>
-            <section class="hours-container">
-                <section class="hours"></section>
-            </section>
-            <section class="minutes-container">
-                <section class="minutes"></section>
-            </section>
-            <!-- <section class="seconds-container">
+		#standup-audio {
+			visibility: hidden;
+		}
+	</style>
+	<div class="demo-container clocks active bounce">
+		<article class="clock station js-los-angeles">
+			<section class="label">San Francisco</section>
+			<section class="hours-container">
+				<section class="hours"></section>
+			</section>
+			<section class="minutes-container">
+				<section class="minutes"></section>
+			</section>
+			<!-- <section class="seconds-container">
                 <section class="seconds"></section>
             </section> -->
-            <section class="diff-container"></section>
-        </article>
-        <article class="clock station js-new-york">
-            <section class="label">New York</section>
-            <section class="hours-container">
-                <section class="hours"></section>
-            </section>
-            <section class="minutes-container">
-                <section class="minutes"></section>
-            </section>
-            <!-- <section class="seconds-container">
+			<section class="diff-container"></section>
+		</article>
+		<article class="clock station js-new-york">
+			<section class="label">New York</section>
+			<section class="hours-container">
+				<section class="hours"></section>
+			</section>
+			<section class="minutes-container">
+				<section class="minutes"></section>
+			</section>
+			<!-- <section class="seconds-container">
                 <section class="seconds"></section>
             </section> -->
-            <section class="diff-container"></section>
-        </article>
-        <article class="clock station js-london">
-            <section class="label">London</section>
-            <section class="hours-container">
-                <section class="hours"></section>
-            </section>
-            <section class="minutes-container">
-                <section class="minutes"></section>
-            </section>
-            <!-- <section class="seconds-container">
+			<section class="diff-container"></section>
+		</article>
+		<article class="clock station js-london">
+			<section class="label">London</section>
+			<section class="hours-container">
+				<section class="hours"></section>
+			</section>
+			<section class="minutes-container">
+				<section class="minutes"></section>
+			</section>
+			<!-- <section class="seconds-container">
                 <section class="seconds"></section>
             </section> -->
-            <section class="diff-container"></section>
-        </article>
-          <article class="clock station js-prague">
-            <section class="label">Prague</section>
-            <section class="hours-container">
-                <section class="hours"></section>
-            </section>
-            <section class="minutes-container">
-                <section class="minutes"></section>
-            </section>
-            <!-- <section class="seconds-container">
+			<section class="diff-container"></section>
+		</article>
+		<article class="clock station js-prague">
+			<section class="label">Prague</section>
+			<section class="hours-container">
+				<section class="hours"></section>
+			</section>
+			<section class="minutes-container">
+				<section class="minutes"></section>
+			</section>
+			<!-- <section class="seconds-container">
                 <section class="seconds"></section>
             </section> -->
-            <section class="diff-container"></section>
-        </article>
-        <article class="clock station js-tokyo">
-            <section class="label">Tokyo</section>
-            <section class="hours-container">
-                <section class="hours"></section>
-            </section>
-            <section class="minutes-container">
-                <section class="minutes"></section>
-            </section>
-            <!-- <section class="seconds-container">
+			<section class="diff-container"></section>
+		</article>
+		<article class="clock station js-tokyo">
+			<section class="label">Tokyo</section>
+			<section class="hours-container">
+				<section class="hours"></section>
+			</section>
+			<section class="minutes-container">
+				<section class="minutes"></section>
+			</section>
+			<!-- <section class="seconds-container">
                 <section class="seconds"></section>
             </section> -->
-            <section class="diff-container"></section>
-        </article>
-    </div>
+			<section class="diff-container"></section>
+		</article>
+	</div>
 
-    <h1 id="index">... loading ...</h1>
-    <img src="" id="standup-image" />
-    <audio src="" id="standup-audio"></audio>
-    <h1 id="standup-title">STAND-UP now!</h1>
-
-
-    <!-- Your script should come as last in body tag -->
-    <!-- To allow transpile ES6+ to ES5 (JavaScript) use application/ecmascript instead of text/javascript (works on all supported platforms) -->
-    <script type="application/ecmascript">
-        window.addEventListener('sos.loaded', function () {
-            sos.onReady().then(function () {
-                var files = [
-                    {
-                        uid: 'libs/fetch-2.0.4.min.js',
-                        uri: 'https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.min.js',
-                        type: sos.offline.types.javascript,
-                        flags: [sos.offline.flags.append(document.body)],
-                    },
-                    {
-                        "uri": "https://momentjs.com/downloads/moment-with-locales.min.js",
-                        "uid": "momentjs",
-                        "type": sos.offline.types.javascript,
-                        "flags": [sos.offline.flags.append(document.head)]
-                    },
-                    {
-                        "uri": "https://momentjs.com/downloads/moment-timezone-with-data.min.js",
-                        "uid": "momentjs-tz",
-                        "type": sos.offline.types.javascript,
-                        "flags": [sos.offline.flags.append(document.head)]
-                    }
-
-                ];
-                sos.offline.addFiles(files).then(function () {
+	<h1 id="index">... loading ...</h1>
+	<img src="" id="standup-image" />
+	<audio src="" id="standup-audio"></audio>
+	<h1 id="standup-title">STAND-UP now!</h1>
 
 
-                    /*
-                     *  Main function to set the clock times
-                     */
-                    (function () {
-                        // Initialise the locale-enabled clocks
-                        initInternationalClocks();
-                        // Initialise any local time clocks
-                        initLocalClocks();
-                        // Start the seconds container moving
-                        moveSecondHands();
-                        // Set the intial minute hand container transition, and then each subsequent step
-                        setUpMinuteHands();
-                    })();
+	<!-- Your script should come as last in body tag -->
+	<!-- To allow transpile ES6+ to ES5 (JavaScript) use application/ecmascript instead of text/javascript (works on all supported platforms) -->
+	<script type="application/ecmascript">
+		async function startApplet() {
+			sos.onReady().then(function() {
+				var files = [{
+						uid: 'libs/fetch-2.0.4.min.js',
+						uri: 'https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.min.js',
+						type: sos.offline.types.javascript,
+						flags: [sos.offline.flags.append(document.body)],
+					},
+					{
+						"uri": "https://momentjs.com/downloads/moment-with-locales.min.js",
+						"uid": "momentjs",
+						"type": sos.offline.types.javascript,
+						"flags": [sos.offline.flags.append(document.head)]
+					},
+					{
+						"uri": "https://momentjs.com/downloads/moment-timezone-with-data.min.js",
+						"uid": "momentjs-tz",
+						"type": sos.offline.types.javascript,
+						"flags": [sos.offline.flags.append(document.head)]
+					}
 
-                    /*
-                     *  Set up an entry for each locale of clock we want to use
-                     */
-                    function getTimes() {
-                        moment.tz.add([
-                            'Eire|GMT IST|0 -10|01010101010101010101010|1BWp0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00',
-                            'Asia/Tokyo|JST|-90|0|',
-                              'Europe/Prague|LMT PMT CET CEST GMT|-V.I -V.I -10 -20 0|0123232323232323232423232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232|-4QbAV.I 1FDc0 XPaV.I 11d0 1iO0 11A0 1o00 11A0 Qrc0 6i00 WM0 1fA0 1cM0 1cM0 1cM0 1cM0 1qM0 11c0 mp0 xA0 mn0 17c0 1io0 17c0 1fc0 1ao0 1bNc0 1cM0 1fA0 1a00 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00|13e5',
-                            'America/New_York|EST EDT|50 40|0101|1Lz50 1zb0 Op0',
-                            'America/Los_Angeles|LMT PST PDT PWT PPT|7Q.W 80 70 70 70|0121213412121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-3tFE0 1nEe0 1nX0 11B0 1nX0 SgN0 8x10 iy0 5Wp1 1VaX 3dA0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1a00 1fA0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|15e6'
-                        ]);
-                        var now = new Date();
-                        // Set the time manually for each of the clock types we're using
-                        var times = [
-                            {
-                                jsclass: 'js-tokyo',
-                                jstime: moment.tz(now, "Asia/Tokyo"),
-                                jszone: "Asia/Tokyo"
-                            },
-                            {
-                                jsclass: 'js-london',
-                                jstime: moment.tz(now, "Eire"),
-                                jszone: "Eire"
-                            },
-                            {
-                                jsclass: 'js-new-york',
-                                jstime: moment.tz(now, "America/New_York"),
-                                jszone: "America/New_York"
-                            },
-                              {
-                                jsclass: 'js-prague',
-                                jstime: moment.tz(now, "Europe/Prague"),
-                                jszone: "Europe/Prague"
-                            },
-                            {
-                                jsclass: 'js-los-angeles',
-                                jstime: moment.tz(now, "America/Los_Angeles"),
-                                jszone: "America/Los_Angeles"
-                            }
-                        ];
-                        return times;
-                    }
+				];
+				sos.offline.addFiles(files).then(function() {
 
-                    function morningEveningSwitcher(time, jsclass) {
-                        const a = setInterval(function() {
-                            const currentHour = parseInt(time.format("HH"));
-                            const element = document.getElementsByClassName(jsclass);
 
-                            if(element && typeof element[0] !== "undefined") {
-                                let dayTime = null;
-                                if(currentHour === 0 || (currentHour < 12 && currentHour >= 5) )  dayTime = " morning";
-                                if(currentHour <= 19) dayTime = " afternoon";
-                                if(currentHour > 19 || (currentHour < 12 && currentHour < 5) ) dayTime = " night";
-                              
-                                element[0].getElementsByClassName('label')[0].className = "label " + dayTime;
-                            }
-                        }, 30 * 1000 );
-                    }
-                    
-                    function getTimeDifference(zone, jsclass) {
-                        // get the current time so we know which offset to take (DST is such bullkitten)
-                        const now = moment.utc();
-                        const offset = moment.tz.zone(zone).utcOffset(now);
-                        // calculate the difference in hours
-                        const element = document.getElementsByClassName(jsclass)[0].getElementsByClassName('diff-container')[0].innerHTML += ("<br> " + offset/60 + " hrs");
-                    }
+					/*
+					 *  Main function to set the clock times
+					 */
+					(function() {
+						// Initialise the locale-enabled clocks
+						initInternationalClocks();
+						// Initialise any local time clocks
+						initLocalClocks();
+						// Start the seconds container moving
+						moveSecondHands();
+						// Set the intial minute hand container transition, and then each subsequent step
+						setUpMinuteHands();
+					})();
 
-                    /*
-                     * Set up the clocks that use moment.js
-                     */
-                    function initInternationalClocks() {
-                        // Initialise the clock settings and the three times
-                        var times = getTimes();
-                        for (var i = 0; i < times.length; ++i) {
-                            var hours = times[i].jstime.format('h');
-                            var minutes = times[i].jstime.format('mm');
-                            var seconds = times[i].jstime.format('ss');
+					/*
+					 *  Set up an entry for each locale of clock we want to use
+					 */
+					function getTimes() {
+						moment.tz.add([
+							'Eire|GMT IST|0 -10|01010101010101010101010|1BWp0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00',
+							'Asia/Tokyo|JST|-90|0|',
+							'Europe/Prague|LMT PMT CET CEST GMT|-V.I -V.I -10 -20 0|0123232323232323232423232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232|-4QbAV.I 1FDc0 XPaV.I 11d0 1iO0 11A0 1o00 11A0 Qrc0 6i00 WM0 1fA0 1cM0 1cM0 1cM0 1cM0 1qM0 11c0 mp0 xA0 mn0 17c0 1io0 17c0 1fc0 1ao0 1bNc0 1cM0 1fA0 1a00 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00|13e5',
+							'America/New_York|EST EDT|50 40|0101|1Lz50 1zb0 Op0',
+							'America/Los_Angeles|LMT PST PDT PWT PPT|7Q.W 80 70 70 70|0121213412121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121212121|-3tFE0 1nEe0 1nX0 11B0 1nX0 SgN0 8x10 iy0 5Wp1 1VaX 3dA0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1a00 1fA0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 s10 1Vz0 LB0 1BX0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|15e6'
+						]);
+						var now = new Date();
+						// Set the time manually for each of the clock types we're using
+						var times = [{
+								jsclass: 'js-tokyo',
+								jstime: moment.tz(now, "Asia/Tokyo"),
+								jszone: "Asia/Tokyo"
+							},
+							{
+								jsclass: 'js-london',
+								jstime: moment.tz(now, "Eire"),
+								jszone: "Eire"
+							},
+							{
+								jsclass: 'js-new-york',
+								jstime: moment.tz(now, "America/New_York"),
+								jszone: "America/New_York"
+							},
+							{
+								jsclass: 'js-prague',
+								jstime: moment.tz(now, "Europe/Prague"),
+								jszone: "Europe/Prague"
+							},
+							{
+								jsclass: 'js-los-angeles',
+								jstime: moment.tz(now, "America/Los_Angeles"),
+								jszone: "America/Los_Angeles"
+							}
+						];
+						return times;
+					}
 
-                            morningEveningSwitcher(times[i].jstime, times[i].jsclass);
-                            getTimeDifference(times[i].jszone, times[i].jsclass);
+					function morningEveningSwitcher(time, jsclass) {
+						const a = setInterval(function() {
+							const currentHour = parseInt(time.format("HH"));
+							const element = document.getElementsByClassName(jsclass);
 
-                            var degrees = [
-                                {
-                                    hand: 'hours',
-                                    degree: (hours * 30) + (minutes / 2)
-                                },
-                                {
-                                    hand: 'minutes',
-                                    degree: (minutes * 6)
-                                },
-                                {
-                                    hand: 'seconds',
-                                    degree: (seconds * 6)
-                                }
-                            ];
-                            for (var j = 0; j < degrees.length; j++) {
-                                var elements = document.querySelectorAll('.active .' + times[i].jsclass + ' .' + degrees[j].hand);
-                                for (var k = 0; k < elements.length; k++) {
-                                    elements[k].style.webkitTransform = 'rotateZ(' + degrees[j].degree + 'deg)';
-                                    elements[k].style.transform = 'rotateZ(' + degrees[j].degree + 'deg)';
-                                    // If this is a minute hand, note the seconds position (to calculate minute position later)
-                                    if (degrees[j].hand === 'minutes') {
-                                        elements[k].parentNode.setAttribute('data-second-angle', degrees[j + 1].degree);
-                                    }
-                                }
-                            }
-                        }
-                        // Add a class to the clock container to show it
-                        var elements = document.querySelectorAll('.clock');
-                        for (var l = 0; l < elements.length; l++) {
+							if (element && typeof element[0] !== "undefined") {
+								let dayTime = null;
+								if (currentHour === 0 || (currentHour < 12 && currentHour >= 5)) dayTime = " morning";
+								if (currentHour <= 19) dayTime = " afternoon";
+								if (currentHour > 19 || (currentHour < 12 && currentHour < 5)) dayTime = " night";
 
-                            elements[l].className = elements[l].className + ' show';
-                        }
-                    }
+								element[0].getElementsByClassName('label')[0].className = "label " + dayTime;
+							}
+						}, 30 * 1000);
+					}
 
-                    /*
-                     * Starts any clocks using the user's local time
-                     */
-                    function initLocalClocks() {
-                        // Get the local time using JS
-                        var date = new Date;
-                        var seconds = date.getSeconds();
-                        var minutes = date.getMinutes();
-                        var hours = date.getHours();
+					function getTimeDifference(zone, jsclass) {
+						// get the current time so we know which offset to take (DST is such bullkitten)
+						const now = moment.utc();
+						const offset = moment.tz.zone(zone).utcOffset(now);
+						// calculate the difference in hours
+						const element = document.getElementsByClassName(jsclass)[0].getElementsByClassName('diff-container')[0].innerHTML += ("<br> " + offset / 60 + " hrs");
+					}
 
-                        // Create an object with each hand and it's angle in degrees
-                        var hands = [
-                            {
-                                hand: 'hours',
-                                angle: (hours * 30) + (minutes / 2)
-                            },
-                            {
-                                hand: 'minutes',
-                                angle: (minutes * 6)
-                            },
-                            {
-                                hand: 'seconds',
-                                angle: (seconds * 6)
-                            }
-                        ];
-                        // Loop through each of these hands to set their angle
-                        for (var j = 0; j < hands.length; j++) {
-                            var elements = document.querySelectorAll('.local .' + hands[j].hand);
-                            for (var k = 0; k < elements.length; k++) {
-                                elements[k].style.transform = 'rotateZ(' + hands[j].angle + 'deg)';
-                                // If this is a minute hand, note the seconds position (to calculate minute position later)
-                                if (hands[j].hand === 'minutes') {
-                                    elements[k].parentNode.setAttribute('data-second-angle', hands[j + 1].angle);
-                                }
-                            }
-                        }
-                    }
+					/*
+					 * Set up the clocks that use moment.js
+					 */
+					function initInternationalClocks() {
+						// Initialise the clock settings and the three times
+						var times = getTimes();
+						for (var i = 0; i < times.length; ++i) {
+							var hours = times[i].jstime.format('h');
+							var minutes = times[i].jstime.format('mm');
+							var seconds = times[i].jstime.format('ss');
 
-                    /*
-                     * Move the second containers
-                     */
-                    function moveSecondHands() {
-                        var containers = document.querySelectorAll('.bounce .seconds-container');
-                        setInterval(function () {
-                            for (var i = 0; i < containers.length; i++) {
-                                if (containers[i].angle === undefined) {
-                                    containers[i].angle = 6;
-                                } else {
-                                    containers[i].angle += 6;
-                                }
-                                containers[i].style.webkitTransform = 'rotateZ(' + containers[i].angle + 'deg)';
-                                containers[i].style.transform = 'rotateZ(' + containers[i].angle + 'deg)';
-                            }
-                        }, 1000);
-                        for (var i = 0; i < containers.length; i++) {
-                            // Add in a little delay to make them feel more natural
-                            var randomOffset = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
-                            containers[i].style.transitionDelay = '0.0' + randomOffset + 's';
-                        }
-                    }
+							morningEveningSwitcher(times[i].jstime, times[i].jsclass);
+							getTimeDifference(times[i].jszone, times[i].jsclass);
 
-                    /*
-                     * Set a timeout for the first minute hand movement (less than 1 minute), then rotate it every minute after that
-                     */
-                    function setUpMinuteHands() {
-                        // More tricky, this needs to move the minute hand when the second hand hits zero
-                        var containers = document.querySelectorAll('.minutes-container');
-                        var secondAngle = containers[containers.length - 1].getAttribute('data-second-angle');
-                        console.log(secondAngle);
-                        if (secondAngle > 0) {
-                            // Set a timeout until the end of the current minute, to move the hand
-                            var delay = (((360 - secondAngle) / 6) + 0.1) * 1000;
-                            console.log(delay);
-                            setTimeout(function () {
-                                moveMinuteHands(containers);
-                            }, delay);
-                        }
-                    }
+							var degrees = [{
+									hand: 'hours',
+									degree: (hours * 30) + (minutes / 2)
+								},
+								{
+									hand: 'minutes',
+									degree: (minutes * 6)
+								},
+								{
+									hand: 'seconds',
+									degree: (seconds * 6)
+								}
+							];
+							for (var j = 0; j < degrees.length; j++) {
+								var elements = document.querySelectorAll('.active .' + times[i].jsclass + ' .' + degrees[j].hand);
+								for (var k = 0; k < elements.length; k++) {
+									elements[k].style.webkitTransform = 'rotateZ(' + degrees[j].degree + 'deg)';
+									elements[k].style.transform = 'rotateZ(' + degrees[j].degree + 'deg)';
+									// If this is a minute hand, note the seconds position (to calculate minute position later)
+									if (degrees[j].hand === 'minutes') {
+										elements[k].parentNode.setAttribute('data-second-angle', degrees[j + 1].degree);
+									}
+								}
+							}
+						}
+						// Add a class to the clock container to show it
+						var elements = document.querySelectorAll('.clock');
+						for (var l = 0; l < elements.length; l++) {
 
-                    /*
-                     * Do the first minute's rotation, then move every 60 seconds after
-                     */
-                    function moveMinuteHands(containers) {
-                        for (var i = 0; i < containers.length; i++) {
-                            containers[i].style.webkitTransform = 'rotateZ(6deg)';
-                            containers[i].style.transform = 'rotateZ(6deg)';
-                        }
-                        // Then continue with a 60 second interval
-                        setInterval(function () {
-                            for (var i = 0; i < containers.length; i++) {
-                                if (containers[i].angle === undefined) {
-                                    containers[i].angle = 12;
-                                } else {
-                                    containers[i].angle += 6;
-                                }
-                                containers[i].style.webkitTransform = 'rotateZ(' + containers[i].angle + 'deg)';
-                                containers[i].style.transform = 'rotateZ(' + containers[i].angle + 'deg)';
-                            }
-                        }, 60000);
-                    }
-                  
-                  
-                    const standUpTime = sos.config.standUpTime || '10:30';
+							elements[l].className = elements[l].className + ' show';
+						}
+					}
 
-                    const contentElement = document.getElementById('index');
-                    const imageElement = document.getElementById('standup-image');
-                    const audioElement = document.getElementById('standup-audio');
-                    const titleElement = document.getElementById('standup-title');
+					/*
+					 * Starts any clocks using the user's local time
+					 */
+					function initLocalClocks() {
+						// Get the local time using JS
+						var date = new Date;
+						var seconds = date.getSeconds();
+						var minutes = date.getMinutes();
+						var hours = date.getHours();
 
-                    const audioSrcs = [
-                        'https://static.signageos.io/assets/dev/old-fashioned-school-bell-daniel_simon.mp3',
-                        'https://static.signageos.io/assets/dev/Alien_AlarmDrum-KevanGC-893953959.mp3',
-                        'https://static.signageos.io/assets/dev/Fire_pager-jason-1283464858.mp3',
-                        'https://static.signageos.io/assets/dev/Japanese-Temple-Bell-Small-SoundBible.com-113624364.mp3',
-                        'https://static.signageos.io/assets/dev/Rooster-SoundBible.com-1114473528.mp3',
-                    ];
-                    let audioSrc = audioSrcs[Math.floor(Math.random() * new Date().valueOf() % audioSrcs.length)];
-                    setInterval(
-                        () => audioSrc = audioSrcs[Math.floor(Math.random() * new Date().valueOf() % audioSrcs.length)],
-                        60 * 60 * 1e3,
-                    );
+						// Create an object with each hand and it's angle in degrees
+						var hands = [{
+								hand: 'hours',
+								angle: (hours * 30) + (minutes / 2)
+							},
+							{
+								hand: 'minutes',
+								angle: (minutes * 6)
+							},
+							{
+								hand: 'seconds',
+								angle: (seconds * 6)
+							}
+						];
+						// Loop through each of these hands to set their angle
+						for (var j = 0; j < hands.length; j++) {
+							var elements = document.querySelectorAll('.local .' + hands[j].hand);
+							for (var k = 0; k < elements.length; k++) {
+								elements[k].style.transform = 'rotateZ(' + hands[j].angle + 'deg)';
+								// If this is a minute hand, note the seconds position (to calculate minute position later)
+								if (hands[j].hand === 'minutes') {
+									elements[k].parentNode.setAttribute('data-second-angle', hands[j + 1].angle);
+								}
+							}
+						}
+					}
 
-                    async function checkTime() {
-                        const [hours, minutes] = standUpTime.split(':');
-                        const standupMoment = moment().hours(hours).minutes(minutes).seconds(0);
-                        const remaining = moment().diff(standupMoment);
-                        if (remaining > 0) {
-                            contentElement.innerHTML = `StandUp was already ${moment.duration(remaining).humanize()} ago`;
-                        } else {
-                            contentElement.innerHTML = `StandUp will be in ${moment.duration(remaining).humanize()}`;
-                        }
+					/*
+					 * Move the second containers
+					 */
+					function moveSecondHands() {
+						var containers = document.querySelectorAll('.bounce .seconds-container');
+						setInterval(function() {
+							for (var i = 0; i < containers.length; i++) {
+								if (containers[i].angle === undefined) {
+									containers[i].angle = 6;
+								} else {
+									containers[i].angle += 6;
+								}
+								containers[i].style.webkitTransform = 'rotateZ(' + containers[i].angle + 'deg)';
+								containers[i].style.transform = 'rotateZ(' + containers[i].angle + 'deg)';
+							}
+						}, 1000);
+						for (var i = 0; i < containers.length; i++) {
+							// Add in a little delay to make them feel more natural
+							var randomOffset = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
+							containers[i].style.transitionDelay = '0.0' + randomOffset + 's';
+						}
+					}
 
-                        if (remaining > 0 && remaining < 5 * 60 * 1e3) {
-                            let gifSrc;
-                            try {
+					/*
+					 * Set a timeout for the first minute hand movement (less than 1 minute), then rotate it every minute after that
+					 */
+					function setUpMinuteHands() {
+						// More tricky, this needs to move the minute hand when the second hand hits zero
+						var containers = document.querySelectorAll('.minutes-container');
+						var secondAngle = containers[containers.length - 1].getAttribute('data-second-angle');
+						console.log(secondAngle);
+						if (secondAngle > 0) {
+							// Set a timeout until the end of the current minute, to move the hand
+							var delay = (((360 - secondAngle) / 6) + 0.1) * 1000;
+							console.log(delay);
+							setTimeout(function() {
+								moveMinuteHands(containers);
+							}, delay);
+						}
+					}
 
-                                const gifsResp = await fetch('https://api.giphy.com/v1/gifs/search?api_key=3eFQvabDx69SMoOemSPiYfh9FY0nzO9x&q=standup%20comedy&offset=0&limit=100');
-                                const gifsData = await gifsResp.json();
+					/*
+					 * Do the first minute's rotation, then move every 60 seconds after
+					 */
+					function moveMinuteHands(containers) {
+						for (var i = 0; i < containers.length; i++) {
+							containers[i].style.webkitTransform = 'rotateZ(6deg)';
+							containers[i].style.transform = 'rotateZ(6deg)';
+						}
+						// Then continue with a 60 second interval
+						setInterval(function() {
+							for (var i = 0; i < containers.length; i++) {
+								if (containers[i].angle === undefined) {
+									containers[i].angle = 12;
+								} else {
+									containers[i].angle += 6;
+								}
+								containers[i].style.webkitTransform = 'rotateZ(' + containers[i].angle + 'deg)';
+								containers[i].style.transform = 'rotateZ(' + containers[i].angle + 'deg)';
+							}
+						}, 60000);
+					}
 
-                                const gifData = gifsData.data[Math.floor(Math.random() * new Date().valueOf() % gifsData.data.length)];
-                                gifSrc = gifData.images.original.url;
-                            } catch (error) {
-                                console.error(error);
-                                gifSrc = 'https://media1.giphy.com/media/VoOaKxAfabAmQ/giphy.gif';
-                            }
-                            imageElement.src = gifSrc;
-                            imageElement.style.display = 'block';
-                            titleElement.style.display = 'block';
-                            if (audioElement.src !== audioSrc) {
-                                audioElement.src = audioSrc;
-                                audioElement.autoplay = 'autoplay';
-                                audioElement.loop = null;
-                                audioElement.play();
-                            }
-                        } else {
-                            imageElement.style.display = 'none';
-                            titleElement.style.display = 'none';
-                            audioElement.src = '';
-                            audioElement.autoplay = null;
-                        }
-                    }
 
-                    setInterval(checkTime, 5e3);
-                });
+					const standUpTime = sos.config.standUpTime || '10:30';
 
-            });
-        });
-    </script>
+					const contentElement = document.getElementById('index');
+					const imageElement = document.getElementById('standup-image');
+					const audioElement = document.getElementById('standup-audio');
+					const titleElement = document.getElementById('standup-title');
+
+					const audioSrcs = [
+						'https://static.signageos.io/assets/dev/old-fashioned-school-bell-daniel_simon.mp3',
+						'https://static.signageos.io/assets/dev/Alien_AlarmDrum-KevanGC-893953959.mp3',
+						'https://static.signageos.io/assets/dev/Fire_pager-jason-1283464858.mp3',
+						'https://static.signageos.io/assets/dev/Japanese-Temple-Bell-Small-SoundBible.com-113624364.mp3',
+						'https://static.signageos.io/assets/dev/Rooster-SoundBible.com-1114473528.mp3',
+					];
+					let audioSrc = audioSrcs[Math.floor(Math.random() * new Date().valueOf() % audioSrcs.length)];
+					setInterval(
+						() => audioSrc = audioSrcs[Math.floor(Math.random() * new Date().valueOf() % audioSrcs.length)],
+						60 * 60 * 1e3,
+					);
+
+					async function checkTime() {
+						const [hours, minutes] = standUpTime.split(':');
+						const standupMoment = moment().hours(hours).minutes(minutes).seconds(0);
+						const remaining = moment().diff(standupMoment);
+						if (remaining > 0) {
+							contentElement.innerHTML = `StandUp was already ${moment.duration(remaining).humanize()} ago`;
+						} else {
+							contentElement.innerHTML = `StandUp will be in ${moment.duration(remaining).humanize()}`;
+						}
+
+						if (remaining > 0 && remaining < 5 * 60 * 1e3) {
+							let gifSrc;
+							try {
+
+								const gifsResp = await fetch('https://api.giphy.com/v1/gifs/search?api_key=3eFQvabDx69SMoOemSPiYfh9FY0nzO9x&q=standup%20comedy&offset=0&limit=100');
+								const gifsData = await gifsResp.json();
+
+								const gifData = gifsData.data[Math.floor(Math.random() * new Date().valueOf() % gifsData.data.length)];
+								gifSrc = gifData.images.original.url;
+							} catch (error) {
+								console.error(error);
+								gifSrc = 'https://media1.giphy.com/media/VoOaKxAfabAmQ/giphy.gif';
+							}
+							imageElement.src = gifSrc;
+							imageElement.style.display = 'block';
+							titleElement.style.display = 'block';
+							if (audioElement.src !== audioSrc) {
+								audioElement.src = audioSrc;
+								audioElement.autoplay = 'autoplay';
+								audioElement.loop = null;
+								audioElement.play();
+							}
+						} else {
+							imageElement.style.display = 'none';
+							titleElement.style.display = 'none';
+							audioElement.src = '';
+							audioElement.autoplay = null;
+						}
+					}
+
+					setInterval(checkTime, 5e3);
+				});
+
+			});
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
 </body>
 
 </html>

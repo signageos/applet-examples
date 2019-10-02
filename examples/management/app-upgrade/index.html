@@ -1,32 +1,39 @@
 <!doctype html>
 <html>
-	<head>
-		<title>Management App Upgrade</title>
-	</head>
-	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-		<h1>Management App Upgrade</h1>
-		<p id="index">... loading ...</p>
-		<button id="upgrade-btn">Upgrade now</button>
+
+<head>
+	<title>Management App Upgrade</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Management App Upgrade</h1>
+	<p id="index">... loading ...</p>
+	<button id="upgrade-btn">Upgrade now</button>
 
 
-		<script type="application/ecmascript">
-			window.addEventListener('sos.loaded', async function () {
-				const contentElement = document.getElementById('index');
-				const upgradeButton = document.getElementById('upgrade-btn');
-				await sos.onReady();
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			const upgradeButton = document.getElementById('upgrade-btn');
+			await sos.onReady();
 
-				if (await sos.management.supports('APP_UPGRADE')) {					
-					upgradeButton.onclick = async () => {
- 						contentElement.innerHTML = 'Upgrading...';
-						await sos.management.app.upgrade(
-							'https://cdn.your-cms.com',
-							'1.0.4'
-						);
-					};
-				} else {
-					contentElement.innerHTML = 'Not Supported';
-				}
-			});
-		</script>
-	</body>
+			if (await sos.management.supports('APP_UPGRADE')) {
+				upgradeButton.onclick = async () => {
+					contentElement.innerHTML = 'Upgrading...';
+					await sos.management.app.upgrade(
+						'https://cdn.your-cms.com',
+						'1.0.4'
+					);
+				};
+			} else {
+				contentElement.innerHTML = 'Not Supported';
+			}
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
 </html>

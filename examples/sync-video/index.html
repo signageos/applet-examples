@@ -1,73 +1,90 @@
 <!doctype html>
 <html>
+
 <head>
-    <title>Video Sync Play</title>
+	<title>Video Sync Play</title>
 </head>
+
 <body style="text-align: center; background-color: #f4d03f; color: #333333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-<h1>Video Sync Play</h1>
-<p id="index"></p>
+	<h1>Video Sync Play</h1>
+	<p id="index"></p>
 
 
-<script type="application/ecmascript">
-	window.addEventListener('sos.loaded', async function () {
-		const contentElement = document.getElementById('index');
-		await sos.onReady();
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			await sos.onReady();
 
-		contentElement.innerHTML = '...syncing...';
+			contentElement.innerHTML = '...syncing...';
 
-		// Connect to the sync server and initialize the sync group TODO add docs link
-		const syncServerUri = sos.config.sync_server || undefined;
-		const syncGroup = sos.config.sync_group || undefined;
-		await sos.sync.connect(syncServerUri);
-		await sos.sync.init(syncGroup);
+			// Connect to the sync server and initialize the sync group TODO add docs link
+			const syncServerUri = sos.config.sync_server || undefined;
+			const syncGroup = sos.config.sync_group || undefined;
+			await sos.sync.connect(syncServerUri);
+			await sos.sync.init(syncGroup);
 
-		contentElement.innerHTML = '...loading videos...';
+			contentElement.innerHTML = '...loading videos...';
 
-		const videos = [
-			{ uid: 'video-1', uri: 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4' },
-			{ uid: 'video-2', uri: 'https://static.signageos.io/assets/video-test-2_e2ffa51f6a4473b815f39e7fb39239da.mp4' },
-			{ uid: 'video-3', uri: 'https://static.signageos.io/assets/video-test-3_5cfd717df750e5b1d5dd8384c194a92d.mp4' },
-		];
+			const videos = [{
+					uid: 'video-1',
+					uri: 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4'
+				},
+				{
+					uid: 'video-2',
+					uri: 'https://static.signageos.io/assets/video-test-2_e2ffa51f6a4473b815f39e7fb39239da.mp4'
+				},
+				{
+					uid: 'video-3',
+					uri: 'https://static.signageos.io/assets/video-test-3_5cfd717df750e5b1d5dd8384c194a92d.mp4'
+				},
+			];
 
-		for (const video of videos) {
-			// Store video to offline storage (https://docs.signageos.io/api/sos-applet-api/#Load_or_Save_specific_file_into_internal_memory)
-			const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
-			video.filePath = filePath;
-			video.agruments = [video.filePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
-		}
-
-		contentElement.innerHTML = '';
-
-		let previousVideoIndex;
-		let currentVideoIndex = 0;
-
-		while (true) {
-			const previousVideo = typeof previousVideoIndex === 'undefined' ? undefined : videos[previousVideoIndex];
-			const currentVideo = videos[currentVideoIndex];
-
-			const realCurrentVideoUid = await sos.sync.wait(currentVideo.uid, syncGroup);
-			const realCurrentVideoIndex = videos.findIndex((video) => video.uid === realCurrentVideoUid);
-			const realCurrentVideo = videos[realCurrentVideoIndex];
-
-			// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/sos-applet-api/#Play_video)
-			await sos.video.play(...realCurrentVideo.agruments);
-			if (previousVideo) {
-				await sos.video.stop(...previousVideo.agruments);
+			for (const video of videos) {
+				// Store video to offline storage (https://docs.signageos.io/api/sos-applet-api/#Load_or_Save_specific_file_into_internal_memory)
+				const {
+					filePath
+				} = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
+				video.filePath = filePath;
+				video.agruments = [video.filePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
 			}
 
-			// https://docs.signageos.io/api/sos-applet-api/#onceEnded
-			const endedPromise = sos.video.onceEnded(...realCurrentVideo.agruments);
+			contentElement.innerHTML = '';
 
-			const nextVideoIndex = (realCurrentVideoIndex + 1) % videos.length;
-			const nextVideo = videos[nextVideoIndex];
-			await sos.video.prepare(...nextVideo.agruments);
+			let previousVideoIndex;
+			let currentVideoIndex = 0;
 
-			await endedPromise;
+			while (true) {
+				const previousVideo = typeof previousVideoIndex === 'undefined' ? undefined : videos[previousVideoIndex];
+				const currentVideo = videos[currentVideoIndex];
 
-			previousVideoIndex = realCurrentVideoIndex;
-			currentVideoIndex = nextVideoIndex;
+				const realCurrentVideoUid = await sos.sync.wait(currentVideo.uid, syncGroup);
+				const realCurrentVideoIndex = videos.findIndex((video) => video.uid === realCurrentVideoUid);
+				const realCurrentVideo = videos[realCurrentVideoIndex];
+
+				// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/sos-applet-api/#Play_video)
+				await sos.video.play(...realCurrentVideo.agruments);
+				if (previousVideo) {
+					await sos.video.stop(...previousVideo.agruments);
+				}
+
+				// https://docs.signageos.io/api/sos-applet-api/#onceEnded
+				const endedPromise = sos.video.onceEnded(...realCurrentVideo.agruments);
+
+				const nextVideoIndex = (realCurrentVideoIndex + 1) % videos.length;
+				const nextVideo = videos[nextVideoIndex];
+				await sos.video.prepare(...nextVideo.agruments);
+
+				await endedPromise;
+
+				previousVideoIndex = realCurrentVideoIndex;
+				currentVideoIndex = nextVideoIndex;
+			}
 		}
-	});
-</script>
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
 </body>
+
 </html>

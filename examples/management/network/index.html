@@ -1,33 +1,40 @@
 <!doctype html>
 <html>
-	<head>
-		<title>Management Network</title>
-	</head>
-	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-		<h1>Management Network</h1>
-		<p id="index">... loading ...</p>
+
+<head>
+	<title>Management Network</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Management Network</h1>
+	<p id="index">... loading ...</p>
 
 
-		<script type="application/ecmascript">
-			window.addEventListener('sos.loaded', async function () {
-				const contentElement = document.getElementById('index');
-				await sos.onReady();
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			await sos.onReady();
 
-				const NOT_SUPPORTED = 'Not Supported';
+			const NOT_SUPPORTED = 'Not Supported';
 
-				const networkInfo = await sos.management.supports('NETWORK_INFO')
-					? await sos.management.getNetworkInfo()
-					: NOT_SUPPORTED;
+			const networkInfo = await sos.management.supports('NETWORK_INFO') ?
+				await sos.management.getNetworkInfo() :
+				NOT_SUPPORTED;
 
-				if (networkInfo === NOT_SUPPORTED) {
-					contentElement.innerHTML = NOT_SUPPORTED;
-				} else {
-					contentElement.innerHTML = `
+			if (networkInfo === NOT_SUPPORTED) {
+				contentElement.innerHTML = NOT_SUPPORTED;
+			} else {
+				contentElement.innerHTML = `
 						IP Address: ${networkInfo.localAddress}
 						Interface: ${networkInfo.activeInterface}
 					`;
-				}
-			});
-		</script>
-	</body>
+			}
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
 </html>

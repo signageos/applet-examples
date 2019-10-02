@@ -10,13 +10,12 @@
 	<h2 id="displayInfo"></h2>
 	<p id="index">... loading ...</p>
 	<div id="htmlContent"></div>
-	
+
 	<script type="application/ecmascript">
-		window.addEventListener('sos.loaded', async function () {
-			
+		async function startApplet() {
+
 			// Load static files
-			let files = [
-				{
+			let files = [{
 					uid: 'libs/fetch-2.0.4.min.js',
 					uri: 'https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.min.js',
 					type: sos.offline.types.javascript,
@@ -37,7 +36,7 @@
 			const htmlContentElement = document.getElementById('htmlContent');
 
 			await sos.onReady(); // Wait until signageOS app is loaded and ready
-			
+
 			//Get display details
 			try {
 				const fw = await sos.management.firmware.getVersion();
@@ -51,14 +50,21 @@
 
 			// load HTML5 content
 			fetch('https://1.signageos.io/assets/dev/html-content.html')
-				.then(function (response) {
+				.then(function(response) {
 					return response.text();
-				}).then(function (data) {
+				}).then(function(data) {
 					const htmlContentDiv = document.getElementById('htmlContent');
 					htmlContentDiv.innerHTML = data;
 				});
 			// Set properties like ID and URL for stream
-			const stream = { uid: 'stream-1', x: 0, y: 25, width: 50, height: 50, uri: 'internal://hdmi1' };
+			const stream = {
+				uid: 'stream-1',
+				x: 0,
+				y: 25,
+				width: 50,
+				height: 50,
+				uri: 'internal://hdmi1'
+			};
 
 			// Set url, resolution on screen (full screen) - (https://docs.signageos.io/api/js/js-video-stream#play-stream)
 			stream.agruments = [
@@ -87,7 +93,11 @@
 			sos.stream.onConnected(async (event) => {
 				await sos.stream.play(...stream.agruments);
 			});
-		});
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
 	</script>
 </body>
 

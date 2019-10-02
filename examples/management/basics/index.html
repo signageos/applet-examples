@@ -1,40 +1,47 @@
 <!doctype html>
 <html>
-	<head>
-		<title>Management Basic</title>
-	</head>
-	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-		<h1>Management Basics</h1>
-		<p id="index">... loading ...</p>
+
+<head>
+	<title>Management Basic</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Management Basics</h1>
+	<p id="index">... loading ...</p>
 
 
-		<script type="application/ecmascript">
-			window.addEventListener('sos.loaded', async function () {
-				const contentElement = document.getElementById('index');
-				await sos.onReady();
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			await sos.onReady();
 
-				const applicationType = await sos.management.app.getType();
+			const applicationType = await sos.management.app.getType();
 
 
-				const deviceModel = await sos.management.supports('MODEL')
-					? await sos.management.getModel()
-					: 'Not Supported';
+			const deviceModel = await sos.management.supports('MODEL') ?
+				await sos.management.getModel() :
+				'Not Supported';
 
-				const deviceSerialNumber = await sos.management.supports('SERIAL_NUMBER')
-					? await sos.management.getSerialNumber()
-					: 'Not Supported';
+			const deviceSerialNumber = await sos.management.supports('SERIAL_NUMBER') ?
+				await sos.management.getSerialNumber() :
+				'Not Supported';
 
-				const currentTemperature = await sos.management.supports('TEMPERATURE')
-					? await sos.management.getTemperature()
-					: 'Not Supported';
+			const currentTemperature = await sos.management.supports('TEMPERATURE') ?
+				await sos.management.getTemperature() :
+				'Not Supported';
 
-				contentElement.innerHTML = `
+			contentElement.innerHTML = `
 					Application Type: ${applicationType}<br/>
 					Model: ${deviceModel}<br/>
 					Serial Number: ${deviceSerialNumber}<br/>
 					Device Temperature: ${currentTemperature}<br/>
 				`;
-			});
-		</script>
-	</body>
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
 </html>

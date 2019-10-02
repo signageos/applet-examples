@@ -1,27 +1,34 @@
 <!doctype html>
 <html>
-	<head>
-		<title>Remote Control</title>
-	</head>
-	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-		<h1>Remote Control Key UP binding</h1>
-		<p id="index">... loading ...</p>
+
+<head>
+	<title>Remote Control</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Remote Control Key UP binding</h1>
+	<p id="index">... loading ...</p>
 
 
-		<script type="application/ecmascript">
-			window.addEventListener('sos.loaded', async function () {
-				const contentElement = document.getElementById('index');
-				await sos.onReady();
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			await sos.onReady();
 
-				contentElement.innerHTML = '';
+			contentElement.innerHTML = '';
 
-				// Bind every key up of a remote control (except remote control is locked) (https://docs.signageos.io/api/sos-applet-api/#input)
-				await sos.input.onKeyUp((keyUpEvent) => {
-					contentElement.innerHTML = contentElement.innerHTML + `Pressed: ${keyUpEvent.keyCode} (${keyUpEvent.keyName})\n`;
-				});
-
-				contentElement.innerHTML = `Try press keys on a remote control.\n\n`;
+			// Bind every key up of a remote control (except remote control is locked) (https://docs.signageos.io/api/sos-applet-api/#input)
+			await sos.input.onKeyUp((keyUpEvent) => {
+				contentElement.innerHTML = contentElement.innerHTML + `Pressed: ${keyUpEvent.keyCode} (${keyUpEvent.keyName})\n`;
 			});
-		</script>
-	</body>
+
+			contentElement.innerHTML = `Try press keys on a remote control.\n\n`;
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
 </html>

@@ -12,11 +12,10 @@
 	<div id="htmlContent"></div>
 
 	<script type="application/ecmascript">
-		window.addEventListener('sos.loaded', async function () {
-			
+		async function startApplet() {
+
 			// Load static files
-			let files = [
-				{
+			let files = [{
 					uid: 'libs/fetch-2.0.4.min.js',
 					uri: 'https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.min.js',
 					type: sos.offline.types.javascript,
@@ -37,7 +36,7 @@
 			const htmlContentElement = document.getElementById('htmlContent');
 
 			await sos.onReady(); // Wait until signageOS app is loaded and ready
-			
+
 			//Get display details
 			try {
 				const fw = await sos.management.firmware.getVersion();
@@ -51,26 +50,62 @@
 
 			// load HTML5 content
 			fetch('https://1.signageos.io/assets/dev/html-content.html')
-				.then(function (response) {
+				.then(function(response) {
 					return response.text();
-				}).then(function (data) {
+				}).then(function(data) {
 					const htmlContentDiv = document.getElementById('htmlContent');
 					htmlContentDiv.innerHTML = data;
 				});
 
 			// Videos that will be downloaded and prepared for playing
-			const videos = [
-				{ uid: 'video-1',  x: 270, y: 480, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1080x1920_009b0dbbd96092b218dcf056f6f0ec0f.mp4' },
-				{ uid: 'video-2',  x: 270, y: 480, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1080x1920_35ce4618ddf2c320b5b7f81cb8b1c61f.mp4' },
-				{ uid: 'video-3',  x: 270, y: 480, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1080x1920_e3ff5dd66b347c8957e9a7f8bac078bb.mp4' },
-				{ uid: 'video-4',  x: 270, y: 480, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_1080x1920_f0b0286999b5554efcfaaf4f604e7bfc.mp4' },
-				{ uid: 'video-5',  x: 270, y: 480, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-06_AME/video-test-06_15s_1080x1920_7c0f255304ee7f685f1d659f498975c5.mp4' },
+			const videos = [{
+					uid: 'video-1',
+					x: 270,
+					y: 480,
+					width: 50,
+					height: 50,
+					uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1080x1920_009b0dbbd96092b218dcf056f6f0ec0f.mp4'
+				},
+				{
+					uid: 'video-2',
+					x: 270,
+					y: 480,
+					width: 50,
+					height: 50,
+					uri: 'https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1080x1920_35ce4618ddf2c320b5b7f81cb8b1c61f.mp4'
+				},
+				{
+					uid: 'video-3',
+					x: 270,
+					y: 480,
+					width: 50,
+					height: 50,
+					uri: 'https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1080x1920_e3ff5dd66b347c8957e9a7f8bac078bb.mp4'
+				},
+				{
+					uid: 'video-4',
+					x: 270,
+					y: 480,
+					width: 50,
+					height: 50,
+					uri: 'https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_1080x1920_f0b0286999b5554efcfaaf4f604e7bfc.mp4'
+				},
+				{
+					uid: 'video-5',
+					x: 270,
+					y: 480,
+					width: 50,
+					height: 50,
+					uri: 'https://static.signageos.io/assets/test-videos-06_AME/video-test-06_15s_1080x1920_7c0f255304ee7f685f1d659f498975c5.mp4'
+				},
 			];
 
 
 			for (const video of videos) {
 				// Store video to offline storage (https://docs.signageos.io/api/js/js-offline-cache-media-files)
-				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
+				const {
+					filePath
+				} = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
 				video.filePath = filePath;
 			}
 
@@ -104,7 +139,11 @@
 				await sos.video.prepare(...nextVideo.agruments); // Before the first video end, prepare the second one
 				await sos.video.onceEnded(...currentVideo.agruments); // Wait until video ends
 			}
-		});
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
 	</script>
 </body>
 

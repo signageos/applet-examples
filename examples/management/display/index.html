@@ -1,68 +1,75 @@
 <!doctype html>
 <html>
-	<head>
-		<title>Management Display</title>
-	</head>
-	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-		<h1>Management Display</h1>
-		<p id="index">... loading ...</p>
+
+<head>
+	<title>Management Display</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Management Display</h1>
+	<p id="index">... loading ...</p>
 
 
-		<script type="application/ecmascript">
-			window.addEventListener('sos.loaded', async function () {
-				const contentElement = document.getElementById('index');
-				await sos.onReady();
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			await sos.onReady();
 
-				const startDisplayOffCountDown = async (countDown = 10) => {
-					if (countDown <= 0) {
-						contentElement.innerHTML = 'Turning off...';
+			const startDisplayOffCountDown = async (countDown = 10) => {
+				if (countDown <= 0) {
+					contentElement.innerHTML = 'Turning off...';
 
-						await sos.management.screen.powerOn();
-						startDisplayOnCountDown();
-					} else {
-						const isDisplayOn = await sos.management.screen.isPoweredOn();
-						contentElement.innerHTML = `
+					await sos.management.screen.powerOn();
+					startDisplayOnCountDown();
+				} else {
+					const isDisplayOn = await sos.management.screen.isPoweredOn();
+					contentElement.innerHTML = `
 							On: ${isDisplayOn}
 							Tuns off in ${countDown}
 						`;
 
-						setTimeout(() => {
-							startDisplayOffCountDown(countDown-1)
-						}, 1000);
-					}
-				};
+					setTimeout(() => {
+						startDisplayOffCountDown(countDown - 1)
+					}, 1000);
+				}
+			};
 
-				const startDisplayOnCountDown = async (countDown = 10) => {
-					if (countDown <= 0) {
-						contentElement.innerHTML = 'Turning on...';
+			const startDisplayOnCountDown = async (countDown = 10) => {
+				if (countDown <= 0) {
+					contentElement.innerHTML = 'Turning on...';
 
-						await sos.management.screen.powerOff();
-						startDisplayOffCountDown();
-					} else {
-						const isDisplayOn = await sos.management.screen.isPoweredOn();
-						contentElement.innerHTML = `
+					await sos.management.screen.powerOff();
+					startDisplayOffCountDown();
+				} else {
+					const isDisplayOn = await sos.management.screen.isPoweredOn();
+					contentElement.innerHTML = `
 							On: ${isDisplayOn}
 							Tuns on in ${countDown}
 						`;
 
-						setTimeout(() => {
-							startDisplayOffCountDown(countDown-1)
-						}, 1000);
-					}
-				};
+					setTimeout(() => {
+						startDisplayOffCountDown(countDown - 1)
+					}, 1000);
+				}
+			};
 
-				const isDisplayOn = await sos.management.screen.isPoweredOn();
-				contentElement.innerHTML = `On: ${isDisplayOn}`;	
+			const isDisplayOn = await sos.management.screen.isPoweredOn();
+			contentElement.innerHTML = `On: ${isDisplayOn}`;
 
-				if (await sos.management.supports('DISPLAY_POWER')) {
-					startDisplayOffCountDown();
-				} else {
-					contentElement.innerHTML = `
+			if (await sos.management.supports('DISPLAY_POWER')) {
+				startDisplayOffCountDown();
+			} else {
+				contentElement.innerHTML = `
 						On: ${isDisplayOn}<br/>
 						Display power management is not supported.<br/>
 					`;
-				}
-			});
-		</script>
-	</body>
+			}
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
 </html>

@@ -1,59 +1,66 @@
 <!doctype html>
 <html>
-	<head>
-		<title>Management Brightness</title>
-	</head>
-	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-		<h1>Management Brightness</h1>
-		<p id="index">... loading ...</p>
-		<button id="half-brightness-btn">Set brightness to 50</button>
-		<button id="full-brightness-btn">Set brightness to 100</button>
+
+<head>
+	<title>Management Brightness</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Management Brightness</h1>
+	<p id="index">... loading ...</p>
+	<button id="half-brightness-btn">Set brightness to 50</button>
+	<button id="full-brightness-btn">Set brightness to 100</button>
 
 
-		<script type="application/ecmascript">
-			window.addEventListener('sos.loaded', async function () {
-				const contentElement = document.getElementById('index');
-				const halfBrightnessButton = document.getElementById('half-brightness-btn');
-				const fullBrightnessButton = document.getElementById('full-brightness-btn');
-				await sos.onReady();
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			const halfBrightnessButton = document.getElementById('half-brightness-btn');
+			const fullBrightnessButton = document.getElementById('full-brightness-btn');
+			await sos.onReady();
 
-				const brightnessWatch = async () => {
-					const brightness = await sos.management.screen.getBrightness();
-					contentElement.innerHTML = `
+			const brightnessWatch = async () => {
+				const brightness = await sos.management.screen.getBrightness();
+				contentElement.innerHTML = `
 						Time from 1: ${brightness.timeFrom1}<br/>
 						Brightness 1: ${brightness.brightness1}<br/>
 						Time from 2: ${brightness.timeFrom2}<br/>
 						Brightness 2: ${brightness.brightness2}<br/>
 					`;
 
-					setTimeout(() => {
-						brightnessWatch();						
-					}, 500);
+				setTimeout(() => {
+					brightnessWatch();
+				}, 500);
+			};
+			brightnessWatch();
+
+			if (await sos.management.supports('SET_BRIGHTNESS')) {
+				halfBrightnessButton.onclick = async () => {
+					await sos.management.screen.setBrightness(
+						"00:00",
+						50,
+						"00:00",
+						50
+					);
 				};
-				brightnessWatch();
 
-				if (await sos.management.supports('SET_BRIGHTNESS')) {
-					halfBrightnessButton.onclick = async () => {
-						await sos.management.screen.setBrightness(
-							"00:00",
-							50,
-							"00:00",
-							50
-						);
-					};
+				fullBrightnessButton.onclick = async () => {
+					await sos.management.screen.setBrightness(
+						"00:00",
+						100,
+						"00:00",
+						100
+					);
+				};
+			} else {
+				contentElement.innerHTML = 'Brightness management is not supported.';
+			}
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
 
-					fullBrightnessButton.onclick = async () => {
-						await sos.management.screen.setBrightness(
-							"00:00",
-							100,
-							"00:00",
-							100
-						);
-					};
-				} else {
-					contentElement.innerHTML = 'Brightness management is not supported.';
-				}
-			});
-		</script>
-	</body>
 </html>

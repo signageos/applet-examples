@@ -1,35 +1,47 @@
 <!doctype html>
 <html>
-	<head>
-		<title>Restore</title>
-	</head>
-	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-		<h1>Restore</h1>
-		<p id="index">... loading ...</p>
+
+<head>
+	<title>Restore</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Restore</h1>
+	<p id="index">... loading ...</p>
 
 
-		<script type="application/ecmascript">
-			window.addEventListener('sos.loaded', async function () {
-				const contentElement = document.getElementById('index');
-				await sos.onReady();
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			await sos.onReady();
 
-				const video = { uid: 'video-1', uri: 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4' };
+			const video = {
+				uid: 'video-1',
+				uri: 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4'
+			};
 
-				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
-				video.filePath = filePath;
-				video.agruments = [video.filePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
+			const {
+				filePath
+			} = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
+			video.filePath = filePath;
+			video.agruments = [video.filePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
 
-				contentElement.innerHTML = '';
+			contentElement.innerHTML = '';
 
-				await sos.video.play(...video.agruments);
+			await sos.video.play(...video.agruments);
 
-				await new Promise((resolve) => setTimeout(resolve, 3e3));
+			await new Promise((resolve) => setTimeout(resolve, 3e3));
 
-				// To restore whole display area. Simply stop all videos, streams etc. (https://docs.signageos.io/api/sos-applet-api/#restore)
-				sos.restore();
+			// To restore whole display area. Simply stop all videos, streams etc. (https://docs.signageos.io/api/sos-applet-api/#restore)
+			sos.restore();
 
-				contentElement.innerHTML = 'Restored.';
-			});
-		</script>
-	</body>
+			contentElement.innerHTML = 'Restored.';
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
 </html>

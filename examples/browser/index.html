@@ -1,38 +1,45 @@
 <!doctype html>
 <html>
-	<head>
-		<title>Browser</title>
-	</head>
-	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-		<h1>Browser</h1>
-		<p id="index">... loading ...</p>
-		<button id="open-button" style="display: none; width: 300px; height: 50px; font-size: 20px">Open browser</button>
+
+<head>
+	<title>Browser</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Browser</h1>
+	<p id="index">... loading ...</p>
+	<button id="open-button" style="display: none; width: 300px; height: 50px; font-size: 20px">Open browser</button>
 
 
-		<script type="application/ecmascript">
-			window.addEventListener('sos.loaded', async function () {
-				const contentElement = document.getElementById('index');
-				const buttonElement = document.getElementById('open-button');
-				await sos.onReady();
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			const buttonElement = document.getElementById('open-button');
+			await sos.onReady();
 
-				contentElement.innerHTML = '';
+			contentElement.innerHTML = '';
 
-				buttonElement.addEventListener('click', (event) => {
-					event.preventDefault();
+			buttonElement.addEventListener('click', (event) => {
+				event.preventDefault();
 
-					// Open link in external browser on touch devices (https://docs.signageos.io/api/sos-applet-api/#Browser)
-					sos.browser.openLink('https://www.signageos.io', {
-						acl: [/^https?:\/\/.*\.google\.\w+(\/.*)?$/],
-						aclMode: 'blacklist', // or 'whitelist'
-						readOnlyAddressBar: true,
-						idleTimeout: 30e3 // milliseconds
-					});
-
-					contentElement.innerHTML = `Browser opened (idle timeout 30s).`;
+				// Open link in external browser on touch devices (https://docs.signageos.io/api/sos-applet-api/#Browser)
+				sos.browser.openLink('https://www.signageos.io', {
+					acl: [/^https?:\/\/.*\.google\.\w+(\/.*)?$/],
+					aclMode: 'blacklist', // or 'whitelist'
+					readOnlyAddressBar: true,
+					idleTimeout: 30e3 // milliseconds
 				});
 
-				buttonElement.style.display = 'inline-block';
+				contentElement.innerHTML = `Browser opened (idle timeout 30s).`;
 			});
-		</script>
-	</body>
+
+			buttonElement.style.display = 'inline-block';
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
 </html>

@@ -12,11 +12,10 @@
 	<div id="htmlContent"></div>
 
 	<script type="application/ecmascript">
-		window.addEventListener('sos.loaded', async function () {
+		async function startApplet() {
 
 			// Load static files
-			let files = [
-				{
+			let files = [{
 					uid: 'libs/fetch-2.0.4.min.js',
 					uri: 'https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.min.js',
 					type: sos.offline.types.javascript,
@@ -37,7 +36,7 @@
 			const htmlContentElement = document.getElementById('htmlContent');
 
 			await sos.onReady(); // Wait until signageOS app is loaded and ready
-			
+
 			//Get display details
 			try {
 				const fw = await sos.management.firmware.getVersion();
@@ -51,34 +50,104 @@
 
 			// load HTML5 content
 			fetch('https://1.signageos.io/assets/dev/html-content.html')
-				.then(function (response) {
+				.then(function(response) {
 					return response.text();
-				}).then(function (data) {
+				}).then(function(data) {
 					const htmlContentDiv = document.getElementById('htmlContent');
 					htmlContentDiv.innerHTML = data;
 				});
 
 			// Videos that will be downloaded and prepared for playing
-			const videoSet1 = [
-				{ uid: 'video0', x: 0, y: 25, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4' },
-				{ uid: 'video1', x: 0, y: 25, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4' },
-				{ uid: 'video2', x: 0, y: 25, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-08_AME/video-test-08_15s_1920x1080_eb8f37b04d4dc8f8e26d80e66a2eb71a.mp4' },
-				{ uid: 'video3', x: 0, y: 25, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_1920x1080_0f110996c51d8c77933b1ab9fecfb61f.mp4' },
-				{ uid: 'video4', x: 0, y: 25, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-06_AME/video-test-06_15s_1920x1080_6bad9be8f365760ae505dab34582978b.mp4' },
+			const videoSet1 = [{
+					uid: 'video0',
+					x: 0,
+					y: 25,
+					width: 50,
+					height: 50,
+					uri: 'https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4'
+				},
+				{
+					uid: 'video1',
+					x: 0,
+					y: 25,
+					width: 50,
+					height: 50,
+					uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4'
+				},
+				{
+					uid: 'video2',
+					x: 0,
+					y: 25,
+					width: 50,
+					height: 50,
+					uri: 'https://static.signageos.io/assets/test-videos-08_AME/video-test-08_15s_1920x1080_eb8f37b04d4dc8f8e26d80e66a2eb71a.mp4'
+				},
+				{
+					uid: 'video3',
+					x: 0,
+					y: 25,
+					width: 50,
+					height: 50,
+					uri: 'https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_1920x1080_0f110996c51d8c77933b1ab9fecfb61f.mp4'
+				},
+				{
+					uid: 'video4',
+					x: 0,
+					y: 25,
+					width: 50,
+					height: 50,
+					uri: 'https://static.signageos.io/assets/test-videos-06_AME/video-test-06_15s_1920x1080_6bad9be8f365760ae505dab34582978b.mp4'
+				},
 			];
 
 			// Every video has set position and resolution on screen
-			const videoSet2 = [
-				{ uid: 'video5', x: 50, y: 25, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4' },
-				{ uid: 'video6', x: 50, y: 25, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-08_AME/video-test-08_15s_1920x1080_eb8f37b04d4dc8f8e26d80e66a2eb71a.mp4' },
-				{ uid: 'video7', x: 50, y: 25, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1920x1080_19c539e7982228ae0527409aeadb5b88.mp4' },
-				{ uid: 'video8', x: 50, y: 25, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4' },
-				{ uid: 'video9', x: 50, y: 25, width: 50, height: 50, uri: 'https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_1920x1080_0f110996c51d8c77933b1ab9fecfb61f.mp4' },
+			const videoSet2 = [{
+					uid: 'video5',
+					x: 50,
+					y: 25,
+					width: 50,
+					height: 50,
+					uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4'
+				},
+				{
+					uid: 'video6',
+					x: 50,
+					y: 25,
+					width: 50,
+					height: 50,
+					uri: 'https://static.signageos.io/assets/test-videos-08_AME/video-test-08_15s_1920x1080_eb8f37b04d4dc8f8e26d80e66a2eb71a.mp4'
+				},
+				{
+					uid: 'video7',
+					x: 50,
+					y: 25,
+					width: 50,
+					height: 50,
+					uri: 'https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1920x1080_19c539e7982228ae0527409aeadb5b88.mp4'
+				},
+				{
+					uid: 'video8',
+					x: 50,
+					y: 25,
+					width: 50,
+					height: 50,
+					uri: 'https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4'
+				},
+				{
+					uid: 'video9',
+					x: 50,
+					y: 25,
+					width: 50,
+					height: 50,
+					uri: 'https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_1920x1080_0f110996c51d8c77933b1ab9fecfb61f.mp4'
+				},
 			];
 
 			// Store video to offline storage for set 1 (https://docs.signageos.io/api/js/js-offline-cache-media-files)
 			for (const video of videoSet1) {
-				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
+				const {
+					filePath
+				} = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
 				video.filePath = filePath;
 				video.agruments = [
 					video.filePath,
@@ -91,7 +160,9 @@
 
 			// Store video to offline storage for set 2 (https://docs.signageos.io/api/js/js-offline-cache-media-files)
 			for (const video of videoSet2) {
-				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
+				const {
+					filePath
+				} = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
 				video.filePath = filePath;
 				video.agruments = [
 					video.filePath,
@@ -154,7 +225,11 @@
 			// Play everything
 			Promise.all([playSet1(), playSet2()]);
 
-		});
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
 	</script>
 </body>
 

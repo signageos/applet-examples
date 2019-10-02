@@ -12,24 +12,22 @@
 	<div id="htmlContent"></div>
 
 	<script type="application/ecmascript">
-		window.addEventListener('sos.loaded', async function () {
-			
+		async function startApplet() {
+
 			// Load static files
-			let files = [
-				{
-					"uri": "https://signageostest.blob.core.windows.net/test/applet-examples/benchmark-styles.css?v=1.0.0",
-					"uid": "benchmark-styles.css-v1.0.0",
-					"type": sos.offline.types.css,
-					"flags": [sos.offline.flags.append(document.head)]
-				}
-			];
+			let files = [{
+				"uri": "https://signageostest.blob.core.windows.net/test/applet-examples/benchmark-styles.css?v=1.0.0",
+				"uid": "benchmark-styles.css-v1.0.0",
+				"type": sos.offline.types.css,
+				"flags": [sos.offline.flags.append(document.head)]
+			}];
 			await sos.offline.addFiles(files);
 			const titleElement = document.getElementById('title');
 			const displayInfoElement = document.getElementById('displayInfo');
 			const indexElement = document.getElementById('index');
 			const htmlContentElement = document.getElementById('htmlContent');
 			await sos.onReady(); // Wait until signageOS app is loaded and ready
-			
+
 			//Get display details
 			try {
 				const firmware = await sos.management.firmware.getVersion();
@@ -42,7 +40,10 @@
 			}
 
 			// Set properties like ID and URL for stream
-			const stream = { uid: 'stream-1', uri: 'internal://dp' };
+			const stream = {
+				uid: 'stream-1',
+				uri: 'internal://dp'
+			};
 
 			// Set url, resolution on screen (full screen) - (https://docs.signageos.io/api/js/js-video-stream#play-stream)
 			stream.agruments = [stream.uri, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
@@ -66,7 +67,11 @@
 			sos.stream.onConnected(async (event) => {
 				await sos.stream.play(...stream.agruments);
 			});
-		});
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
 	</script>
 </body>
 

@@ -149,6 +149,8 @@
 				}
 			}
 
+			await prepareContent(contents[0]);
+
 			for (let i = 0; true; i = (i + 1) % contents.length) {
 				const previousContent = contents[(i + contents.length - 1) % contents.length];
 				const currentContent = contents[i];

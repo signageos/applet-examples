@@ -1,0 +1,29 @@
+{
+  "name": "applet-examples",
+  "version": "1.0.0",
+  "description": "This repository contains sample applets code for every simple method documented in our [documentation](https://docs.signageos.io/api/sos-applet-api/).",
+  "main": "index.html",
+  "directories": {
+    "example": "examples"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "babel": "6.23.0",
+    "babel-cli": "6.26.0",
+    "babel-preset-env": "1.7.0"
+  },
+  "scripts": {
+    "build": "babel index.spec.js -d dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/signageos/applet-examples.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/signageos/applet-examples/issues"
+  },
+  "homepage": "https://gitlab.com/signageos/applet-examples#readme"
+}

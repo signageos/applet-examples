@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="signageOS.io for Linux"/>
+    <title>signageOS.io</title>
+  </head>
+  <body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>signageOS CORS test</h1>
+	<p id="index">... loading ...</p>
+	<script type="text/javascript" language="javascript">
+		var contentElement = document.getElementById('index');
+
+		fetch('https://giphy.com/explore/free-gif')
+		.then(function (resp) {
+			console.info('response', resp);
+			contentElement.innerHTML = 'CORS OK';
+			return resp.text();
+		})
+		.then(function (text) {
+			console.info('text', text);
+		})
+		.catch(function (error) {
+			contentElement.innerHTML = 'CORS ERROR';
+			console.error(error);
+		});
+	</script>
+  </body>
+</html>

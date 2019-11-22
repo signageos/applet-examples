@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Network Settings DHCP</title>
+	</head>
+	<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+		<h1>Network Settings DHCP</h1>
+		<p id="index">... loading ...</p>
+
+
+		<!-- Your script should come as last in body tag -->
+		<!-- To allow transpile ES6+ to ES5 (JavaScript) use application/ecmascript instead of text/javascript (works on all supported platforms) -->
+		<script type="application/ecmascript">
+			async function startApplet() {
+				const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+				const contentElement = document.getElementById('index');
+				console.log('sOS is loaded');
+				contentElement.innerHTML = 'sOS is loaded<br/>';
+
+
+				// Wait on sos data are ready (https://docs.signageos.io/api/sos-applet-api/#onReady)
+				await sos.onReady();
+				console.log('sOS is ready');
+				contentElement.innerHTML += 'sOS is ready<br/>';
+
+				console.log('Setting DHCP network');
+				contentElement.innerHTML += 'Setting DHCP network<br/>';
+
+				try {
+					await sos.management.network.setDHCP('ethernet');
+				} catch (error) {
+					console.error('DHCP network set failed', error);
+					contentElement.innerHTML += 'DHCP network set failed<br/>';
+					return;
+				}
+
+				console.log('DHCP network was set');
+				contentElement.innerHTML += 'DHCP network was set<br/>';
+			}
+
+			// Needed check for distinction between sos open and platform in box
+			typeof sos !== 'undefined' ?
+				startApplet() :
+				window.addEventListener('sos.loaded', startApplet);
+		</script>
+	</body>
+</html>

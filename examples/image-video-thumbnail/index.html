@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Image or Video Thumbnail generation</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Image or Video Thumbnail generation</h1>
+	<p id="index">... loading ...</p>
+	<img src="" id="image-thumbnail" width="320" height="240" style="display: inline-block" alt="Image thumbnail" />
+	<img src="" id="video-thumbnail" width="320" height="240" style="display: inline-block" alt="Video thumbnail" />
+
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			const imageThumbnailElement = document.getElementById('image-thumbnail');
+			const videoThumbnailElement = document.getElementById('video-thumbnail');
+			await sos.onReady();
+
+			contentElement.innerHTML = '';
+
+			const storageUnits = await sos.fileSystem.listStorageUnits();
+			const internalStorageUnit = storageUnits.find((storageUnit) => !storageUnit.removable);
+
+			const imageFilePath = {
+				storageUnit: internalStorageUnit,
+				filePath: 'image1.png',
+			};
+
+			if (await sos.fileSystem.exists(imageFilePath)) {
+				await sos.fileSystem.deleteFile(imageFilePath);
+			}
+			await sos.fileSystem.downloadFile(imageFilePath, 'https://static.signageos.io/assets/android-nec-roberto_3f9b985e2214b59e3d1f296e69e86fdd.png');
+
+			const imageFileDetails = await sos.fileSystem.getFile(imageFilePath);
+			if (imageFileDetails.imageThumbnailUriTemplate) {
+				imageThumbnailElement.src = imageFileDetails.imageThumbnailUriTemplate.replace('{width}', 320).replace('{height}', 240);
+			} else {
+				contentElement.innerHTML += `Image thumbnail is not available<br />`;
+			}
+
+			const videoFilePath = {
+				storageUnit: internalStorageUnit,
+				filePath: 'video1.mp4',
+			};
+
+			if (await sos.fileSystem.exists(videoFilePath)) {
+				await sos.fileSystem.deleteFile(videoFilePath);
+			}
+			await sos.fileSystem.downloadFile(videoFilePath, 'https://static.signageos.io/assets/test-videos-01_AME/video-test-01_3s_1280x720_0d44e43c233b7630e3f5b515c706ac4a.mp4');
+
+			const videoFileDetails = await sos.fileSystem.getFile(videoFilePath);
+			if (videoFileDetails.videoThumbnailUriTemplate) {
+				videoThumbnailElement.src = videoFileDetails.videoThumbnailUriTemplate.replace('{width}', 320).replace('{height}', 240);
+			} else {
+				contentElement.innerHTML += `Video thumbnail is not available<br />`;
+			}
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
+</html>

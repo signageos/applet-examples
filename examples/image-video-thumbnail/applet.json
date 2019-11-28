@@ -1,0 +1,9 @@
+{
+  "scope": "signageos",
+  "name": "image-video-thumbnail",
+  "version": "1.0.0",
+  "main": "index.html",
+  "dependencies": {
+    "front-applet": "4.0.0"
+  }
+}

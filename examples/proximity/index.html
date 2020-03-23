@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+    <title>My first Applet</title>
+    <style>
+        #body.not_detected {
+            background-color: red;
+        }
+
+        #body.detected {
+            background-color: green;
+        }
+    </style>
+</head>
+<body style="color: yellow; font-size: 40px; margin: 0">
+<div id="body" class="not_detected" style="width: 100%; height: 100%">
+    <table style="width: 100%; height: 100%">
+        <tr>
+            <td style="text-align: center; vertical-align: middle; height: 100vh" id="text">Nothing is detected</td>
+        </tr>
+    </table>
+</div>
+<!-- Your script should come as last in body tag -->
+<!-- To allow transpile ES6+ to ES5 (JavaScript) use application/ecmascript instead of text/javascript (works on all supported platforms) -->
+<script type="application/ecmascript">
+	const bodyElement = document.getElementById('body');
+	const textElement = document.getElementById('text');
+	// You need to wait for this event always (https://docs.signageos.io/api/sos-applet-api/#Basics)
+	window.addEventListener('sos.loaded', async function () {
+		sos.sensors.proximity.onStateChange((detected) => {
+			if (detected) {
+				bodyElement.className = 'detected';
+				textElement.innerText = 'Something is detected!';
+			} else {
+				bodyElement.className = 'not_detected';
+				textElement.innerText = 'Nothing is detected!';
+			}
+		});
+	});
+</script>
+</body>
+</html>

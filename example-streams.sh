@@ -19,3 +19,6 @@ ffplay http://192.168.1.135:8080/index.m3u8
 # HTTP stream
 npx static-server -p 8080
 ffplay http://192.168.1.135:8080/video1.mp4
+
+# UDP stream desktop
+ffmpeg -stream_loop -1 -video_size 1920x1080 -framerate 25 -f x11grab -i :0.0+1920,0 -f mpegts -vcodec mpeg2video -b:v 40M udp://224.0.0.1:1234

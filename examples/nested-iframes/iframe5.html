@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Iframe 5</title>
+	</head>
+	<body style="text-align: center; background-color: #333; color: #006400;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+		<h1>Iframe 5</h1>
+		<p id="index">... loading ...</p>
+
+
+		<script type="application/javascript">
+			window.addEventListener('sos.loaded', function () {
+				var contentElement = document.getElementById('index');
+				sos.onReady()
+				.then(function () {
+				var iframeUri = sos.config.iframeUri || 'https://raw.githubusercontent.com/signageos/applet-examples/master/examples/iframes/iframe.html';
+	
+				var {
+				filePath
+				} = await sos.offline.cache.loadOrSaveFile('iframe6.html', iframeUri);
+	
+					contentElement.innerHTML = '';
+	
+					iframeElement.src = filePath;
+					iframeElement.style.display = 'block';
+				});
+			});
+		</script>
+	</body>
+</html>

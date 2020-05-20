@@ -1,0 +1,9 @@
+{
+  "scope": "signageos",
+  "name": "management-seurity-pin-code",
+  "version": "1.0.0",
+  "main": "index.html",
+  "dependencies": {
+    "front-applet": "5.0.0"
+  }
+}

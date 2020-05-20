@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Management Security PIN code</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Management Security PIN code</h1>
+	<p id="index">... loading ...</p>
+	<button id="get-pin-btn">Get PIN code</button><br/>
+	<input type="text" id="pin-code-input"/>
+	<button id="set-pin-btn">Set PIN code</button><br/>
+	<button id="generate-pin-btn">Generate random PIN code</button><br/>
+
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			const getPinButton = document.getElementById('get-pin-btn');
+			const pinInput = document.getElementById('pin-code-input');
+			const setPinButton = document.getElementById('set-pin-btn');
+			const generatePinButton = document.getElementById('generate-pin-btn');
+			await sos.onReady();
+
+			getPinButton.onclick = async () => {
+				const pinCode = await sos.management.security.getPinCode();
+				contentElement.innerHTML += '<br/>Get PIN: ' + pinCode;
+			};
+
+			setPinButton.onclick = async () => {
+				const newPinCode = pinInput.value;
+				try {
+					await sos.management.security.setPinCode(newPinCode);
+					contentElement.innerHTML += '<br/>Set PIN: ' + newPinCode;
+				} catch (error) {
+					contentElement.innerHTML += '<br/>Set PIN failed: ' + error.message;
+				}
+			};
+
+			generatePinButton.onclick = async () => {
+				await sos.management.security.generateRandomPinCode();
+				contentElement.innerHTML += '<br/>Generate PIN';
+			};
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
+</html>

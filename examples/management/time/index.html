@@ -8,43 +8,51 @@
 <body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
 	<h1>Management Time</h1>
 	<p id="index">... loading ...</p>
-	<button id="fixed-time-btn">Set time to 10:00 AM</button>
-	<button id="timezone-time-btn">Set time to 3:00 PM in Amsterdam</button>
+	<button id="manual-time-btn">Set time to 10:00 AM in Amsterdam</button>
+	<button id="ntp-time-btn">Set time to NTP in London</button>
 
 
 	<script type="application/ecmascript">
 		async function startApplet() {
 			const contentElement = document.getElementById('index');
-			const fixedTimeButton = document.getElementById('fixed-time-btn');
-			const timezoneTimeButton = document.getElementById('timezone-time-btn');
+			const manualTimeButton = document.getElementById('manual-time-btn');
+			const ntpTimeButton = document.getElementById('ntp-time-btn');
 			await sos.onReady();
+
+			// https://docs.signageos.io/api/js/management/6-js-management-time
 
 			const timeWatch = async () => {
 				const time = await sos.management.time.get();
 				contentElement.innerHTML = `
-						Time: ${time.currentDate.toLocalString()}<br/>
+						Time: ${time.currentDate}<br/>
 						Timezone: ${time.timezone}<br/>
+						NTP: ${time.ntpServer}<br/>
 					`;
 
 				setTimeout(() => {
-					brightnessWatch();
+					timeWatch();
 				}, 500);
 			};
 			timeWatch();
 
+			manualTimeButton.focus();
+
 			if (await sos.management.supports('SET_TIME')) {
-				fixedTimeButton.onclick = async () => {
+				manualTimeButton.onclick = async () => {
 					const date = new Date();
-					date.setHours(10, 00);
-					await sos.management.time.set(date);
+					date.setHours(10, 0);
+					await sos.management.time.setManual(
+						date,
+						'Europe/Amsterdam',
+					);
 				}
 
-				timezoneTimeButton.onclick = async () => {
+				ntpTimeButton.onclick = async () => {
 					const date = new Date();
-					date.setHours(15, 00);
-					await sos.management.time.set(
-						date,
-						'Europe/Amsterdam'
+					date.setHours(15, 0);
+					await sos.management.time.setNTP(
+						'0.pool.ntp.org',
+						'Europe/London',
 					);
 				}
 			} else {

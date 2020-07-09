@@ -1,0 +1,32 @@
+body {
+	font-family: 'Arial',sans-serif; 
+	color: #FFF;
+	background: #000;
+	padding: 0!important;
+	width: 1280px;
+	height: 360px;
+	overflow: hidden;
+}
+
+td {
+    padding: 6px;
+}
+
+tr:nth-child(even) {background: #333}
+tr:nth-child(odd) {background: #000}
+
+table#tabell {
+    width: 1260px;
+}
+
+span.linje {
+    display: block;
+    text-align: center;
+    padding: 5px 10px 5px 10px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+}
+
+td.line {
+	padding: 0!important;
+}

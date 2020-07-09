@@ -1,0 +1,38 @@
+<smil>
+	<head>
+		<meta http-equiv="refresh" content="20"/>
+		<layout>
+			<!-- define the screen resolution -->
+			<root-layout width="1080" height="1920" backgroundColor="#18182c" />
+
+			<!-- define the screen layout, in this case single fullscreen zone -->
+			<region regionName="main" left="0" top="0" width="1080" height="1920" z-index="1" backgroundColor="#18182c"/>
+		</layout>
+	</head>
+	<body>
+		<par>
+
+			<!-- Downloading resources into the internal storage -->
+			<seq>
+				<video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/portrait1.mp4" region="main" soundLevel="0%"></video>
+				<video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/portrait2.mp4" region="main" soundLevel="0%"></video>
+				<prefetch src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/portrait1.jpg" />
+				<prefetch src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/portrait2.jpg" />
+
+				<seq id="__prefetchEnd" dur="1s" />
+			</seq>
+
+			<!-- Wait for the prefetch of media files, once done, start the playback -->
+			<par begin="__prefetchEnd.endEvent" repeatCount="indefinite">
+
+				<!-- indefinite loop of media files in the selected order -->
+				<seq repeatCount="indefinite">
+					<video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/portrait1.mp4" region="main" soundLevel="0%"></video>
+					<video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/portrait2.mp4" region="main" soundLevel="0%"></video>
+					<img dur="3" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/portrait1.jpg" region="main" fit="fill"></img>
+					<img dur="5" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/portrait2.jpg" region="main" fit="fill"></img>
+				</seq>
+			</par>
+		</par>
+	</body>
+</smil>

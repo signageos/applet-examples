@@ -34,19 +34,24 @@
 			<par begin="__prefetchEnd.endEvent" repeatCount="indefinite">
 
 				<!-- indefinite loop of media files in the selected order -->
-				<par dur="indefinite">
+				<seq repeatCount="indefinite">
+
 					<!-- starting the playback from 1st of January 2020, ends the playback 1st of December 2020 -->
-					<seq begin="wallclock(2020-01-01T09:00)" end="wallclock(2020-12-01T12:00)">
+					<!-- play this sequence once -->
+					<seq begin="wallclock(2020-01-01T09:00)" end="wallclock(2020-12-01T12:00)" repeatCount="1">
 						<video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape1.mp4" region="main" soundLevel="0%"></video>
 						<video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape2.mp4" region="main" soundLevel="0%"></video>
 					</seq>
 
 					<!-- Play this <seq> only from 9:00 am on the 9th of July till 12am 9th of July -->
-					<seq begin="wallclock(2020-07-09T09:00)" end="wallclock(2020-07-09T12:00)">
-						<img dur="3" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape1.jpg" region="main" fit="fill"></img>
-						<img dur="5" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape2.jpg" region="main" fit="fill"></img>
+					<!-- play this sequence once if the time is right-->
+					<seq begin="wallclock(2020-07-09T09:00)" end="wallclock(2020-07-09T18:00)" repeatCount="1">
+						<img dur="3s" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape1.jpg" region="main" fit="fill"></img>
+						<img dur="5s" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape2.jpg" region="main" fit="fill"></img>
 					</seq>
-				</par>
+
+					<!-- repeat the whole sequence indefinite -->
+				</seq>
 			</par>
 		</par>
 	</body>

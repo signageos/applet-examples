@@ -54,7 +54,7 @@
 				<par>
 					<!-- indefinite loop of media files in the selected order -->
 					<seq repeatCount="indefinite">
-						<ref src="https://www.signageos.io" region="bottom type="text/html" dur="indefinite" />
+						<ref src="https://www.signageos.io" region="bottom" type="text/html" dur="indefinite" />
 					</seq>
 				</par>
 			</par>

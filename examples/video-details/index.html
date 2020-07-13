@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Video Details</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Video Details</h1>
+	<p id="index">... loading ...</p>
+
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			const videoThumbnailElement = document.getElementById('video-thumbnail');
+			await sos.onReady();
+
+			contentElement.innerHTML = '';
+
+			const storageUnits = await sos.fileSystem.listStorageUnits();
+			const internalStorageUnit = storageUnits.find((storageUnit) => !storageUnit.removable);
+
+			const videoFilePath = {
+				storageUnit: internalStorageUnit,
+				filePath: 'video1.mp4',
+			};
+
+			if (await sos.fileSystem.exists(videoFilePath)) {
+				await sos.fileSystem.deleteFile(videoFilePath);
+			}
+			await sos.fileSystem.downloadFile(videoFilePath, 'https://static.signageos.io/assets/test-videos-01_AME/video-test-01_3s_1280x720_0d44e43c233b7630e3f5b515c706ac4a.mp4');
+
+			const videoFileDetails = await sos.fileSystem.getFile(videoFilePath);
+			contentElement.innerHTML += `Video details: ${JSON.stringify(videoFileDetails)}<br />`;
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
+</html>

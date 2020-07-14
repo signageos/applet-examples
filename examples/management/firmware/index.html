@@ -32,6 +32,22 @@
 						Firmware upgrade is not supported.<br/>
 					`;
 			}
+
+			if (sos.config.autoUpdateUrl) {
+				if (await sos.management.supports('FIRMWARE_UPGRADE')) {
+					if (firmwareVersion !== sos.config.autoUpdateVersion) {
+						console.info('Firmware upgrade is happening.', sos.config.autoUpdateUrl, sos.config.autoUpdateVersion);
+						await sos.management.firmware.upgrade(
+							sos.config.autoUpdateUrl,
+							sos.config.autoUpdateVersion,
+						);
+					} else {
+						console.info('Firmware is already installed.', sos.config.autoUpdateUrl, sos.config.autoUpdateVersion);
+					}
+				} else {
+					console.error('Firmware upgrade is not supported.', sos.config.autoUpdateUrl);
+				}
+			}
 		}
 		// Needed check for distinction between sos open and platform in box
 		typeof sos !== 'undefined' ?

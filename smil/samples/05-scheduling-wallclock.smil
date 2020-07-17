@@ -45,7 +45,7 @@
 
 					<!-- Play this <seq> only from 9:00 am on the 9th of July till 12am 9th of July -->
 					<!-- play this sequence once if the time is right-->
-					<seq begin="wallclock(2020-07-09T09:00)" end="wallclock(2020-07-09T18:00)" repeatCount="1">
+					<seq begin="wallclock(2020-07-16T12:00)" end="wallclock(2020-07-17T19:00)" repeatCount="1">
 						<img dur="3s" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape1.jpg" region="main" fit="fill"></img>
 						<img dur="5s" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape2.jpg" region="main" fit="fill"></img>
 					</seq>

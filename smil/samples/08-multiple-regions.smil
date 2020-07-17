@@ -38,7 +38,7 @@
 					<!-- indefinite loop of media files in the selected order -->
 					<seq repeatCount="indefinite">
 						<video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape1.mp4" region="top-left" soundLevel="0%"></video>
-						<img dur="3" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape1.jpg" region="top-left" fit="fill"></img>
+						<img dur="3s" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape1.jpg" region="top-left" fit="fill"></img>
 					</seq>
 				</par>
 
@@ -46,7 +46,7 @@
 					<!-- indefinite loop of media files in the selected order -->
 					<seq repeatCount="indefinite">
 						<video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape2.mp4" region="top-right" soundLevel="0%"></video>
-						<img dur="5" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape2.jpg" region="top-right" fit="fill"></img>
+						<img dur="5s" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape2.jpg" region="top-right" fit="fill"></img>
 					</seq>
 				</par>
 			</par>

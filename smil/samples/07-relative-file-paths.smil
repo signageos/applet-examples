@@ -39,8 +39,8 @@
 				<seq repeatCount="indefinite">
 					<video src="./assets/landscape1.mp4" region="main" soundLevel="0%"></video>
 					<video src="./assets/landscape2.mp4" region="main" soundLevel="0%"></video>
-					<img dur="3" src="./assets/landscape1.jpg" region="main" fit="fill"></img>
-					<img dur="5" src="./assets/landscape2.jpg" region="main" fit="fill"></img>
+					<img dur="3s" src="./assets/landscape1.jpg" region="main" fit="fill"></img>
+					<img dur="5s" src="./assets/landscape2.jpg" region="main" fit="fill"></img>
 				</seq>
 			</par>
 		</par>

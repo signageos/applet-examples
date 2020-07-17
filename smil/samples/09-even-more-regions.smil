@@ -39,12 +39,12 @@
 			<!-- Wait for the prefetch of media files, once done, start the playback -->
 			<par begin="__prefetchEnd.endEvent" repeatCount="indefinite">
 
-				<!-- TWO <par> playlists are here, they will play together side by side, both in their respective region -->
+				<!-- FIVE <par> playlists are here, they will play together side by side, all in their respective region -->
 				<par>
 					<!-- indefinite loop of media files in the selected order -->
 					<seq repeatCount="indefinite">
 						<video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape1.mp4" region="top-left" soundLevel="0%"></video>
-						<img dur="3" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape1.jpg" region="top-left" fit="fill"></img>
+						<img dur="3s" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape1.jpg" region="top-left" fit="meet"></img>
 					</seq>
 				</par>
 
@@ -52,21 +52,21 @@
 					<!-- indefinite loop of media files in the selected order -->
 					<seq repeatCount="indefinite">
 						<video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape2.mp4" region="top-right" soundLevel="0%"></video>
-						<img dur="5" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape2.jpg" region="top-right" fit="fill"></img>
+						<img dur="5s" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape2.jpg" region="top-right" fit="meet"></img>
 					</seq>
 				</par>
 
 				<par>
 					<!-- indefinite loop of media files in the selected order -->
 					<seq repeatCount="indefinite">
-						<img dur="5" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/portrait1.jpg" region="bottom-left-first" fit="fill"></img>
+						<img dur="5s" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/portrait1.jpg" region="bottom-left-first" fit="meet"></img>
 					</seq>
 				</par>
 
 				<par>
 					<!-- indefinite loop of media files in the selected order -->
 					<seq repeatCount="indefinite">
-						<img dur="5" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/portrait2.jpg" region="bottom-left-second" fit="fill"></img>
+						<img dur="5s" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/portrait2.jpg" region="bottom-left-second" fit="meet"></img>
 					</seq>
 				</par>
 

@@ -8,7 +8,7 @@
 			<!-- define the screen layout zones in relative % -->
 			<region regionName="top-left" left="0" top="0" width="50%" height="50%" z-index="1" backgroundColor="#fdc400"/>
 			<region regionName="bottom-left" left="0" top="50%" width="50%" height="50%" z-index="1" backgroundColor="#fdc400"/>
-			<region regionName="right" left=5"0%" top="0%" width="50%" height="100%" z-index="1" backgroundColor="#fdc400"/>
+			<region regionName="right" left="50%" top="0%" width="50%" height="100%" z-index="1" backgroundColor="#fdc400"/>
 		</layout>
 	</head>
 	<body>
@@ -39,7 +39,7 @@
 					<!-- indefinite loop of media files in the selected order -->
 					<seq repeatCount="indefinite">
 						<video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape1.mp4" region="top-left" soundLevel="0%"></video>
-						<img dur="3" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape1.jpg" region="top-left" fit="fill"></img>
+						<img dur="3s" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape1.jpg" region="top-left" fit="fill"></img>
 					</seq>
 				</par>
 
@@ -47,14 +47,14 @@
 					<!-- indefinite loop of media files in the selected order -->
 					<seq repeatCount="indefinite">
 						<video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape2.mp4" region="bottom-left" soundLevel="0%"></video>
-						<img dur="5" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape2.jpg" region="bottom-left" fit="fill"></img>
+						<img dur="5s" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape2.jpg" region="bottom-left" fit="fill"></img>
 					</seq>
 				</par>
 
 				<par>
 					<!-- indefinite loop of media files in the selected order -->
 					<seq repeatCount="indefinite">
-						<ref src="https://www.signageos.io" region="bottom" type="text/html" dur="indefinite" />
+						<ref src="https://www.signageos.io" region="right" type="text/html" dur="indefinite" />
 					</seq>
 				</par>
 			</par>

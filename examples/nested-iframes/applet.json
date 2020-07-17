@@ -1,9 +1,0 @@
-{
-  "scope": "signageos",
-  "name": "iframes",
-  "version": "1.0.1",
-  "main": "index.html",
-  "dependencies": {
-    "front-applet": "1.0.32"
-  }
-}

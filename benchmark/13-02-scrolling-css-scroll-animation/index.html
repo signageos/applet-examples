@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>13-02-a Scrolling CSS Scroll Animation</title>
+	<style>
+		body { background: white; font-family: sans-serif; margin: 20px; margin-top: 0 }
+		h1 { position: fixed; background: white; margin: 0; padding-bottom: 10px; width: 100%; z-index: 100 }
+		#wrapper { width: 100%; position: relative }
+		#items { width: 100%; position: absolute; top: 0; left: 0; animation: scrolling 30s linear infinite }
+		.item { border: 1px solid black; margin: 10px 0; padding: 0 20px }
+		.item:first-child { margin-top: 0 }
+		.item-title { font-size: 20px }
+		.item-body { font-size: 15px }
+		@-webkit-keyframes scrolling {
+			0% { top: 0 }
+			100% { top: -500px }
+		}
+	</style>
+</head>
+
+<body>
+	<h1>13-02-a Scrolling CSS Scroll Animation</h1>
+	<div id="wrapper">
+		<div id="items" style=""></div>
+	</div>
+
+	<script>
+		var items = document.getElementById('items');
+		var itemsCount = 20;
+
+		// populate items
+		for (var i = 0; i < itemsCount; i++) {
+			var item = document.createElement('div');
+			item.className = 'item';
+
+			var title = document.createElement('p');
+			title.className = 'item-title';
+			title.innerText = 'Item ' + (i + 1);
+			item.appendChild(title);
+
+			var body = document.createElement('p');
+			body.className = 'item-body';
+			body.innerText = 'This is some cool item ' + (i + 1);
+			item.appendChild(body);
+
+			items.appendChild(item);
+		}
+
+		function findKeyframesRuleByName(name) {
+			for (var i = 0; i < document.styleSheets.length; i++) {
+				var cssRules = document.styleSheets[i].cssRules;
+				for (var j = 0; j < cssRules.length; j++) {
+					var cssRule = cssRules[j];
+					if (cssRule.type === window.CSSRule.KEYFRAMES_RULE && cssRule.name === name) {
+						return cssRule;
+					}
+				}
+			}
+		}
+
+		var keyframesRule = findKeyframesRuleByName('scrolling');
+		keyframesRule.appendRule('100% { top: -' + items.offsetHeight + 'px }');
+	</script>
+</body>
+
+</html>

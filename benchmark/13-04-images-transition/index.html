@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+<head>
+	<title>13-04-a Images Transition</title>
+	<style>
+		img {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			left: 0;
+			top: 0;
+			object-fit: contain;
+			opacity: 0;
+			transition: opacity 1s ease-in-out;
+		}
+	</style>
+</head>
+<body>
+	<h1 id="title">13-04-a Images Transition</h1>
+	<p id="index">... loading ...</p>
+
+	<script type="application/ecmascript">
+		const IMAGE_SHOW_TIME = 10e3;
+
+		window.addEventListener('sos.loaded', async function () {
+			await sos.onReady();
+
+			// Load static files
+			let files = [{
+				"uri": "https://signageostest.blob.core.windows.net/test/applet-examples/benchmark-styles.css?v=1.0.0",
+				"uid": "benchmark-styles.css-v1.0.0",
+				"type": sos.offline.types.css,
+				"flags": [sos.offline.flags.append(document.head)]
+			}];
+			await sos.offline.addFiles(files);
+
+			const contentElement = document.getElementById('index');
+
+			const contents = [
+				{ uid: 'image-1', uri: 'https://signageos-public.s3.eu-central-1.amazonaws.com/assets/test-images/1236be4ad4c245b3ea9e79dc2b23d637.png' },
+				{ uid: 'image-2', uri: 'https://signageos-public.s3.eu-central-1.amazonaws.com/assets/test-images/246e8ab76805e03eec09476053139a56.png' },
+				{ uid: 'image-3', uri: 'https://signageos-public.s3.eu-central-1.amazonaws.com/assets/test-images/5a6c251c49c36d74d70223c4187b765a.png' },
+				{ uid: 'image-4', uri: 'https://signageos-public.s3.eu-central-1.amazonaws.com/assets/test-images/f4ecd58cf3c08cb76c6ee881dc5db18c.png' },
+			];
+
+			// Save all files parallel
+			await Promise.all(contents.map(async (content) => {
+				// Store files to offline storage (https://docs.signageos.io/api/sos-applet-api/#Load_or_Save_specific_file_into_internal_memory)
+				console.log("download file " + content.uid);
+				const { filePath } = await sos.offline.cache.loadOrSaveFile(content.uid, content.uri);
+				console.log("file " + content.uid + " downloaded");
+				content.filePath = filePath;
+			}));
+
+			for (const content of contents) {
+				content.agruments = [content.filePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
+			}
+
+			contentElement.innerHTML = '';
+
+			function wait(timeout) {
+				return new Promise((resolve) => setTimeout(resolve, timeout));
+			}
+
+			async function prepareContent(content) {
+				console.log('prepareContent ' + content.uid);
+				const imgElement = document.createElement('img');
+				imgElement.id = content.uid;
+				imgElement.src = content.filePath;
+				document.body.appendChild(imgElement);
+			}
+
+			async function playContent(content) {
+				console.log('playContent ' + content.uid);
+				let imgElement = document.getElementById(content.uid);
+				if (!imgElement) {
+					await prepareContent(content);
+					imgElement = document.getElementById(content.uid);
+				}
+				imgElement.style.opacity = '1';
+				content.playing = true;
+				await wait(500);
+			}
+
+			async function stopContent(content) {
+				console.log('stopContent ' + content.uid);
+				if (content.playing) {
+					const imgElement = document.getElementById(content.uid);
+					imgElement.parentElement.removeChild(imgElement);
+					content.playing = false;
+				}
+			}
+
+			async function waitEndedContent() {
+				await wait(IMAGE_SHOW_TIME);
+			}
+
+			for (let i = 0; true; i = (i + 1) % contents.length) {
+				const previousContent = contents[(i + contents.length - 1) % contents.length];
+				const currentContent = contents[i];
+				const nextContent = contents[(i + 1) % contents.length];
+
+				await playContent(currentContent);
+				await wait(IMAGE_SHOW_TIME / 2);
+				await stopContent(previousContent);
+				await prepareContent(nextContent);
+				await waitEndedContent(currentContent);
+			}
+		});
+	</script>
+</body>
+</html>

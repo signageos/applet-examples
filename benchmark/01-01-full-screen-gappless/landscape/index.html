@@ -82,6 +82,8 @@
 			indexElement.innerHTML = '';
 			htmlContentElement.innerHTML = '';
 
+			await sos.video.prepare(...videos[0].agruments); // Before the first video starts, call prepare
+
 			for (let i = 0; true; i = (i + 1) % videos.length) {
 				const previousVideo = videos[(i + videos.length - 1) % videos.length];
 				const currentVideo = videos[i];

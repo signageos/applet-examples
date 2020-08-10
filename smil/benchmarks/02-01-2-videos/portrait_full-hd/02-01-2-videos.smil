@@ -1,0 +1,59 @@
+<smil>
+	<head>
+		<meta http-equiv="refresh" content="20"/>
+		<layout>
+			<!-- define the screen resolution -->
+			<root-layout width="1080" height="1920" backgroundColor="#18182c" />
+
+			<!-- define the screen layout, in this case single fullscreen zone -->
+			<region regionName="main" left="0" top="0" width="1080" height="1920" z-index="1" backgroundColor="#18182c"/>
+		</layout>
+	</head>
+	<body>
+		<par>
+
+			<!-- Downloading resources into the internal storage -->
+			<seq>
+				<prefetch src="https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_1080x1920_f0b0286999b5554efcfaaf4f604e7bfc.mp4" />
+				<prefetch src="https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1080x1920_4841debb924bcd0168a58b120bd31561.mp4" />
+				<prefetch src="https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1080x1920_009b0dbbd96092b218dcf056f6f0ec0f.mp4" />
+				<prefetch src="https://static.signageos.io/assets/test-videos-07_AME/video-test-07_15s_1080x1920_0595b73bc2bab7de737860dc4e800e1a.mp4" />
+                <prefetch src="https://static.signageos.io/assets/test-videos-06_AME/video-test-06_15s_1080x1920_7c0f255304ee7f685f1d659f498975c5.mp4" />
+				<prefetch src="https://static.signageos.io/assets/test-videos-06_AME/video-test-06_15s_1080x1920_7c0f255304ee7f685f1d659f498975c5.mp4" />
+				<prefetch src="https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1080x1920_009b0dbbd96092b218dcf056f6f0ec0f.mp4" />
+				<prefetch src="https://static.signageos.io/assets/test-videos-07_AME/video-test-07_15s_1080x1920_0595b73bc2bab7de737860dc4e800e1a.mp4" />
+				<prefetch src="https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_1080x1920_f0b0286999b5554efcfaaf4f604e7bfc.mp4" />
+				<prefetch src="https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1080x1920_4841debb924bcd0168a58b120bd31561.mp4" />
+
+				<seq id="__prefetchEnd" dur="1s" />
+			</seq>
+
+			<!-- Wait for the prefetch of media files, once done, start the playback -->
+			<par begin="__prefetchEnd.endEvent" repeatCount="indefinite">
+
+				<!-- indefinite loop of media files in the selected order -->
+				<!-- https://docs.signageos.io/knowledge-base/signageos-smil-docs-seq-playlist -->
+
+				<seq repeatCount="indefinite">
+
+					<video src="https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_1080x1920_f0b0286999b5554efcfaaf4f604e7bfc.mp4" region="main" soundLevel="0%"></video>
+					<video src="https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1080x1920_4841debb924bcd0168a58b120bd31561.mp4" region="main" soundLevel="0%"></video>
+                    <video src="https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1080x1920_009b0dbbd96092b218dcf056f6f0ec0f.mp4" region="main" soundLevel="0%"></video>
+                    <video src="https://static.signageos.io/assets/test-videos-07_AME/video-test-07_15s_1080x1920_0595b73bc2bab7de737860dc4e800e1a.mp4" region="main" soundLevel="0%"></video>
+                    <video src="https://static.signageos.io/assets/test-videos-06_AME/video-test-06_15s_1080x1920_7c0f255304ee7f685f1d659f498975c5.mp4" region="main" soundLevel="0%"></video>
+
+					 <seq repeatCount="2">
+
+						<video src="https://static.signageos.io/assets/test-videos-06_AME/video-test-06_15s_1080x1920_7c0f255304ee7f685f1d659f498975c5.mp4" region="main" soundLevel="0%"></video>
+						<video src="https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1080x1920_009b0dbbd96092b218dcf056f6f0ec0f.mp4" region="main" soundLevel="0%"></video>
+						<video src="https://static.signageos.io/assets/test-videos-07_AME/video-test-07_15s_1080x1920_0595b73bc2bab7de737860dc4e800e1a.mp4" region="main" soundLevel="0%"></video>
+						<video src="https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_1080x1920_f0b0286999b5554efcfaaf4f604e7bfc.mp4" region="main" soundLevel="0%"></video>
+						<video src=""https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1080x1920_4841debb924bcd0168a58b120bd31561.mp4" region="main" soundLevel="0%"></video>
+
+					</seq>
+				
+				</seq>
+			</par>
+		</par>
+	</body>
+</smil>

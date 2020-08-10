@@ -1,18 +1,37 @@
 <!doctype html>
 <html>
-    <body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-		<h1>Iframe 4</h1>	
+    <body style="text-align: center; background-color: magenta; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+		<h1>Iframe 4</h1>
 		<p id="index">Loading.......</p>
-		<iframe id="iframe" style="border: 0; position: absolute; display: none; width: 100%; height: 100%; left: 0; top: 0">
-			<p>Iframe 4</p>
-		</iframe>
+
+		<iframe id="iframe" style="border: 0; position: absolute; width: 90%; height: 90%; left: 0; top: 0;"></iframe>
+
 		<script type="text/javascript">
-			document.addEventListener("DOMContentLoaded", function(){
-					var iframe = document.getElementById('iframe');
-					iframe.setAttribute('src', 'https://raw.githubusercontent.com/signageos/applet-examples/master/examples/nested-iframes/iframe5.html');
-					//iframe.style.display = 'block';
-					setTimeout(function() { iframe.style.display = 'block'; }, 3000);
+			function startApplet() {
+				var iframeElement = document.getElementById('iframe');
+				
+				sos.offline.cache.loadOrSaveFile('iframe5', 'https://raw.githubusercontent.com/signageos/applet-examples/master/examples/nested-iframes/iframe5.html')
+				.then(function (file) { iframeElement.src = file.filePath })
+				.catch(function (error) { console.error(error); });
+			}
+
+			window.addEventListener('sos.loaded', function () {
+				sos.onReady().then(function () {
+					startApplet();
+				});
 			});
+
+		</script>
+
+		<script type="text/javascript">
+		// sOS JS API loader
+		!function(){window.addEventListener("message",function(t){
+			if(t.source===window.parent&&"hug.api_js_uri"===t.data.type) {
+				var e=t.data.uri;
+				if(!e)throw new Error("Front applet JS is not set.");
+				var a=document.createElement("script");
+				a.setAttribute("type","text/javascript"),a.setAttribute("src",e),a.onload=a.onreadystatechange=function(){
+					this.readyState&&"loaded"!=this.readyState&&"complete"!=this.readyState||(window.sos.apiJsUri=t.data.uri,window.dispatchEvent(new Event("hug.loaded")),window.dispatchEvent(new Event("sos.loaded")))},document.head.appendChild(a)}}),window.parent.postMessage({type:"hug_loader.ready"},"*")}();
 		</script>
 	</body>
 </html>

@@ -1,0 +1,65 @@
+<smil>
+	<head>
+		<meta http-equiv="refresh" content="20"/>
+		<layout>
+			<!-- define the screen resolution -->
+			<root-layout width="1920" height="1920" backgroundColor="#18182c" />
+
+			<!-- define the screen layout zones in relative % -->
+			<region regionName="top-left" left="0" top="0" width="50%" height="50%" z-index="1" backgroundColor="#fdc400"/>
+			<region regionName="top-right" left="50%" top="0" width="50%" height="50%" z-index="1" backgroundColor="#fdc400"/>
+			<region regionName="bottom-left" left="0" top="50%" width="50%" height="50%" z-index="1" backgroundColor="#fdc400"/>
+			<region regionName="bottom-right" left="50%" top="50%" width="50%" height="50%" z-index="1" backgroundColor="#fdc400"/>
+		</layout>
+	</head>
+	<body>
+		<par>
+
+			<!-- Play this intro video as long as the resources being prefetched -->
+			<seq end="__prefetchEnd.endEvent">
+				<seq repeatCount="indefinite">
+					<!-- Play waiting prompt -->
+					<video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/loader.mp4" />
+				</seq>
+			</seq>
+
+			<!-- Downloading resources into the internal storage -->
+			<seq>
+				<prefetch src="https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4" />
+				<prefetch src="https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4" />
+				<prefetch src="https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4" />
+				<prefetch src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape2.jpg" />
+				<seq id="__prefetchEnd" dur="1s" />
+			</seq>
+
+			<!-- Wait for the prefetch of media files, once done, start the playback -->
+			<par begin="__prefetchEnd.endEvent" repeatCount="indefinite">
+
+				<!-- TWO <par> playlists are here, they will play together side by side, both in their respective region -->
+				<par>
+					<!-- indefinite loop of media files in the selected order -->
+					<seq repeatCount="indefinite">
+						<video src="https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4" region="top-left" soundLevel="0%"></video>
+						<img dur="3s" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape1.jpg" region="top-left" fit="fill"></img>
+					</seq>
+				</par>
+
+				<par>
+					<!-- indefinite loop of media files in the selected order -->
+					<seq repeatCount="indefinite">
+						<video src="https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4" region="top-right" soundLevel="0%"></video>
+						<img dur="5s" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape2.jpg" region="top-right" fit="fill"></img>
+					</seq>
+				</par>
+
+				<par>
+					<!-- indefinite loop of media files in the selected order -->
+					<seq repeatCount="indefinite">
+						<video src="https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4" region="bottom-left" soundLevel="0%"></video>
+						<img dur="3s" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape1.jpg" region="bottom-right" fit="fill"></img>
+					</seq>
+				</par>
+			</par>
+		</par>
+	</body>
+</smil>

@@ -1,0 +1,37 @@
+<smil>
+	<head>
+		<meta http-equiv="refresh" content="20"/>
+		<layout>
+			<!-- define the screen resolution -->
+			<root-layout width="1080" height="1920" backgroundColor="#18182c" />
+			<!-- define the screen layout, in this case single fullscreen zone -->
+			<region regionName="main" left="0" top="0" width="1920" height="1080" z-index="1" backgroundColor="#18182c"/>
+			<region regionName="overlay" top="50%" left="50%" width="50%" height="50%" z-index="2" />
+		</layout>
+	</head>
+	<body>
+		<par>
+			<!-- Downloading resources into the internal storage -->
+			<seq>
+				<prefetch src="https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1920x1080_19c539e7982228ae0527409aeadb5b88.mp4" />
+				<prefetch src="https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1920x1080_88f90af5fa281d7efb8eae17848e71d9.mp4" />
+				<seq id="__prefetchEnd" dur="1s" />
+			</seq>
+			<!-- Wait for the prefetch of media files, once done, start the playback -->
+			<par begin="__prefetchEnd.endEvent" repeatCount="indefinite">
+				<!-- indefinite loop of media files in the selected order -->
+				<!-- https://docs.signageos.io/knowledge-base/signageos-smil-docs-seq-playlist -->
+				<par>
+					<seq repeatCount="indefinite">
+						<video src="https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1920x1080_19c539e7982228ae0527409aeadb5b88.mp4" region="main" soundLevel="0%"></video>
+					</seq>
+				</par>
+				<par>
+					<seq repeatCount="indefinite">
+						<video src="https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1920x1080_88f90af5fa281d7efb8eae17848e71d9.mp4" region="overlay" soundLevel="0%"></video>
+					</seq>
+				</par>
+			</par>
+		</par>
+	</body>
+</smil>

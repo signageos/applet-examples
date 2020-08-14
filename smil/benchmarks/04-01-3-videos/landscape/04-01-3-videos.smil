@@ -27,7 +27,7 @@
 			<seq>
 				<prefetch src="https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4" />
 				<prefetch src="https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4" />
-				<prefetch src="https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4" />
+				<prefetch src="https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1920x1080_88f90af5fa281d7efb8eae17848e71d9.mp4" />
 				<prefetch src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/landscape2.jpg" />
 				<seq id="__prefetchEnd" dur="1s" />
 			</seq>

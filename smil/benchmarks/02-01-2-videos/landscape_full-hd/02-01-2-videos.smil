@@ -5,12 +5,8 @@
 			<!-- define the screen resolution -->
 			<root-layout width="1920" height="1080" backgroundColor="#18182c" />
 
-			<!-- define the screen layout, in this case 4 zones -->
-			<region regionName="top-left" left="0" top="0" width="50%" height="50%" z-index="1" backgroundColor="#fdc400"/>
-			<region regionName="top-right" left="50%" top="0" width="50%" height="50%" z-index="1" backgroundColor="#fdc400"/>
-			<region regionName="bottom-left" left="0" top="50%" width="50%" height="50%" z-index="1" backgroundColor="#fdc400"/>
-			<region regionName="bottom-right" left="50%" top="50%" width="50%" height="50%" z-index="1" backgroundColor="#fdc400"/>
-
+			<!-- define the screen layout, in this case single fullscreen zone -->
+			<region regionName="main" left="0" top="0" width="1920" height="1080" z-index="1" backgroundColor="#18182c"/>
 		</layout>
 	</head>
 	<body>
@@ -26,45 +22,38 @@
 				<prefetch src="https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4" />
 				<prefetch src="https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_1920x1080_0f110996c51d8c77933b1ab9fecfb61f.mp4" />
 				<prefetch src="https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1920x1080_19c539e7982228ae0527409aeadb5b88.mp4" />
+				<prefetch src="https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1920x1080_88f90af5fa281d7efb8eae17848e71d9.mp4" />
+				<prefetch src="https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4" />
+
 				<seq id="__prefetchEnd" dur="1s" />
 			</seq>
 
 			<!-- Wait for the prefetch of media files, once done, start the playback -->
 			<par begin="__prefetchEnd.endEvent" repeatCount="indefinite">
 
-				<!-- FOUR <par> playlists are here, they will play together side by side, both in their respective regions. -->
+				<!-- indefinite loop of media files in the selected order -->
+				<!-- https://docs.signageos.io/knowledge-base/signageos-smil-docs-seq-playlist -->
 
-				<par>
-					<!-- indefinite loop of media files in the selected order -->
-					<seq repeatCount="indefinite">
-						<video src="https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1920x1080_19c539e7982228ae0527409aeadb5b88.mp4" region="top-left" soundLevel="0%"></video>
-						<video src="https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1920x1080_88f90af5fa281d7efb8eae17848e71d9.mp4" region="top-left" soundLevel="0%"></video>
-					</seq>
-				</par>
+				<seq repeatCount="indefinite">
 
-				<par>
-					<!-- indefinite loop of media files in the selected order -->
-					<seq repeatCount="indefinite">
-						<video src="https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4" region="top-right" soundLevel="0%"></video>
-						<video src="https://static.signageos.io/assets/test-videos-08_AME/video-test-08_15s_1920x1080_eb8f37b04d4dc8f8e26d80e66a2eb71a.mp4" region="top-right" soundLevel="0%"></video>
-					</seq>
-				</par>
+					<video src="https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1920x1080_19c539e7982228ae0527409aeadb5b88.mp4" region="main" soundLevel="0%"></video>
+					<video src="https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1920x1080_88f90af5fa281d7efb8eae17848e71d9.mp4" region="main" soundLevel="0%"></video>
+                    <video src="https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4" region="main" soundLevel="0%"></video>
+                    <video src="https://static.signageos.io/assets/test-videos-08_AME/video-test-08_15s_1920x1080_eb8f37b04d4dc8f8e26d80e66a2eb71a.mp4" region="main" soundLevel="0%"></video>
+                    <video src="https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4" region="main" soundLevel="0%"></video>
 
-				<par>
-					<!-- indefinite loop of media files in the selected order -->
-					<seq repeatCount="indefinite">
-						<video src="https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4" region="bottom-left" soundLevel="0%"></video>
-						<video src="https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4" region="bottom-left" soundLevel="0%"></video>
-					</seq>
-				</par>
+					 <seq repeatCount="2">
 
-				<par>
-					<!-- indefinite loop of media files in the selected order -->
-					<seq repeatCount="indefinite">
-						<video src="https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_1920x1080_0f110996c51d8c77933b1ab9fecfb61f.mp4" region="bottom-right" soundLevel="0%"></video>
-						<video src="https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1920x1080_19c539e7982228ae0527409aeadb5b88.mp4" region="bottom-right" soundLevel="0%"></video>
+						<video src="https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4" region="main" soundLevel="0%"></video>
+						<video src="https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_1920x1080_0f110996c51d8c77933b1ab9fecfb61f.mp4" region="main" soundLevel="0%"></video>
+						<video src="https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1920x1080_19c539e7982228ae0527409aeadb5b88.mp4" region="main" soundLevel="0%"></video>
+						<video src="https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1920x1080_88f90af5fa281d7efb8eae17848e71d9.mp4" region="main" soundLevel="0%"></video>
+						<video src="https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4" region="main" soundLevel="0%"></video>
+
 					</seq>
-				</par>
+				
+				</seq>
+			</par>
 		</par>
 	</body>
 </smil>

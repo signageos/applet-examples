@@ -49,15 +49,9 @@
 	        font-size: 20px;
 	}
 
-	div#klocka {
+	div#clock {
 	    font-size: 30px;
 	    float:left;
-	}
-
-	div#dag {
-	    float: right;
-	    font-size: 20px;
-	    margin-top: 5px;
 	}
 
 	img {

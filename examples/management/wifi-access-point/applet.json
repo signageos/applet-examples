@@ -1,0 +1,9 @@
+{
+  "scope": "signageos",
+  "name": "wifi-access-point",
+  "version": "1.0.0",
+  "main": "index.html",
+  "dependencies": {
+    "front-applet": "4.3.0"
+  }
+}

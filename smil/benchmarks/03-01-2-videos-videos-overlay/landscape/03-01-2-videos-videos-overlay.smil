@@ -1,0 +1,50 @@
+<smil>
+	<head>
+		<meta http-equiv="refresh" content="20"/>
+		<layout>
+			<!-- define the screen resolution -->
+			<root-layout width="1920" height="1080" backgroundColor="#18182c" />
+
+			<!-- define the screen layout, in this case 4 zones -->
+			<region regionName="main" left="0" top="0" width="1920" height="1080" z-index="1" backgroundColor="#18182c"/>
+			<region regionName="bottom-right" left="70%" top="70%" width="30%" height="30%" z-index="9" backgroundColor="#fdc400"/>
+
+		</layout>
+	</head>
+	<body>
+		<par>
+
+			<!-- Downloading resources into the internal storage -->
+			<seq>
+				<prefetch src="https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1920x1080_19c539e7982228ae0527409aeadb5b88.mp4" />
+				<prefetch src="https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1920x1080_88f90af5fa281d7efb8eae17848e71d9.mp4" />
+				<prefetch src="https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4" />
+				<seq id="__prefetchEnd" dur="1s" />
+			</seq>
+
+			<!-- Wait for the prefetch of media files, once done, start the playback -->
+			<par begin="__prefetchEnd.endEvent" repeatCount="indefinite">
+
+				<!-- TWO <par> playlists are here, they will play together side by side, both in their respective regions. -->
+
+				<par>
+					<!-- indefinite loop of media files in the selected order -->
+					<seq repeatCount="indefinite">
+						<video src="https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1920x1080_88f90af5fa281d7efb8eae17848e71d9.mp4" region="main" soundLevel="0%"></video>
+						<video src="https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1920x1080_19c539e7982228ae0527409aeadb5b88.mp4" region="main" soundLevel="0%"></video>
+						<video src="https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4" region="main" soundLevel="0%"></video>
+					</seq>
+				</par>
+
+				<par>
+					<!-- indefinite loop of media files in the selected order -->
+					<seq repeatCount="indefinite">
+						<video src="https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4" region="bottom-right" soundLevel="0%"></video>
+						<video src="https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1920x1080_19c539e7982228ae0527409aeadb5b88.mp4" region="bottom-right" soundLevel="0%"></video>
+						<video src="https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1920x1080_88f90af5fa281d7efb8eae17848e71d9.mp4" region="bottom-right" soundLevel="0%"></video>
+					</seq>
+				</par>
+			</par>
+		</par>
+	</body>
+</smil>

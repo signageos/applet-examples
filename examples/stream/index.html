@@ -9,7 +9,6 @@
 	<h1>Stream</h1>
 	<p id="index">... loading ...</p>
 
-
 	<script type="application/ecmascript">
 		async function startApplet() {
 			const contentElement = document.getElementById('index');
@@ -28,6 +27,13 @@
 			stream.agruments = [stream.uri, 0, 0, document.body.offsetWidth, document.body.offsetHeight, protocolType, format];
 
 			contentElement.innerHTML = '';
+
+			function streamEventListener ({type, srcArguments}) {
+				contentElement.innerHTML = `Stream ${type}: ${srcArguments.uri}`;
+			}
+
+			sos.stream.onConnected(streamEventListener);
+			sos.stream.onDisconnected(streamEventListener);
 
 			// Play stream forever (https://docs.signageos.io/api/sos-applet-api/#Play_stream)
 			await sos.stream.play(...stream.agruments);

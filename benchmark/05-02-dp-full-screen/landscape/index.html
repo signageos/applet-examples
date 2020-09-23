@@ -46,7 +46,7 @@
 			};
 
 			// Set url, resolution on screen (full screen) - (https://docs.signageos.io/api/js/js-video-stream#play-stream)
-			stream.agruments = [stream.uri, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
+			stream.agruments = [stream.uri, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
 
 			// Remove loading title
 			titleElement.innerHTML = '';

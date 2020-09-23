@@ -64,8 +64,8 @@
 			}
 
 			// Set video properties for proper play on screen
-            const width = document.body.offsetWidth;
-            const height = document.body.offsetHeight;
+            const width = document.documentElement.clientWidth;
+            const height = document.documentElement.clientHeight;
             //const width = 1920;
             //const height = 1080;
 			for (const video of videos) {

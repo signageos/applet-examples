@@ -69,10 +69,10 @@
 			// Set url, resolution on screen (full screen) - (https://docs.signageos.io/api/js/js-video-stream#play-stream)
 			stream.agruments = [
 				stream.uri,
-				Math.floor(document.body.offsetWidth * stream.x / 100),
-				Math.floor(document.body.offsetHeight * stream.y / 100),
-				Math.floor(document.body.offsetWidth * stream.width / 100),
-				Math.floor(document.body.offsetHeight * stream.height / 100),
+				Math.floor(document.documentElement.clientWidth * stream.x / 100),
+				Math.floor(document.documentElement.clientHeight * stream.y / 100),
+				Math.floor(document.documentElement.clientWidth * stream.width / 100),
+				Math.floor(document.documentElement.clientHeight * stream.height / 100),
 			];
 
 			// Remove loading title

@@ -25,7 +25,7 @@
 				uri
 			};
 
-			stream.agruments = [stream.uri, 0, 0, document.body.offsetWidth, document.body.offsetHeight, protocolType, format];
+			stream.agruments = [stream.uri, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight, protocolType, format];
 
 			contentElement.innerHTML = '';
 

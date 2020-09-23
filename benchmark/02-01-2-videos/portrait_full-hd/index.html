@@ -134,10 +134,10 @@
 				video.filePath = filePath;
 				video.agruments = [
 					video.filePath,
-					Math.floor(document.body.offsetWidth * video.x / 100),
-					Math.floor(document.body.offsetHeight * video.y / 100),
-					Math.floor(document.body.offsetWidth * video.width / 100),
-					Math.floor(document.body.offsetHeight * video.height / 100),
+					Math.floor(document.documentElement.clientWidth * video.x / 100),
+					Math.floor(document.documentElement.clientHeight * video.y / 100),
+					Math.floor(document.documentElement.clientWidth * video.width / 100),
+					Math.floor(document.documentElement.clientHeight * video.height / 100),
 				];
 			}
 
@@ -149,10 +149,10 @@
 				video.filePath = filePath;
 				video.agruments = [
 					video.filePath,
-					Math.floor(document.body.offsetWidth * video.x / 100),
-					Math.floor(document.body.offsetHeight * video.y / 100),
-					Math.floor(document.body.offsetWidth * video.width / 100),
-					Math.floor(document.body.offsetHeight * video.height / 100),
+					Math.floor(document.documentElement.clientWidth * video.x / 100),
+					Math.floor(document.documentElement.clientHeight * video.y / 100),
+					Math.floor(document.documentElement.clientWidth * video.width / 100),
+					Math.floor(document.documentElement.clientHeight * video.height / 100),
 				];
 			}
 

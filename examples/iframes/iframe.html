@@ -19,7 +19,7 @@
 				})
 				.then(function (file) {
 					contentElement.innerHTML = '';
-					videoAgruments = [file.filePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
+					videoAgruments = [file.filePath, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
 					return sos.video.play.apply(sos.video, videoAgruments);
 				})
 				.then(function () {

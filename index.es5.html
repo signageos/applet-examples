@@ -80,7 +80,7 @@
 
 
 					// For video coordinations compution use document.body (https://docs.signageos.io/screen-width-and-height-on-webos-1/)
-					var videoAgruments = [filePath, 60, 100, document.body.offsetWidth - 2 * 60, Math.round((document.body.offsetWidth - 2 * 60) * (3 / 4))];
+					var videoAgruments = [filePath, 60, 100, document.documentElement.clientWidth - 2 * 60, Math.round((document.documentElement.clientWidth - 2 * 60) * (3 / 4))];
 					function playBack() {
 						// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/sos-applet-api/#Play_video)
 						sos.video.prepare.apply(sos.video, videoAgruments)

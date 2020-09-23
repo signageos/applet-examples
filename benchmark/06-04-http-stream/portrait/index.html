@@ -52,8 +52,8 @@
 			const coords = sos.config.coords ? JSON.parse(sos.config.coords) : {
 				x: 0,
 				y: 0,
-				width: document.body.offsetWidth,
-				height: document.body.offsetHeight
+				width: document.documentElement.clientWidth,
+				height: document.documentElement.clientHeight
 			};
 
 			// Remove loading title

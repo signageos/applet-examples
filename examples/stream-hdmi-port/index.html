@@ -20,7 +20,7 @@
 				uri: 'internal://hdmi1'
 			};
 
-			stream.agruments = [stream.uri, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
+			stream.agruments = [stream.uri, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
 
 			contentElement.innerHTML = '';
 

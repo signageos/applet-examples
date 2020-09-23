@@ -24,7 +24,7 @@
 				filePath
 			} = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
 			video.filePath = filePath;
-			video.agruments = [video.filePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
+			video.agruments = [video.filePath, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
 
 			contentElement.innerHTML = '';
 

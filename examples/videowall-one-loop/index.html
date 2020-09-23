@@ -32,7 +32,7 @@
 			const {
 				filePath: videoFilePath
 			} = await sos.offline.cache.loadOrSaveFile(uid, videoUri);
-			const videoAgruments = [videoFilePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
+			const videoAgruments = [videoFilePath, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
 
 			contentElement.innerHTML = '';
 

@@ -114,8 +114,8 @@
 					video.filePath,
 					video.x,
 					video.y,
-					Math.floor(document.body.offsetWidth * video.width / 100),
-					Math.floor(document.body.offsetHeight * video.height / 100),
+					Math.floor(document.documentElement.clientWidth * video.width / 100),
+					Math.floor(document.documentElement.clientHeight * video.height / 100),
 					{
 						'4k': true
 					}

@@ -69,7 +69,7 @@
 				} = await sos.offline.cache.loadOrSaveFile(item.uid, item.uri);
 				item.filePath = filePath;
 				if (item.type === 'video') {
-					item.agruments = [item.filePath, 0, 0, document.body.offsetWidth, document.body.offsetHeight];
+					item.agruments = [item.filePath, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
 				}
 			}
 

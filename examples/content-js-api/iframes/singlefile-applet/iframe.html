@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Iframes (iframe)</title>
+	</head>
+	<body style="text-align: center; background-color: #333; color: #F4D03F;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+		<h1>Iframes (iframe)</h1>
+		<p id="index">... loading ...</p>
+
+
+		<script type="application/javascript">
+			window.addEventListener('sos.loaded', function () {
+				var contentElement = document.getElementById('index');
+				var videoArguments;
+				sos.onReady()
+				.then(function () {
+					var videoUri = sos.config.videoUri || 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4';
+					return sos.offline.cache.loadOrSaveFile('video', videoUri);
+				})
+				.then(function (file) {
+					contentElement.innerHTML = '';
+					videoArguments = [file.filePath, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
+					return sos.video.play.apply(sos.video, videoArguments);
+				})
+				.then(function () {
+					return sos.video.onceEnded.apply(sos.video, videoArguments);
+				})
+				.then(function () {
+					return sos.video.stop.apply(sos.video, videoArguments);
+				})
+				.then(function () {
+					contentElement.innerHTML = 'Applet is over.';
+				});
+			});
+		</script>
+
+
+		<!-- This snippet of code must be pasted here (https://docs.signageos.io/api/sos-applet-api/#iframes) -->
+		<script type="text/javascript">
+			// sOS JS API loader
+			!function(){window.addEventListener("message",function(t){if(t.source===window.parent&&"hug.api_js_uri"===t.data.type){var e=t.data.uri;if(!e)throw new Error("Front applet JS is not set.");var a=document.createElement("script");a.setAttribute("type","text/javascript"),a.setAttribute("src",e),a.onload=a.onreadystatechange=function(){this.readyState&&"loaded"!=this.readyState&&"complete"!=this.readyState||(window.sos.apiJsUri=t.data.uri,window.dispatchEvent(new Event("hug.loaded")),window.dispatchEvent(new Event("sos.loaded")))},document.head.appendChild(a)}}),window.parent.postMessage({type:"hug_loader.ready"},"*")}();
+		</script>
+	</body>
+</html>

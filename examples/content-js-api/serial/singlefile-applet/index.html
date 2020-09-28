@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Video Loop Offline</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Serial Port Basics</h1>
+	<p id="data"></p>
+
+
+	<script type="application/ecmascript">
+		async function startApplet() {
+			await sos.onReady();
+
+			const dataElement = document.getElementById('data');
+
+			function log(message) {
+				dataElement.innerHTML += message + '<br>';
+			}
+
+			const serialPort = await sos.hardware.openSerialPort({
+				device: '/dev/ttyUSB0',
+				baudRate: 115200,
+			});
+
+			serialPort.onData((data) => log('data: ' + data.toString()));
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
+</html>

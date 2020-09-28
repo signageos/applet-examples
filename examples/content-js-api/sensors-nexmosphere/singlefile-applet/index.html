@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Video Loop Offline</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Nexmosphere</h1>
+	<p id="log"></p>
+
+	<script type="application/ecmascript">
+		async function startApplet() {
+			await sos.onReady();
+
+			const logElement = document.getElementById('log');
+
+			function log(message) {
+				logElement.innerHTML += message + '<br>';
+			}
+
+			// add Nexmosphere extension library to the project and cache it offline on the device
+			await sos.offline.addFilesSync([
+				{
+					uri: "https://2.signageos.io/lib/front-applet-extension-nexmosphere/0.1.1/front-applet-extension-nexmosphere.js",
+					uid: "front-applet-extension-nexmosphere.js",
+					type: sos.offline.types.javascript,
+					flags: [sos.offline.flags.append(document.body)],
+				},
+			]);
+
+			const serialPort = await sos.hardware.openSerialPort({
+				device: '/dev/ttyUSB0',
+				baudRate: 115200,
+			});
+
+			// you can now use Nexmosphere class
+			const nexmosphere = new Nexmosphere(serialPort);
+
+			const buttonAddress = 3;
+			const buttonIndex = 0;
+			const button = nexmosphere.createButton(buttonAddress, buttonIndex);
+			button.on('pressed', () => log('button is pressed'));
+			button.on('released', () => log('button is released'));
+
+			const rfidAntennaAddress = 5;
+			const rfidAntenna = nexmosphere.createRfidAntenna(rfidAntennaAddress);
+			const currentlyPlacedTags = await rfidAntenna.getPlacedTags();
+			log('currently placed tags: ' + currentlyPlacedTags.join(', '));
+			rfidAntenna.on('picked', (tag) => log(`tag ${tag} was picked`));
+			rfidAntenna.on('placed', (tag) => log(`tag ${tag} was placed`));
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
+</html>

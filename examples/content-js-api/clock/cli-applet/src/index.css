@@ -1,0 +1,315 @@
+
+body {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	text-align: center; 
+	background-color: #F4D03F; 
+	color: #333;
+	margin: 0; 
+	padding: 0;
+}
+
+.demo-container.clocks {
+	background: #18182c;
+	padding: 0;
+	width: 100%;
+	height: 100vh;
+	margin: 0;
+	overflow: hidden;
+}
+
+.clock {
+	border-radius: 50%;
+	background: radial-gradient(#000, #000 0.1em, #fff 0.1em, #fff), #fff;
+	display: inline-block;
+	margin: 1%;
+	padding-bottom: 15%;
+	position: relative;
+	top: 50%;
+	width: 15%;
+	opacity: 0;
+	transform: translateY(-40%);
+}
+
+.clock.show {
+	opacity: 1;
+	transform: translateY(-50%);
+	transition: all 2.5s 0.5s cubic-bezier(.12, 1.03, .34, 1);
+}
+
+.clock::after {
+	background: red;
+	border-radius: 50%;
+	content: "";
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 4%;
+	height: 4%;
+	z-index: 10;
+}
+
+.minutes-container,
+.hours-container,
+.seconds-container {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+.hours-container {
+	animation: rotate 43200s infinite linear;
+}
+
+.linear .minutes-container {
+	animation: rotate 3600s infinite linear;
+}
+
+.linear .seconds-container {
+	animation: rotate 60s infinite linear;
+}
+
+.steps .minutes-container {
+	animation: rotate 3600s infinite steps(60);
+}
+
+.steps .seconds-container {
+	animation: rotate 60s infinite steps(60);
+}
+
+.local.steps .minutes-container {
+	animation: none;
+}
+
+.bounce .minutes-container {
+	transition: transform 0.3s cubic-bezier(.4, 2.08, .55, .44);
+}
+
+.bounce .seconds-container {
+	transition: transform 0.2s cubic-bezier(.4, 2.08, .55, .44);
+}
+
+.hours {
+	background: #000;
+	width: 3.5%;
+	height: 40%;
+	position: absolute;
+	left: 48.25%;
+	top: 22%;
+	transform-origin: 50% 71%;
+}
+
+.minutes {
+	background: #000;
+	width: 3.5%;
+	height: 55%;
+	position: absolute;
+	left: 48.25%;
+	top: 7%;
+	transform-origin: 50% 78.5%;
+}
+
+.seconds {
+	background: red;
+	width: 1.5%;
+	height: 42%;
+	position: absolute;
+	left: 49.25%;
+	top: 20%;
+	transform-origin: 50% 71%;
+	z-index: 8;
+}
+
+.label {
+	background: #fff;
+	border-radius: 0.25em;
+	color: #000;
+	font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Helvetica, Arial, sans-serif;
+	font-size: 2.3em;
+	font-weight: bold;
+	text-transform: uppercase;
+	padding: 0.5em 0.75em 0.25em;
+	position: absolute;
+	top: -4em;
+	left: 50%;
+	transform: translate(-50%, 0);
+}
+
+.label.morning {
+	background: #ffffff;
+}
+
+.label.afternoon {
+	background: #ffffff;
+}
+
+.label.night {
+	background: #000000;
+	color: #ffffff;
+}
+
+.diff-container {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	top: 106%;
+	font-size: 3em;
+	color: #fff;
+	font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Helvetica, Arial, sans-serif;
+}
+
+@keyframes rotate {
+	100% {
+		transform: rotateZ(360deg);
+	}
+}
+
+.clock.station {
+	background: #fff url("https://cssanimation.rocks/images/posts/clocks/ios_clock.svg") no-repeat center;
+	background-size: 90%;
+	box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2) inset;
+}
+
+.clock.station .seconds::before {
+	background: red;
+	border-radius: 50%;
+	content: "";
+	position: absolute;
+	top: -9%;
+	left: -200%;
+	height: 18%;
+	width: 500%;
+}
+
+.clock.ios7 {
+	background: #fff url(/assets/images/posts/clocks/ios_clock.svg) no-repeat center;
+	background-size: 88%;
+}
+
+.clock.ios7:before {
+	background: black;
+	border-radius: 50%;
+	content: "";
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 6%;
+	height: 6%;
+	z-index: 0;
+}
+
+.clock.ios7:after {
+	width: 2%;
+	height: 2%;
+}
+
+.clock.ios7 .seconds {
+	border-radius: 200%/10%;
+	height: 30%;
+	left: 49.5%;
+	top: 20%;
+	width: 1%;
+	transform-origin: 50% 100%;
+}
+
+.clock.ios7 .minutes {
+	border-radius: 150%/10%;
+	width: 2%;
+	height: 35%;
+	left: 49%;
+	top: 15%;
+	transform-origin: 50% 100%;
+}
+
+.clock.ios7 .hours {
+	border-radius: 85%/10%;
+	width: 2%;
+	height: 20%;
+	left: 49%;
+	top: 30%;
+	transform-origin: 50% 100%;
+}
+
+
+.clock.simple {
+	background: #fff url(/assets/images/posts/clocks/ios_clock.svg) no-repeat center;
+	background-size: 88%;
+}
+
+.clock.simple:after {
+	background-color: #000;
+	width: 5%;
+	height: 5%;
+}
+
+.clock.simple .seconds {
+	background-color: #000;
+	height: 45%;
+	left: 49.5%;
+	top: 14%;
+	width: 1%;
+	transform-origin: 50% 80%;
+}
+
+.clock.simple .minutes {
+	width: 2%;
+	height: 40%;
+	left: 49%;
+	top: 10%;
+	transform-origin: 50% 100%;
+}
+
+.clock.simple .hours {
+	width: 2.5%;
+	height: 20%;
+	left: 48.75%;
+	top: 30%;
+	transform-origin: 50% 100%;
+}
+
+.hours.angled {
+	transform: rotateZ(-40deg);
+}
+
+.minutes.angled {
+	transform: rotateZ(40deg);
+}
+
+#index {
+	z-index: 50;
+	position: absolute;
+	top: 0px;
+	left: 50%;
+	margin-left: -400px;
+	width: 800px;
+	color: lightgrey;
+}
+
+#standup-image {
+	display: none;
+	position: absolute;
+	z-index: 60;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+}
+
+#standup-title {
+	display: none;
+	position: absolute;
+	z-index: 61;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	font-size: 12rem;
+	color: white;
+}
+
+#standup-audio {
+	visibility: hidden;
+}

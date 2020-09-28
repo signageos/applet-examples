@@ -35,7 +35,7 @@ This repository contains:
 - [Network settings via manual IP](/examples/content-js-api/network-settings-manual)
 - [Offline Files](/examples/content-js-api/offline-files) for managing files
 - [Offline Resources](/examples/content-js-api/offline-resources) for saving & using libraries
-- [Offline ZIP Decompression](/examples/content-js-api/offline-zip-decompression) for unpacking `*.zip` files
+- [Offline ZIP Decompression](/examples/content-js-api/offline-zip-decompress) for unpacking `*.zip` files
 - [Proximity Sensor](/examples/content-js-api/proximity)
 - [Remote control key UP binding](/examples/content-js-api/remote-control) for bind pressing keys on remote control
 - [Save and Load Large JSON file](/examples/content-js-api/save-and-load-large-json) from the internal memory
@@ -68,7 +68,7 @@ This repository contains:
 - [Network Information](/examples/management-js-api/network)
 - [Package Install](/examples/management-js-api/package-install) for Android and Linux packages
 - [Remote Control IR Lock](/examples/management-js-api/remote)
-- [Reszte for change display resolution and orientation](/examples/management-js-api/resize)
+- [Resize for changing display resolution and orientation](/examples/management-js-api/resize)
 - [Screenshot upload](/examples/management-js-api/screenshot-upload) to remote server
 - [Security PIN setup](/examples/management-js-api/security-pin-code)
 - [System Reboot](/examples/management-js-api/system-reboot)

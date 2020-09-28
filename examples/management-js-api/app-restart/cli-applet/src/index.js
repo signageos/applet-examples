@@ -11,7 +11,7 @@ sos.onReady().then(async function () {
 		if (countDown <= 0) {
 			contentElement.innerHTML = 'Restarting...';
 
-			await sos.management.power.systemReboot();
+			await sos.management.power.appRestart();
 		} else {
 			contentElement.innerHTML = `Restarts in ${countDown}`;
 
@@ -29,7 +29,7 @@ sos.onReady().then(async function () {
 
 		restartButton.onclick = async () => {
 			contentElement.innerHTML = 'Restarting...';
-			await sos.management.power.systemReboot();
+			await sos.management.power.appRestart();
 		};
 	} else {
 		contentElement.innerHTML = 'Not Supported';

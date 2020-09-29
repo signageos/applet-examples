@@ -12,23 +12,55 @@ sos.onReady().then(async function () {
 		logElement.innerHTML += message + '<br>';
 	}
 
-	const serialPort = await sos.hardware.openSerialPort({
-		device: '/dev/ttyUSB0',
-		baudRate: 115200,
-	});
+	async function downloadNexmosphereLib() {
+		try {
+			// add Nexmosphere extension library to the project and cache it offline on the device
+			await sos.offline.addFilesSync([
+				{
+					uri: "https://2.signageos.io/lib/front-applet-extension-nexmosphere/0.1.1/front-applet-extension-nexmosphere.js",
+					uid: "front-applet-extension-nexmosphere.js",
+					type: sos.offline.types.javascript,
+					flags: [sos.offline.flags.append(document.body)],
+				},
+			]);
+		} catch (error) {
+			log('failed to download Nexmosphere library: ' + error.message);
+			throw error;
+		}
+	}
 
-	const nexmosphere = new Nexmosphere(serialPort);
+	async function createNexmosphere() {
+		try {
+			const serialPort = await sos.hardware.openSerialPort({
+				device: '/dev/ttyUSB0',
+				baudRate: 115200,
+			});
 
-	const buttonAddress = 3;
-	const buttonIndex = 0;
+			// you can now use Nexmosphere class
+			return new Nexmosphere(serialPort);
+		} catch (error) {
+			log('failed to create nexmosphere: ' + error.message);
+			throw error;
+		}
+	}
+
+	log('initializing');
+
+	await downloadNexmosphereLib();
+	const nexmosphere = await createNexmosphere();
+
+	const buttonAddress = parseInt(sos.config.buttonAddress) || 1;
+	const buttonIndex = parseInt(sos.config.buttonIndex) || 0;
 	const button = nexmosphere.createButton(buttonAddress, buttonIndex);
 	button.on('pressed', () => log('button is pressed'));
 	button.on('released', () => log('button is released'));
 
-	const rfidAntennaAddress = 5;
+	const rfidAntennaAddress = parseInt(sos.config.rfidAddress) || 1;
 	const rfidAntenna = nexmosphere.createRfidAntenna(rfidAntennaAddress);
 	const currentlyPlacedTags = await rfidAntenna.getPlacedTags();
 	log('currently placed tags: ' + currentlyPlacedTags.join(', '));
 	rfidAntenna.on('picked', (tag) => log(`tag ${tag} was picked`));
 	rfidAntenna.on('placed', (tag) => log(`tag ${tag} was placed`));
+
+	log('Ready! Try some sensors');
 });

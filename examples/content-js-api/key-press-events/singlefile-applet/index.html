@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Key Press Events</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Key Press Events</h1>
+	<p id="index">... uniCharCode ...</p>
+	<p id="index2">... uniKeyCode ...</p>
+
+	<script type="application/ecmascript">
+
+		function uniCharCode(event) {
+				var char = event.which || event.keyCode;
+				const contentElement = document.getElementById('index');
+				contentElement.innerHTML = "Unicode CHARACTER code: " + char;
+		}
+
+		function uniKeyCode(event) {
+				var key = event.keyCode;
+				const contentElement = document.getElementById('index2');
+				contentElement.innerHTML = "Unicode KEY code: " + key;
+		}
+			
+		window.document.addEventListener("keyup", uniCharCode);
+		window.document.addEventListener("keydown", uniKeyCode);
+		
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			await sos.onReady();
+			contentElement.innerHTML = 'sOS Ready';
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
+</html>

@@ -30,6 +30,7 @@ This repository contains:
 - [Iframes](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/iframes) propagation of sos API
 - [Iframes Nested](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/nested-iframes) propagation of sos API
 - [Image and Video Thumbnail](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/image-video-thumbnail)
+- [Key Press Events](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/key-press-events)
 - [MD5 checksum](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/md5-checksum) for offline stored files
 - [Network settings via DHCP](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/network-settings-dhcp)
 - [Network settings via manual IP](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/network-settings-manual)

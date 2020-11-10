@@ -8,7 +8,7 @@ sos.onReady().then(async function () {
 	const contentElement = document.getElementById('index');
 	const iframeElement = document.getElementById('iframe');
 	
-	const iframeUri = sos.config.iframeUri || 'https://raw.githubusercontent.com/signageos/applet-examples/master/examples/iframes/singlefile-applet/iframe.html';
+	const iframeUri = sos.config.iframeUri || 'https://raw.githubusercontent.com/signageos/applet-examples/master/examples/content-js-api/iframes/singlefile-applet/iframe.html';
 
 	const {
 		filePath

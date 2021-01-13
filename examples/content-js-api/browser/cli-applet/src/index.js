@@ -12,7 +12,7 @@ sos.onReady().then(async function () {
 		event.preventDefault();
 
 		// Open link in external browser on touch devices (https://docs.signageos.io/api/sos-applet-api/#Browser)
-		sos.browser.openLink('https://www.signageos.io', {
+		sos.browser.open('https://www.signageos.io', {
 			acl: [/^https?:\/\/.*\.google\.\w+(\/.*)?$/],
 			aclMode: 'blacklist', // or 'whitelist'
 			readOnlyAddressBar: true,

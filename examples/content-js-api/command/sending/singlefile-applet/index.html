@@ -20,8 +20,8 @@
 			for (let i = 0; i < 10; i++) {
 				// Send commands to be safely stored for reports, monitoring etc. even when goes offline (https://docs.signageos.io/api/sos-applet-api/#Command_Dispatching)
 				await sos.command.dispatch({
-					type: 'Loop.Item.Iterate',
-					iteration: i,
+					type: 'Loop.Item.Iterate', // mandatory *type* and custom value
+					iteration: i, // custom parameter and value
 				});
 				contentElement.innerHTML = `Iteration: ${i}`;
 				await new Promise((resolve) => setTimeout(resolve, 1e3));

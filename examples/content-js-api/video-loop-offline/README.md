@@ -7,8 +7,8 @@ Example playback of videos, cached on the device.
 
 For more information on how to write applets, read these articles:
 
-* [Offline Cache API](https://docs.signageos.io/api/js/content/js-offline-cache-media-files)
-* [Video API](https://docs.signageos.io/api/js/content/js-video)
+* [Offline Cache API](https://docs.signageos.io/api/js/content/latest/js-offline-cache-media-files)
+* [Video API](https://docs.signageos.io/api/js/content/latest/js-video)
 * [Getting started with applets](https://docs.signageos.io/knowledge-base/applet)
 * [How to write single-file applets](https://docs.signageos.io/knowledge-base/applet-editor)
 * [How to write applets with signageOS CLI](https://docs.signageos.io/knowledge-base/setup-developer-environment)

@@ -7,7 +7,7 @@ Example usage of power API.
 
 For more information on how to write applets, read these articles:
 
-* [Power API](https://docs.signageos.io/api/js/management/4-js-management-power)
+* [Power API](https://docs.signageos.io/api/js/management/latest/4-js-management-power)
 * [Getting started with applets](https://docs.signageos.io/knowledge-base/applet)
 * [How to write single-file applets](https://docs.signageos.io/knowledge-base/applet-editor)
 * [How to write applets with signageOS CLI](https://docs.signageos.io/knowledge-base/setup-developer-environment)

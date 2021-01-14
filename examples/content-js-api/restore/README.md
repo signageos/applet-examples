@@ -7,7 +7,7 @@ Example of restoring the device to the initial state, clearing all currently pla
 
 For more information on how to write applets, read these articles:
 
-* [Applet Basics](https://docs.signageos.io/api/js/content/js-applet-basics)
+* [Applet Basics](https://docs.signageos.io/api/js/content/latest/js-applet-basics)
 * [Getting started with applets](https://docs.signageos.io/knowledge-base/applet)
 * [How to write single-file applets](https://docs.signageos.io/knowledge-base/applet-editor)
 * [How to write applets with signageOS CLI](https://docs.signageos.io/knowledge-base/setup-developer-environment)

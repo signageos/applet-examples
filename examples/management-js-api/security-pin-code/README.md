@@ -7,7 +7,7 @@ Example usage of security API.
 
 For more information on how to write applets, read these articles:
 
-* [Security API](https://docs.signageos.io/api/js/management/12-js-management-security)
+* [Security API](https://docs.signageos.io/api/js/management/latest/12-js-management-security)
 * [Getting started with applets](https://docs.signageos.io/knowledge-base/applet)
 * [How to write single-file applets](https://docs.signageos.io/knowledge-base/applet-editor)
 * [How to write applets with signageOS CLI](https://docs.signageos.io/knowledge-base/setup-developer-environment)

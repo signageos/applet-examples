@@ -8,7 +8,7 @@ Example integration of Nexmosphere sensors.
 For more information on how to write applets, read these articles:
 
 * [More info about Nexmosphere integration](https://docs.signageos.io/knowledge-base/sensors-supported-sensors#nexmosphere)
-* [Sensors API](https://docs.signageos.io/api/js/content/js-sensors)
+* [Sensors API](https://docs.signageos.io/api/js/content/latest/js-sensors)
 * [Nexmosphere SDK](https://www.npmjs.com/package/@signageos/nexmosphere-sdk)
 * [Nexmosphere Front Applet Extension](https://www.npmjs.com/package/@signageos/front-applet-extension-nexmosphere)
 * [Getting started with applets](https://docs.signageos.io/knowledge-base/applet)

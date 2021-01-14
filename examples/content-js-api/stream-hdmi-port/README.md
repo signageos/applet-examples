@@ -7,7 +7,7 @@ Example of displaying feed from HDMI port as Picture-in-Picture via video inputs
 
 For more information on how to write applets, read these articles:
 
-* [Video Inputs API](https://docs.signageos.io/api/js/content/js-video-inputs-internal-ports)
+* [Video Inputs API](https://docs.signageos.io/api/js/content/latest/js-video-inputs-internal-ports)
 * [Getting started with applets](https://docs.signageos.io/knowledge-base/applet)
 * [How to write single-file applets](https://docs.signageos.io/knowledge-base/applet-editor)
 * [How to write applets with signageOS CLI](https://docs.signageos.io/knowledge-base/setup-developer-environment)

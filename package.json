@@ -1,7 +1,7 @@
 {
   "name": "applet-examples",
   "version": "1.0.0",
-  "description": "This repository contains sample applets code for every simple method documented in our [documentation](https://docs.signageos.io/api/sos-applet-api/).",
+  "description": "This repository contains sample applets code for every simple method documented in our [documentation](https://docs.signageos.io/api/js/content/latest/js-api-introduction.",
   "main": "index.html",
   "directories": {
     "example": "examples"

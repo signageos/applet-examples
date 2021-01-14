@@ -7,7 +7,7 @@ Example usage offline cache API for media files.
 
 For more information on how to write applets, read these articles:
 
-* [Offline Cache API](https://docs.signageos.io/api/js/content/js-offline-cache-media-files)
+* [Offline Cache API](https://docs.signageos.io/api/js/content/latest/js-offline-cache-media-files)
 * [Getting started with applets](https://docs.signageos.io/knowledge-base/applet)
 * [How to write single-file applets](https://docs.signageos.io/knowledge-base/applet-editor)
 * [How to write applets with signageOS CLI](https://docs.signageos.io/knowledge-base/setup-developer-environment)

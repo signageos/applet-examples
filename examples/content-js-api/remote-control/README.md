@@ -7,7 +7,7 @@ Example usage of input API.
 
 For more information on how to write applets, read these articles:
 
-* [Input API](https://docs.signageos.io/api/js/content/js-input)
+* [Input API](https://docs.signageos.io/api/js/content/latest/js-input)
 * [Getting started with applets](https://docs.signageos.io/knowledge-base/applet)
 * [How to write single-file applets](https://docs.signageos.io/knowledge-base/applet-editor)
 * [How to write applets with signageOS CLI](https://docs.signageos.io/knowledge-base/setup-developer-environment)

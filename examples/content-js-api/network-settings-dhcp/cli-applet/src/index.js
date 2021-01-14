@@ -3,7 +3,7 @@ require('./index.css');
 
 import sos from '@signageos/front-applet';
 
-// Wait on sos data are ready (https://docs.signageos.io/api/sos-applet-api/#onReady)
+// Wait on sos data are ready (https://docs.signageos.io/api/js/content/latest/js-applet-basics)
 sos.onReady().then(async function () {
 	const contentElement = document.getElementById('index');
 
@@ -13,7 +13,7 @@ sos.onReady().then(async function () {
 	contentElement.innerHTML = 'sOS is loaded<br/>';
 
 
-	// Wait on sos data are ready (https://docs.signageos.io/api/sos-applet-api/#onReady)
+	// Wait on sos data are ready (https://docs.signageos.io/api/js/content/latest/js-applet-basics)
 	await sos.onReady();
 	console.log('sOS is ready');
 	contentElement.innerHTML += 'sOS is ready<br/>';

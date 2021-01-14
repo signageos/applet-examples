@@ -24,7 +24,7 @@
 			buttonElement.addEventListener('click', async (event) => {
 				event.preventDefault();
 
-				// Pause or Resume timing triggers (https://docs.signageos.io/api/sos-applet-api/#Triggers)
+				// Pause or Resume timing triggers (https://docs.signageos.io/api/js/content/latest/js-timing)
 				if (paused) {
 					await sos.timing.triggers.resume();
 					paused = false;

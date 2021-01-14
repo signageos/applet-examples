@@ -35,7 +35,7 @@
 			sos.stream.onConnected(streamEventListener);
 			sos.stream.onDisconnected(streamEventListener);
 
-			// Play stream forever (https://docs.signageos.io/api/sos-applet-api/#Play_stream)
+			// Play stream forever (https://docs.signageos.io/api/js/content/latest/js-video-stream)
 			await sos.stream.play(...stream.arguments);
 		}
 		// Needed check for distinction between sos open and platform in box

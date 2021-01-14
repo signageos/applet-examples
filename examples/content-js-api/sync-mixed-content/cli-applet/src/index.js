@@ -3,7 +3,7 @@ require('./index.css');
 
 import sos from '@signageos/front-applet';
 
-// Wait on sos data are ready (https://docs.signageos.io/api/sos-applet-api/#onReady)
+// Wait on sos data are ready (https://docs.signageos.io/api/js/content/latest/js-applet-basics)
 sos.onReady().then(async function () {
 	const contentElement = document.getElementById('index');
 	const imageElement = document.getElementById('image');
@@ -53,7 +53,7 @@ sos.onReady().then(async function () {
 	];
 
 	for (const item of items) {
-		// Store file to offline storage (https://docs.signageos.io/api/sos-applet-api/#Load_or_Save_specific_file_into_internal_memory)
+		// Store file to offline storage (https://docs.signageos.io/api/js/content/latest/js-offline-cache-media-files)
 		const {
 			filePath
 		} = await sos.offline.cache.loadOrSaveFile(item.uid, item.uri);
@@ -78,7 +78,7 @@ sos.onReady().then(async function () {
 
 		// play current
 
-		// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/sos-applet-api/#Play_video)
+		// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/js/content/latest/js-video)
 		if (realCurrent.type === 'video') {
 			await sos.video.play(...realCurrent.arguments);
 		} else if (realCurrent.type === 'image') {
@@ -106,7 +106,7 @@ sos.onReady().then(async function () {
 		const nextIndex = (realCurrentIndex + 1) % items.length;
 
 		if (realCurrent.type === 'video') {
-			// https://docs.signageos.io/api/sos-applet-api/#onceEnded
+			// https://docs.signageos.io/api/js/content/latest/js-video
 			endedPromise = sos.video.onceEnded(...realCurrent.arguments);
 
 			const next = items[nextIndex];

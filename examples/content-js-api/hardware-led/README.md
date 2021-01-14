@@ -7,7 +7,7 @@ Example usage of hardware LED API.
 
 For more information on how to write applets, read these articles:
 
-* [Hardware API](https://docs.signageos.io/api/js/content/js-hardware)
+* [Hardware API](https://docs.signageos.io/api/js/content/latest/js-hardware)
 * [Getting started with applets](https://docs.signageos.io/knowledge-base/applet)
 * [How to write single-file applets](https://docs.signageos.io/knowledge-base/applet-editor)
 * [How to write applets with signageOS CLI](https://docs.signageos.io/knowledge-base/setup-developer-environment)

@@ -3,7 +3,7 @@ require('./index.css');
 
 import sos from '@signageos/front-applet';
 
-// Wait on sos data are ready (https://docs.signageos.io/api/sos-applet-api/#onReady)
+// Wait on sos data are ready (https://docs.signageos.io/api/js/content/latest/js-applet-basics)
 sos.onReady().then(async function () {
 	const contentElement = document.getElementById('index');
 	
@@ -24,7 +24,7 @@ sos.onReady().then(async function () {
 
 	await new Promise((resolve) => setTimeout(resolve, 3e3));
 
-	// To restore whole display area. Simply stop all videos, streams etc. (https://docs.signageos.io/api/sos-applet-api/#restore)
+	// To restore whole display area. Simply stop all videos, streams etc. (https://docs.signageos.io/api/js/content/latest/js-applet-basics#restore)
 	sos.restore();
 
 	contentElement.innerHTML = 'Restored.';

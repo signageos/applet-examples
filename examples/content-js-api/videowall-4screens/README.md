@@ -7,8 +7,8 @@ Example of a video wall on four screens.
 
 For more information on how to write applets, read these articles:
 
-* [Video API](https://docs.signageos.io/api/js/content/js-video)
-* [Synchronization API](https://docs.signageos.io/api/js/content/js-sync-playback)
+* [Video API](https://docs.signageos.io/api/js/content/latest/js-video)
+* [Synchronization API](https://docs.signageos.io/api/js/content/latest/js-sync-playback)
 * [Getting started with applets](https://docs.signageos.io/knowledge-base/applet)
 * [How to write single-file applets](https://docs.signageos.io/knowledge-base/applet-editor)
 * [How to write applets with signageOS CLI](https://docs.signageos.io/knowledge-base/setup-developer-environment)

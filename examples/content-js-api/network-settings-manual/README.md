@@ -7,7 +7,7 @@ Example of manual network configuration via network API.
 
 For more information on how to write applets, read these articles:
 
-* [Network API](https://docs.signageos.io/api/js/management/11-js-management-network)
+* [Network API](https://docs.signageos.io/api/js/management/latest/11-js-management-network)
 * [Getting started with applets](https://docs.signageos.io/knowledge-base/applet)
 * [How to write single-file applets](https://docs.signageos.io/knowledge-base/applet-editor)
 * [How to write applets with signageOS CLI](https://docs.signageos.io/knowledge-base/setup-developer-environment)

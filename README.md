@@ -18,6 +18,7 @@ This repository contains:
 
 ### Content-related examples
 - [Browser](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/browser) on touch devices
+- [Capabilities - Content](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/capabilities-content) to check what is supported on the device
 - [Clock](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/clock)
 - [Command](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/command)
 - [Commands Sending](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/command/sending) for monitoring
@@ -61,6 +62,7 @@ This repository contains:
 - [Basic information](https://github.com/signageos/applet-examples/tree/master/examples/management-js-api/basics) like device model, serial number and temperature
 - [Battery](https://github.com/signageos/applet-examples/tree/master/examples/management-js-api/battery)
 - [Brightness](https://github.com/signageos/applet-examples/tree/master/examples/management-js-api/brightness)
+- [Capabilities - Management](https://github.com/signageos/applet-examples/tree/master/examples/management-js-api/capabilities-management) to check what is supported on the device
 - [Debug](https://github.com/signageos/applet-examples/tree/master/examples/management-js-api/debug) for enabling device debugger and console log access
 - [Display On/Off](https://github.com/signageos/applet-examples/tree/master/examples/management-js-api/display)
 - [Firmware upgrade](https://github.com/signageos/applet-examples/tree/master/examples/management-js-api/firmware)

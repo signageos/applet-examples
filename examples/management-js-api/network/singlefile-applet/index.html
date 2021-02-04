@@ -15,19 +15,26 @@
 			const contentElement = document.getElementById('index');
 			await sos.onReady();
 
-			const NOT_SUPPORTED = 'Not Supported';
+			if (await sos.management.supports('NETWORK_INFO')) {
+				const interfaces = await sos.management.network.listInterfaces();
+				contentElement.innerHTML = '';
 
-			const networkInfo = await sos.management.supports('NETWORK_INFO') ?
-				await sos.management.getNetworkInfo() :
-				NOT_SUPPORTED;
-
-			if (networkInfo === NOT_SUPPORTED) {
-				contentElement.innerHTML = NOT_SUPPORTED;
+				for (const iface of interfaces) {
+					contentElement.innerHTML +=
+						`Type: ${iface.type}, ` +
+						`Name: ${iface.name}, ` +
+						`MAC: ${iface.macAddress}`;
+					if (iface.localAddress) {
+						contentElement.innerHTML +=
+							`IP: ${iface.localAddress}, ` +
+							`Gateway: ${iface.gateway}, ` +
+							`Netmask: ${iface.netmask}, ` +
+							`DNS: ${(iface.dns || []).join(', ')}`;
+					}
+					contentElement.innerHTML += '<br>';
+				}
 			} else {
-				contentElement.innerHTML = `
-						IP Address: ${networkInfo.localAddress}
-						Interface: ${networkInfo.activeInterface}
-					`;
+				contentElement.innerHTML = 'Not Supported';
 			}
 		}
 		// Needed check for distinction between sos open and platform in box

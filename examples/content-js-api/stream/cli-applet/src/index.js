@@ -10,14 +10,13 @@ sos.onReady().then(async function () {
 	const uri = sos.config.uri || 'https://www.rmp-streaming.com/media/bbb-360p.mp4';
 	//const uri = sos.config.uri || 'rtsp://184.72.239.149/vod/mp4:BigBuckBunny_175k.mov';
 	const protocolType = sos.config.protocolType || 'HTTP'; // RTSP
-	const format = sos.config.format || 'MP4';
 
 	const stream = {
 		uid: 'stream-1',
 		uri
 	};
 
-	stream.arguments = [stream.uri, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight, protocolType, format];
+	stream.arguments = [stream.uri, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight, protocolType];
 
 	contentElement.innerHTML = '';
 

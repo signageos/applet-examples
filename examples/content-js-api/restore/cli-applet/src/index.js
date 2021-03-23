@@ -8,7 +8,7 @@ sos.onReady().then(async function () {
 	const contentElement = document.getElementById('index');
 	
 	const video = {
-		uid: 'video-1',
+		uid: 'video-1.mp4',
 		uri: 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4'
 	};
 

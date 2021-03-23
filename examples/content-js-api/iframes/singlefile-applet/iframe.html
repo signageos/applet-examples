@@ -17,7 +17,7 @@
 				.then(function () {
 					// like saving files to internal memory from within the iframe
 					var videoUri = sos.config.videoUri || 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4';
-					return sos.offline.cache.loadOrSaveFile('video', videoUri);
+					return sos.offline.cache.loadOrSaveFile('video.mp4', videoUri);
 				})
 				.then(function (file) {
 					contentElement.innerHTML = '';

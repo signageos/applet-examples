@@ -1,0 +1,83 @@
+<smil>
+    <head>
+        <triggers>
+            <trigger id="trigger1" condition="or">
+                <condition 
+                    origin="keyboard" <!-- Trigger origin, now keyboard -->
+                    data="aaaaa" <!-- Key string to match -->
+                    action="keyUp" <!-- keyboard action, probably fixed -->
+                />
+            </trigger>
+            <!-- you can add as many triggers as you need -->
+            <trigger id="trigger2" condition="or">
+                <condition 
+                    origin="keyboard" <!-- Trigger origin, now keyboard -->
+                    data="bbbbbb" <!-- Key string to match -->
+                    action="keyUp" <!-- keyboard action, probably fixed -->
+                />
+            </trigger>
+            <trigger id="trigger3" condition="or">
+                <condition 
+                    origin="keyboard" <!-- Trigger origin, now keyboard -->
+                    data="cccccc" <!-- Key string to match -->
+                    action="keyUp" <!-- keyboard action, probably fixed -->
+                />
+            </trigger>
+        </triggers>
+        <layout>
+			<!-- define the screen resolution -->
+			<root-layout width="1920" height="1080" backgroundColor="#18182c" />
+
+            <region regionName="trigger-region" left="10" top="10" width="1280" height="720">
+                <!-- Single sub-region filling the parent region completely -->
+                <region regionName="trigger-sub-region1" 
+                        left="0" 
+                        top="0" 
+                        width="100%" 
+                        height="100%"
+                    />
+            </region>
+        </layout>
+    </head>
+    <body>
+        <par>
+            <par>
+                <seq repeatCount="indefinite">
+                    <video src="aaaaa.mp4" region="trigger-region"></video>
+                    <video src="bbbbb.mp4" region="trigger-region"></video>
+                    <video src="ccccc.mp4" region="trigger-region"></video>
+                </seq>
+            </par>
+
+            <par>
+                <!-- referencing <trigger id="trigger1"> defined in <head>  
+                    "aaaaa" is not a mandatory naming
+                -->
+                <seq begin="trigger1"> 
+                    <video src="aaaaa.mp4" 
+                        region="trigger-region"> <!-- As a region you always set the parent of the sub-regions -->
+                    </video>
+                </seq>
+            </par>
+
+            <par>
+                <!-- referencing <trigger id="trigger2"> defined in <head>  -->
+                <seq begin="trigger2"> 
+                    <video src="bbbbb.mp4" 
+                        region="trigger-region"> <!-- As a region you always set the parent of the sub-regions -->
+                    </video>
+                </seq>
+            </par>
+
+            <par>
+                <!-- referencing <trigger id="trigger2"> defined in <head>  -->
+                <seq begin="trigger3"> 
+                    <video src="ccccc.mp4" 
+                        region="trigger-region"> <!-- As a region you always set the parent of the sub-regions -->
+                    </video>
+                </seq>
+            </par>
+
+        </par>
+    </body>
+</smil>

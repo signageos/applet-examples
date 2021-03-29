@@ -79,3 +79,22 @@ This repository contains:
 - [Timer](https://github.com/signageos/applet-examples/tree/master/examples/management-js-api/timer) for turning display On/Off based on time and day in a week 
 - [Volume](https://github.com/signageos/applet-examples/tree/master/examples/management-js-api/volume) level settings
 - [Wi-Fi Access Point](https://github.com/signageos/applet-examples/tree/master/examples/management-js-api/wifi-access-point) for setting up RPi via smartphone/PC
+
+## SMIL playlists examples
+
+### Demos
+
+- [Playlist with zones and widgets](https://github.com/signageos/applet-examples/tree/master/smil/demos/zones)
+
+### Samples
+
+- [Fullscreen video playback](https://github.com/signageos/applet-examples/blob/master/smil/samples/01-full-screen-playback.smil)
+- [Preloader and fullscreen playback](https://github.com/signageos/applet-examples/blob/master/smil/samples/02-preloader-video-and-full-screen-playback.smil)
+- [Portrait playback](https://github.com/signageos/applet-examples/blob/master/smil/samples/03-portrait-playback.smil)
+- [Special media playback ordering](https://github.com/signageos/applet-examples/blob/master/smil/samples/04-special-media-playback-ordering.smil)
+- [Scheduling via Wallclock](https://github.com/signageos/applet-examples/blob/master/smil/samples/05-scheduling-wallclock.smil)
+- [Regions with relative size definition](https://github.com/signageos/applet-examples/blob/master/smil/samples/06-regions-relative-definitions.smil)
+- [Relative file paths](https://github.com/signageos/applet-examples/blob/master/smil/samples/07-relative-file-paths.smil)
+- [Multiple regions playlist](https://github.com/signageos/applet-examples/blob/master/smil/samples/08-multiple-regions.smil)
+- [HTML5 content in region](https://github.com/signageos/applet-examples/blob/master/smil/samples/10-html5-content-in-region.smil)
+- [Keyboard content triggers](https://github.com/signageos/applet-examples/blob/master/smil/samples/11-keyboard-triggers.smil)

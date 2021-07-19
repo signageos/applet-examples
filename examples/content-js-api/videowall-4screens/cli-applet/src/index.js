@@ -1,4 +1,3 @@
-
 require('./index.css');
 
 import sos from '@signageos/front-applet';
@@ -19,9 +18,9 @@ sos.onReady().then(async function () {
 
 	// Videos for the video wall are sliced in pre-production into separate segments, each segment for each device in the matrix
 	const videosTopLeft = [{
-			uid: 'video-1.mp4',
-			uri: 'https://static.signageos.io/assets/videowall1/videowall1-top_left_0478fd10ebd4cdc9b888db783e0810ea.mp4'
-		},
+		uid: 'video-1.mp4',
+		uri: 'https://static.signageos.io/assets/videowall1/videowall1-top_left_0478fd10ebd4cdc9b888db783e0810ea.mp4'
+	},
 		{
 			uid: 'video-2.mp4',
 			uri: 'https://static.signageos.io/assets/videowall2/videowall2-top_left_def8f44d0dcac75b3b2474b705cb0f8e.mp4'
@@ -32,9 +31,9 @@ sos.onReady().then(async function () {
 		},
 	];
 	const videosTopRight = [{
-			uid: 'video-1.mp4',
-			uri: 'https://static.signageos.io/assets/videowall1/videowall1-top_right_3be4db1ded91836bb778c2fbd8810005.mp4'
-		},
+		uid: 'video-1.mp4',
+		uri: 'https://static.signageos.io/assets/videowall1/videowall1-top_right_3be4db1ded91836bb778c2fbd8810005.mp4'
+	},
 		{
 			uid: 'video-2.mp4',
 			uri: 'https://static.signageos.io/assets/videowall2/videowall2-top_right_588d44880144af36192b58ba42c18052.mp4'
@@ -45,9 +44,9 @@ sos.onReady().then(async function () {
 		},
 	];
 	const videosBottomLeft = [{
-			uid: 'video-1.mp4',
-			uri: 'https://static.signageos.io/assets/videowall1/videowall1-bottom_left_4e7c71fbb015ed9947e379f46daf941b.mp4'
-		},
+		uid: 'video-1.mp4',
+		uri: 'https://static.signageos.io/assets/videowall1/videowall1-bottom_left_4e7c71fbb015ed9947e379f46daf941b.mp4'
+	},
 		{
 			uid: 'video-2.mp4',
 			uri: 'https://static.signageos.io/assets/videowall2/videowall2-bottom_left_cd0fe378929adffd4f85642bd70a7100.mp4'
@@ -58,11 +57,11 @@ sos.onReady().then(async function () {
 		},
 	];
 	const videosBottomRight = [{
-			uid: 'video-1.mp4',
-			uri: 'https://static.signageos.io/assets/videowall1/videowall1-bottom_right_49db19005399d29d6872da2be7354208.mp4'
-		},
+		uid: 'video-1.mp4',
+		uri: 'https://static.signageos.io/assets/videowall1/videowall1-bottom_right_49db19005399d29d6872da2be7354208.mp4'
+	},
 		{
-			uid: 'video-2.mp4,
+			uid: 'video-2.mp4',
 			uri: 'https://static.signageos.io/assets/videowall2/videowall2-bottom_right_b0183cc35cb2c575546c9a63421db11a.mp4'
 		},
 		{

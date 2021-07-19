@@ -1,4 +1,3 @@
-
 require('./index.css');
 
 import sos from '@signageos/front-applet';
@@ -12,11 +11,11 @@ sos.onReady().then(async function () {
 		return imgElements.find((imgElement) => imgElement.getAttribute('data-args') === JSON.stringify(args)) ||
 			imgElements.find((imgElement) => imgElement.style.display === 'none');
 	}
-	
+
 	const contents = sos.config.contents ? JSON.parse(sos.config.contents) : [{
-			uid: 'video-1.mp4',
-			uri: 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4'
-		},
+		uid: 'video-1.mp4',
+		uri: 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4'
+	},
 		{
 			uid: 'image-1.png',
 			uri: 'https://static.signageos.io/assets/android-benq-amy_bbd9afbc0655ceb6da790a80fbd90290.png'
@@ -62,7 +61,7 @@ sos.onReady().then(async function () {
 			uri: 'https://static.signageos.io/assets/video-test-3_5cfd717df750e5b1d5dd8384c194a92d.mp4'
 		},
 		{
-			uid: 'image-10.png,
+			uid: 'image-10.png',
 			uri: 'https://static.signageos.io/assets/webos-1.0-krabappel_60b520b38756789dce877dc2feac92fb.png'
 		},
 		{

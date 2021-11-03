@@ -98,3 +98,37 @@ This repository contains:
 - [Multiple regions playlist](https://github.com/signageos/applet-examples/blob/master/smil/samples/08-multiple-regions.smil)
 - [HTML5 content in region](https://github.com/signageos/applet-examples/blob/master/smil/samples/10-html5-content-in-region.smil)
 - [Keyboard content triggers](https://github.com/signageos/applet-examples/blob/master/smil/samples/11-keyboard-triggers.smil)
+
+## Publish applets
+### CI publishing
+- Applets are automatically published/uploaded to signageOS cloud in Gitlab CI when pushed (e.g.: `publish-applet:sample`)
+- The only requirements is to set correct `SOS_API_IDENTIFICATION` & `SOS_API_SECURITY_TOKEN` & `SOS_ORGANIZATION_UID` in runner environment variables at https://gitlab.com/signageos/applet-examples/-/settings/ci_cd
+- You can generate the token on https://box.signageos.io/settings
+- You can get organization uid on https://box.signageos.io/organizations
+- For details, see `.gitlab-ci.yml`
+
+### Local publishing
+- For publishing locally, install package `npm i @signageos/cli -g`, do `sos login` & `sos organization set-default`.
+- Run publishing using command `npm run upload-applet`
+
+## Test applets
+### CI running tests
+- Applets are automatically tested in Gitlab CI when pushed and clicked manual job (e.g.: `test-device:tizen-2.4`).
+- The only requirements is to set correct `SOS_AUTH_CLIENT_ID` & `SOS_AUTH_SECRET` in runner environment variables at https://gitlab.com/signageos/applet-examples/-/settings/ci_cd
+- You can generate the token on https://box.signageos.io/organization/__FILL_YOUR_ORGANIZATION_UID__/API%20tokens
+- For details, see `.gitlab-ci.yml`
+
+### Local running tests
+- For testing locally, install package `npm i @signageos/cli -g`, do `sos login` & `sos organization set-default`.
+- Always export correct `export SOS_APPLET_UID="__FILL_YOUR_APPLET_UID__"` & `export SOS_APPLET_VERSION="__FILL_YOUR_APPLET_VERSIO__"` for the applet you are testing & `export SOS_DEVICE_UID="__FILL_DEVICE_UID_TO_TEST_ON__"` for the device you want to test against.
+- Run tests using command `npm test`.
+
+### signageOS cloud running tests from Box
+- Go to https://box.signageos.io/device/__FILL_DEVICE_UID_TO_TEST_ON__/debugAndLogs
+- Select corresponding applet & version and click "Run applet tests" in "Device Applet tests" section.
+
+### signageOS cloud running tests from CLI
+- For testing locally, install package `npm i @signageos/cli -g`, do `sos login` & `sos organization set-default`.
+- Always export correct `export SOS_APPLET_UID="__FILL_YOUR_APPLET_UID__"` & `export SOS_APPLET_VERSION="__FILL_YOUR_APPLET_VERSIO__"` for the applet you are testing.
+- Upload tests to signageOS cloud using command `sos applet test upload`.
+- Run tests on signageOS cloud using command `sos applet test run`.

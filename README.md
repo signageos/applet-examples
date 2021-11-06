@@ -120,7 +120,7 @@ This repository contains:
 
 ### Local running tests
 - For testing locally, install package `npm i @signageos/cli -g`, do `sos login` & `sos organization set-default`.
-- Always export correct `export SOS_APPLET_UID="__FILL_YOUR_APPLET_UID__"` & `export SOS_APPLET_VERSION="__FILL_YOUR_APPLET_VERSIO__"` for the applet you are testing & `export SOS_DEVICE_UID="__FILL_DEVICE_UID_TO_TEST_ON__"` for the device you want to test against.
+- Always export correct `export SOS_APPLET_UID="__FILL_YOUR_APPLET_UID__"` & `export SOS_APPLET_VERSION="__FILL_YOUR_APPLET_VERSION__"` for the applet you are testing & `export SOS_DEVICE_UID="__FILL_DEVICE_UID_TO_TEST_ON__"` for the device you want to test against.
 - Run tests using command `npm test`.
 
 ### signageOS cloud running tests from Box
@@ -129,6 +129,6 @@ This repository contains:
 
 ### signageOS cloud running tests from CLI
 - For testing locally, install package `npm i @signageos/cli -g`, do `sos login` & `sos organization set-default`.
-- Always export correct `export SOS_APPLET_UID="__FILL_YOUR_APPLET_UID__"` & `export SOS_APPLET_VERSION="__FILL_YOUR_APPLET_VERSIO__"` for the applet you are testing.
+- Always export correct `export SOS_APPLET_UID="__FILL_YOUR_APPLET_UID__"` & `export SOS_APPLET_VERSION="__FILL_YOUR_APPLET_VERSION__"` for the applet you are testing.
 - Upload tests to signageOS cloud using command `sos applet test upload`.
 - Run tests on signageOS cloud using command `sos applet test run`.

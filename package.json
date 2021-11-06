@@ -15,7 +15,10 @@
   "scripts": {
     "upload-applet": "sos applet upload --applet-path=index.html",
     "upload-applet-ci": "sos applet upload --no-update-package-config --applet-path=index.html --yes",
-    "test": "mocha --timeout 120000"
+    "upload-tests": "sos applet test upload",
+    "upload-tests-ci": "sos applet test upload --yes",
+    "test": "mocha --timeout 120000",
+    "test-sos": "sos applet test run --yes --device-uid"
   },
   "repository": {
     "type": "git",

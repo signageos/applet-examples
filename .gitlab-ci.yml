@@ -11,6 +11,7 @@ stages:
     - cd $APPLET_PATH
     - npm install
     - npm run upload-applet-ci
+    - npm run upload-tests-ci
 
 .test-applet-device:
   stage: test
@@ -21,6 +22,15 @@ stages:
     - npm install
     - npm test
 
+.test-applet-device:sos:
+  stage: test
+  image: node:16-alpine
+  when: manual
+  script:
+    - cd $APPLET_PATH
+    - npm install @signageos/cli -g
+    - npm run test-sos $SOS_DEVICE_UID
+
 # Sample Applet
 publish-applet:sample:
   extends: .publish-applet
@@ -30,6 +40,14 @@ publish-applet:sample:
 
 test-applet-device:sample:tizen-2.4:
   extends: .test-applet-device
+  variables:
+    APPLET_PATH: .
+    SOS_APPLET_VERSION: 2.0.0
+    SOS_APPLET_UID: ca2123037c0ceeaceab255707ff94924ecc2830aaaa3cee88c
+    SOS_DEVICE_UID: e824fcd24a4f8bdf962974e45c1a9901606b50771520a0a907625
+
+test-applet-device:sample:tizen-2.4:sos:
+  extends: .test-applet-device:sos
   variables:
     APPLET_PATH: .
     SOS_APPLET_VERSION: 2.0.0

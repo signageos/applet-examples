@@ -84,6 +84,7 @@ This repository contains:
 
 ### Demos
 
+- [Sensors "Car Rental" Demo](https://github.com/signageos/applet-examples/tree/master/smil/demos/car_rental_sensors)
 - [Playlist with zones and widgets](https://github.com/signageos/applet-examples/tree/master/smil/demos/zones)
 
 ### Samples

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<smil>
+    <head>
+        <meta content="1000" http-equiv="Refresh"/>
+        <triggers>
+            <!-- keys drop off RFID trigger  Alt81M-->
+            <trigger id="triggerGenderManTrigger" condition="or">
+                <condition
+                        origin="keyboard"  data="X001BAlt81M" action="keydown"/>
+            </trigger>
+            <trigger id="triggerGenderWomanTrigger" condition="or">
+                <condition
+                        origin="keyboard"  data="X001BAlt81F" action="keydown"/>
+            </trigger>
+            <trigger id="triggerKeysPlacedDown" condition="or">
+                <condition
+                        origin="keyboard"  data="XRAlt8PB001" action="keydown"/>
+            </trigger>
+            <trigger id="triggerKeysPickedUp" condition="or">
+                <condition
+                        origin="keyboard"  data="XRAlt8PU001" action="keydown"/>
+            </trigger>
+        </triggers>
+        <layout>
+            <root-layout backgroundColor="#000000" height="1920" width="1080"/>
+            <region regionName="main" left="0" top="0" width="100%" height="100%" z-index="1"
+                    backgroundColor="#FFFFFF"
+                    mediaAlign="topLeft">
+                <region regionName="triggeredContent" left="0" top="0" width="100%" height="100%" z-index="1"
+                        backgroundColor="transparent"/>
+            </region>
+            <region regionName="keyPickup" left="1280" top="50" width="590" height="590" z-index="3"
+                    backgroundColor="transparent"
+                    mediaAlign="topLeft">
+                <region regionName="keysTriggeredContent" left="0" top="0" width="100%" height="100%" z-index="3"
+                        backgroundColor="transparent"/>
+            </region>
+        </layout>
+    </head>
+    <body>
+        <par>
+            <seq repeatCount="indefinite">
+                <video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/demo/car-rental-sensors/display/assets/pexels-gleb-albovsky-6605102.mp4" id="annons0" fit="hidden" region="main">
+                    <param name="cacheControl" value="auto" />
+                </video>
+                <video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/demo/car-rental-sensors/display/assets/pexels-rodnae-productions-8783208.mp4" id="annons0" fit="hidden" region="main">
+                    <param name="cacheControl" value="auto" />
+                </video>
+            </seq>
+        </par>
+
+        <par>
+            <seq begin="triggerGenderManTrigger" repeatCount="1">
+                <video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/demo/car-rental-sensors/display/assets/petersen-museum.mp4" id="annons0" fit="hidden" region="main">
+                    <param name="cacheControl" value="auto" />
+                </video>
+            </seq>
+        </par>
+
+        <par>
+            <seq begin="triggerGenderWomanTrigger" repeatCount="1">
+                <video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/demo/car-rental-sensors/display/assets/petersen-museum.mp4" id="annons0" fit="hidden" region="main">
+                    <param name="cacheControl" value="auto" />
+                </video>
+            </seq>
+        </par>
+
+        <par>
+            <seq begin="triggerKeysPlacedDown" repeatCount="1">
+                <img src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/demo/car-rental-sensors/display/assets/keys_pickup.png" id="annons1" dur="35s" fit="hidden" region="keyPickup">
+                    <param name="cacheControl" value="auto" />
+                </img>
+            </seq>
+        </par>
+
+        <par>
+            <seq begin="triggerKeysPickedUp" repeatCount="1">
+                <img src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/demo/car-rental-sensors/display/assets/keys_thanks.png" id="annons1" dur="15s" fit="hidden" region="keyPickup">
+                    <param name="cacheControl" value="auto" />
+                </img>
+            </seq>
+        </par>
+    </body>
+</smil>

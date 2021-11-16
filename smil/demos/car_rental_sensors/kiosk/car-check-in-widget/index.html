@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title> CAR RENT </title>
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+  <!-- font awesome style -->
+  <link href="css/font-awesome.min.css" rel="stylesheet" />
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700|Raleway:400,700&display=swap" rel="stylesheet" />
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="css/responsive.css" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="hero_area" id="start">
+    <div class="hero_bg_box">
+      <img src="images/hero-bg.png" alt="">
+    </div>
+    <!-- header section strats -->
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container">
+          <a class="navbar-brand" href="index.html">
+            <span>
+              CAR RENT
+            </span>
+          </a>
+          <div class="" id="">
+            <div class="custom_menu-btn">
+              <button onclick="openNav()">
+                <span class="s-1"> </span>
+                <span class="s-2"> </span>
+                <span class="s-3"> </span>
+              </button>
+            </div>
+            <div id="myNav" class="overlay">
+              <div class="overlay-content">
+                <a href="index.html">HOME</a>
+                <a href="#">ABOUT</a>
+                <a href="#">CONTACT US</a>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!-- end header section -->
+    <!-- slider section -->
+    <section class="slider_section ">
+      <div id="customCarousel1" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="detail-box">
+                    <h5>
+                      01
+                    </h5>
+                    <h1>
+                      Scan Your <br />
+                      Rent Code
+                    </h1>
+                    <button id="startScanning">
+                      SCAN NOW
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item ">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="detail-box">
+                    <h5>
+                      02
+                    </h5>
+                    <h1>
+                      Select <br />
+                      Vehicles
+                    </h1>
+                    <a href="#carSelector" class="">
+                      Select Now
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ol class="carousel-indicators">
+          <li data-target="#customCarousel1" data-slide-to="0" class="active"></li>
+          <li data-target="#customCarousel1" data-slide-to="1"></li>
+        </ol>
+      </div>
+
+      <!-- Scanning Modal -->
+      <div class="modal fade" id="scanningModal" tabindex="-1" role="dialog" aria-labelledby="scanningModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="scanningModalLabel">Fast track your check in</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h2>Scan your Rent Code</h2>
+              <br>
+              <br>
+              <img src="images/barcode-scan.gif" id="scanningInProgressGif">
+              <img src="images/check-green.gif" id="scanningDoneGif" style="display: none;">
+            
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- end slider section -->
+  </div>
+
+  <!-- car selector section -->
+
+  <section class="car_selector_section layout_padding" id="carSelector">
+    <div class="container">
+      <div class="heading_container heading_center">
+        <h2>
+          Upgrade Yourself To Premium
+        </h2>
+        <p>
+          which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't an
+        </p>
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-lg-6">
+          <div class="box">
+            <div class="img-box car_box">
+              <img src="images/car1.jfif" alt="">
+            </div>
+            <div class="detail-box">
+              <a href="">
+                Car
+              </a>
+              <div class="price_box">
+                <h6 class="price_heading">
+                  <span>$</span> 10.00
+                </h6>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-6">
+          <div class="box">
+            <div class="img-box car_box">
+              <img src="images/car2.jfif" alt="">
+            </div>
+            <div class="detail-box">
+              <a href="">
+                Car
+              </a>
+              <div class="price_box">
+                <h6 class="price_heading">
+                  <span>$</span> 10.00
+                </h6>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-6">
+          <div class="box">
+            <div class="img-box car_box">
+              <img src="images/car3.jfif" alt="">
+            </div>
+            <div class="detail-box">
+              <a href="">
+                Car
+              </a>
+              <div class="price_box">
+                <h6 class="price_heading">
+                  <span>$</span> 10.00
+                </h6>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-6">
+          <div class="box">
+            <div class="img-box car_box">
+              <img src="images/car4.jfif" alt="">
+            </div>
+            <div class="detail-box">
+              <a href="">
+                Car
+              </a>
+              <div class="price_box">
+                <h6 class="price_heading">
+                  <span>$</span> 10.00
+                </h6>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-6">
+          <div class="box">
+            <div class="img-box car_box">
+              <img src="images/car5.jfif" alt="">
+            </div>
+            <div class="detail-box">
+              <a href="">
+                Car
+              </a>
+              <div class="price_box">
+                <h6 class="price_heading">
+                  <span>$</span> 10.00
+                </h6>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-6">
+          <div class="box">
+            <div class="img-box car_box">
+              <img src="images/car6.jfif" alt="">
+            </div>
+            <div class="detail-box">
+              <a href="">
+                Car
+              </a>
+              <div class="price_box">
+                <h6 class="price_heading">
+                  <span>$</span> 10.00
+                </h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="btn-box">
+        <a href="#insuranceSection">
+          Continue to Checkout
+        </a>
+      </div>
+      <p style="width: 100%; text-align: center; margin-top: 2em;">I don't want to ride a premium car.</p>
+    </div>
+  </section>
+
+  <!-- end car selection section -->
+
+  <!-- insurance section -->
+
+  <section class="insurance_section" id="insuranceSection">
+    <div class="about_bg_box">
+      <img src="images/insurance.jpg" alt="">
+    </div>
+    <div class="container ">
+      <div class="row">
+        <div class="col-md-6 mr-auto ">
+          <div class="detail-box">
+            <div class="heading_container">
+              <h2>
+                Avoid <br>
+                Troubles
+              </h2>
+            </div>
+            <h3>
+              All-in Insurance Package
+            </h3>
+            <h3>
+              $29.99 / day
+            </h3>
+            <a href="#checkoutSection" class="mt_20">
+              Add Insurance
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end insurance section -->
+
+  <!-- checkout section -->
+  <section class="payment_section layout_padding" id="checkoutSection">
+    <div class="hero_bg_box">
+      <img src="images/checkout.png" alt="" style="height: 100%;">
+    </div>
+    <div class="container">
+      <div class="heading_container">
+        <h2>
+          Checkout Summary
+        </h2>
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-lg-6">
+          <div class="box">
+            <div class="img-box" style="overflow: hidden;">
+              <img src="images/car6.jfif" alt="">
+            </div>
+            <div class="detail-box">
+                Illustrative photo
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5 col-md-offset-2 checkout_summary">
+          <h4>Vehicle - $21.25 / day</h4>
+          <h3>BMW M5 Alpina</h3>
+          <br>
+          <br>
+          <h4>Insurance - $29.99 / day</h4>
+          <h3>All-in Insurance Package</h3>
+          <br>
+          <br>
+          <h4>Total:</h4>
+          <h3>$51.24 / day</h3>
+          <button class="mt_20" id="initiatePayment">
+            Pay Now
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Payment Modal -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="paymentModalLabel">Payment in process</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h2>Insert, Tap or Swipe on Terminal</h2>
+            <br>
+            <br>
+            <h4>Total:</h4>
+            <h3>$51.24 / day</h3>
+          
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end contact section -->
+
+  <!-- thank_you section -->
+
+  <section class="thank_you_section layout_padding-bottom" id="thankYouSection" style="position: relative;">
+    <video muted loop id="thankYouVideo">
+      <source src="images/thank_you.mp4" type="video/mp4">
+    </video>
+
+    <div class="container">
+      <div class="heading_container heading_center">
+        <h2>
+          Thank you!
+        </h2>
+        <h3>Pick up your car at station 2.</h3>
+      </div>
+    </div>
+  </section>
+  <div class="modal-backdrop fade show" style="display: none;" id="modal-backdrop"></div>
+  <audio src="images/horn.mp3" volume="1.0" id="hornAudio"></audio>
+
+  <!-- end thank_you section -->
+
+  <script type="text/javascript" src="libs/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="libs/bootstrap.js"></script>
+  <script type="text/javascript" src="dist/bundle.js"></script>
+
+  <!-- here you can leverage signageOS remote debugging tool based on Weinre-->
+  <script type="text/javascript">
+      window.WeinreServerURL = 'https://weinre.signageos.io';
+      window.WeinreServerId = 'carrental';
+  </script>
+  <script type="text/javascript" src="https://weinre.signageos.io/target/target-script-min.js"></script>
+</body>
+
+</html>

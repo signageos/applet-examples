@@ -38,7 +38,7 @@ async function print() {
         '                                          \n' +
         '        S I G N A G E O S . I O           \n' +
         '                                          \n';
-      const serialPort = await sos.hardware.openSerialPort({ device: 'PORT1', baudRate: 9600 });
+      const serialPort = await sos.hardware.openSerialPort({ device: 'PORT1', baudRate: 115200 });
       await serialPort.write(stringToHex(receipt));
       await serialPort.close();
     } catch (e) {

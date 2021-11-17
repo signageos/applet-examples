@@ -35,6 +35,10 @@
                 <region regionName="keysTriggeredContent" left="0" top="0" width="100%" height="100%" z-index="3"
                         backgroundColor="transparent"/>
             </region>
+            <region regionName="stationNumber" left="1520" bottom="50" width="350" height="350" z-index="3"
+                    backgroundColor="transparent"
+                    mediaAlign="topLeft">
+            </region>
         </layout>
     </head>
     <body>
@@ -46,6 +50,14 @@
                 <video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/demo/car-rental-sensors/display/assets/pexels-rodnae-productions-8783208.mp4" id="annons0" fit="hidden" region="main">
                     <param name="cacheControl" value="auto" />
                 </video>
+            </seq>
+        </par>
+        
+        <par>
+            <seq repeatCount="indefinite">
+                <img src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/demo/car-rental-sensors/display/assets/keys_pickup_station.png" id="annons1" dur="35s" fit="hidden" region="stationNumber">
+                    <param name="cacheControl" value="auto" />
+                </img>
             </seq>
         </par>
 

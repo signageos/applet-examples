@@ -1,16 +1,5 @@
 # Car Rental Demo - Kiosk part
 
-## Download assets
-```sh
-./download.sh
-```
-
-## Install dependencies & build
-```sh
-./install.sh
-```
-
-
 **Components:**  
 Samsung KIOSK running [signageOS SMIL Player](https://github.com/signageos/smil-player) with attached:
 

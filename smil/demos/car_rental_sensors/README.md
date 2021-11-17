@@ -1,5 +1,15 @@
 # Car Rental Demo
 
+## Download assets
+```sh
+./download.sh
+```
+
+## Install dependencies & build
+```sh
+./install.sh
+```
+
 ## Featuring
 
 - [signageOS SMIL Player](https://github.com/signageos/smil-player)

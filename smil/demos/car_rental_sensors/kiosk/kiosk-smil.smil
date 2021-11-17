@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<smil>
+    <head>
+        <meta content="1000" http-equiv="Refresh"/>
+        <sensors>
+            <!-- keys drop off RFID sensor -->
+            <sensor type="rfid" id="rfid1" driver="nexmosphere">
+                <option name="address">007</option>
+            </sensor>
+        </sensors>
+        <triggers>
+            <!-- keys drop off RFID trigger-->
+            <trigger id="trigger1" condition="or">
+                <!-- data="1" means key to car 1 -->
+                <condition origin="rfid1" data="1" action="placed"/>
+            </trigger>
+        </triggers>
+        <layout>
+            <root-layout backgroundColor="#000000" height="1080" width="1920"/>
+            <region regionName="main" left="0" top="0" width="100%" height="100%" z-index="1"
+                    backgroundColor="#FFFFFF"
+                    mediaAlign="topLeft">
+                <region regionName="triggeredContent" left="0" top="0" width="100%" height="100%" z-index="1"
+                        backgroundColor="transparent"/>
+            </region>
+        </layout>
+    </head>
+    <body>
+        <par>
+            <seq repeatCount="indefinite">
+                <ref src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/demo/car-rental-sensors/kiosk/car-check-in-widget.zip" 
+                    type="application/widget" dur="indefinite" region="main"/>
+            </seq>
+        </par>
+
+        <par>
+            <seq begin="trigger1" repeatCount="1" >
+                <ref src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/demo/car-rental-sensors/kiosk/car-check-out-widget.zip" 
+                    type="application/widget" dur="indefinite" region="main"/>
+            </seq>
+        </par>
+
+    </body>
+</smil>

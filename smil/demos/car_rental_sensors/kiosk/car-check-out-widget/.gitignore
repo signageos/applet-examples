@@ -1,0 +1,9 @@
+/dist/*
+/css/bootstrap.css
+/css/font-awesome.min.css
+/fonts/*
+/images/*
+/libs/*
+src/sos.bundle.js
+/package-lock.json
+/car-check-in-widget.zip

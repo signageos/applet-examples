@@ -43,11 +43,11 @@
 			indexElement.innerHTML = '...syncing...';
 
 			// Connect to the sync server and initialize the sync group
-			// How to use selfhosted synchronizer (https://docs.signageos.io/knowledge-base/how-to-install-synchronizer-on-prem)
+			// How to use selfhosted synchronizer (https://signageos.zendesk.com/hc/en-us/articles/4405231869330)
 			const syncServerUri = sos.config.sync_server || undefined;
 			const syncGroup = sos.config.sync_group;
 
-			// Connect all devices by IP/URL into one group (https://docs.signageos.io/api/js/content/latest/js-sync-playback)
+			// Connect all devices by IP/URL into one group (https://sdk.docs.signageos.io/api/js/content/latest/js-sync-playback)
 			await sos.sync.connect(syncServerUri);
 			await sos.sync.init(syncGroup);
 
@@ -85,7 +85,7 @@
 			const videos = sos.config.placement === 'right' ? videosRight : videosLeft;
 
 			for (const video of videos) {
-				// Store video to offline storage (https://docs.signageos.io/api/js/content/latest/js-offline-cache-media-files)
+				// Store video to offline storage (https://sdk.docs.signageos.io/api/js/content/latest/js-offline-cache-media-files)
 				const {
 					filePath
 				} = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
@@ -110,13 +110,13 @@
 				const realCurrentVideoIndex = videos.findIndex((video) => video.uid === realCurrentVideoUid);
 				const realCurrentVideo = videos[realCurrentVideoIndex];
 
-				// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/js/content/latest/js-video)
+				// Videos are identificated by URI & coordination together (https://sdk.docs.signageos.io/api/js/content/latest/js-video)
 				await sos.video.play(...realCurrentVideo.agruments);
 				if (previousVideo) {
 					await sos.video.stop(...previousVideo.agruments);
 				}
 
-				// Create promise for waiting on end of the video (https://docs.signageos.io/api/js/content/latest/js-video)
+				// Create promise for waiting on end of the video (https://sdk.docs.signageos.io/api/js/content/latest/js-video)
 				const endedPromise = sos.video.onceEnded(...realCurrentVideo.agruments);
 
 				const nextVideoIndex = (realCurrentVideoIndex + 1) % videos.length;

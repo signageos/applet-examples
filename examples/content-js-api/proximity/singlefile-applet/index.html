@@ -25,7 +25,7 @@
 <script type="application/ecmascript">
 	const bodyElement = document.getElementById('body');
 	const textElement = document.getElementById('text');
-	// You need to wait for this event always (https://docs.signageos.io/api/js/content/latest/js-applet-basics)
+	// You need to wait for this event always (https://sdk.docs.signageos.io/api/js/content/latest/js-applet-basics)
 	window.addEventListener('sos.loaded', async function () {
 		sos.sensors.proximity.onStateChange((detected) => {
 			if (detected) {

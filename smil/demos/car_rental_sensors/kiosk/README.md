@@ -70,7 +70,7 @@ Widgets are also defined in the kiosk-smil.smil playlist:
 
 ## Widgets and the use of signageOS
 
-You can use [signageOS JS API](https://docs.signageos.io/api/js/content/latest/js-api-introduction) in your widgets. It allows you to access many of great APIs including accelerated video playback, filesystem and peripherals.
+You can use [signageOS JS API](https://sdk.docs.signageos.io/api/js/content/latest/js-api-introduction) in your widgets. It allows you to access many of great APIs including accelerated video playback, filesystem and peripherals.
 
 In order to use signageOS JS API you need to include the latest `sos.bundle.js` into your widget. You can get it here: [https://2.signageos.io/lib/front-applet/~LATEST-VERSION~/bundle.js](https://2.signageos.io/lib/front-applet/4.12.0/bundle.js) or by `npm install @signageos/front-applet`.
 

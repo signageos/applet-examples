@@ -6,6 +6,6 @@ Example usage of Vue with signageOS Applet.
 
 For more information on how to write applets, read these articles:
 
-* [Tutorial for using Vue and signageOS](https://docs.signageos.io/knowledge-base/applet-example-vue)
-* [Getting started with applets](https://docs.signageos.io/knowledge-base/applet)
-* [How to write applets with signageOS CLI](https://docs.signageos.io/knowledge-base/setup-developer-environment)
+* [Tutorial for using Vue and signageOS](https://signageos.zendesk.com/hc/en-us/articles/4405230302738)
+* [Getting started with applets](https://signageos.zendesk.com/hc/en-us/articles/4405068855570-Introduction-to-Applets)
+* [How to write applets with signageOS CLI](https://signageos.zendesk.com/hc/en-us/articles/4405070294674)

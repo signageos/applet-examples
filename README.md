@@ -2,7 +2,7 @@
 
 This repository contains:
 
-- Sample Applets code for every simple method documented in signageOS [Documentation](https://docs.signageos.io/api/js/content/latest/js-api-introduction).
+- Sample Applets code for every simple method documented in signageOS [Documentation](https://sdk.docs.signageos.io/api/js/content/latest/js-api-introduction).
 
 - Sample SMIL files for signageOS SMIL Player
 

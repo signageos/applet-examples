@@ -62,10 +62,10 @@
 				height: document.documentElement.clientHeight
 			};
 
-			// Set url, resolution on screen (full screen) - (https://docs.signageos.io/api/js/content/latest/js-video-stream#play-stream)
+			// Set url, resolution on screen (full screen) - (https://sdk.docs.signageos.io/api/js/content/latest/js-video-stream#play-stream)
 			stream.agruments = [stream.uri, coords.x, coords.y, coords.width, coords.height, stream.protocol];
 
-			// Play stream forever (https://docs.signageos.io/api/js/content/latest/js-video-stream)
+			// Play stream forever (https://sdk.docs.signageos.io/api/js/content/latest/js-video-stream)
 			await sos.stream.play(...stream.agruments);
 		}
 		// Needed check for distinction between sos open and platform in box

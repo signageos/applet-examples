@@ -7,11 +7,11 @@ Example of setting various settings on the device.
 
 For more information on how to write applets, read these articles:
 
-* [IR Remote Control API](https://docs.signageos.io/api/js/management/latest/3-js-management-remote-control)
-* [Power API](https://docs.signageos.io/api/js/management/latest/4-js-management-power)
-* [Screen API](https://docs.signageos.io/api/js/management/latest/5-js-management-screen)
-* [Time API](https://docs.signageos.io/api/js/management/latest/6-js-management-time)
-* [Audio API](https://docs.signageos.io/api/js/management/latest/7-js-management-volume)
-* [Getting started with applets](https://docs.signageos.io/knowledge-base/applet)
-* [How to write single-file applets](https://docs.signageos.io/knowledge-base/applet-editor)
-* [How to write applets with signageOS CLI](https://docs.signageos.io/knowledge-base/setup-developer-environment)
+* [IR Remote Control API](https://sdk.docs.signageos.io/api/js/management/latest/3-js-management-remote-control)
+* [Power API](https://sdk.docs.signageos.io/api/js/management/latest/4-js-management-power)
+* [Screen API](https://sdk.docs.signageos.io/api/js/management/latest/5-js-management-screen)
+* [Time API](https://sdk.docs.signageos.io/api/js/management/latest/6-js-management-time)
+* [Audio API](https://sdk.docs.signageos.io/api/js/management/latest/7-js-management-volume)
+* [Getting started with applets](https://signageos.zendesk.com/hc/en-us/articles/4405068855570-Introduction-to-Applets)
+* [How to write single-file applets](https://signageos.zendesk.com/hc/en-us/articles/4405011600274)
+* [How to write applets with signageOS CLI](https://signageos.zendesk.com/hc/en-us/articles/4405070294674)

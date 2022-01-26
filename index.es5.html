@@ -12,21 +12,21 @@
 		<script type="application/javascript">
 
 
-			// You need to wait for this event always (https://docs.signageos.io/api/js/content/latest/js-applet-basics)
+			// You need to wait for this event always (https://sdk.docs.signageos.io/api/js/content/latest/js-applet-basics)
 			window.addEventListener('sos.loaded', function () {
 				var contentElement = document.getElementById('index');
 				console.log('sOS is loaded');
 				contentElement.innerHTML = 'sOS is loaded';
 
 
-				// Wait on sos data are ready (https://docs.signageos.io/api/js/content/latest/js-applet-basics)
+				// Wait on sos data are ready (https://sdk.docs.signageos.io/api/js/content/latest/js-applet-basics)
 				sos.onReady()
 				.then(function () {
 					console.log('sOS is ready');
 					contentElement.innerHTML = 'sOS is ready';
 
 
-					// Allow use jQuery (or any other JS library) in offline (https://docs.signageos.io/api/js/content/latest/js-applet-resources)
+					// Allow use jQuery (or any other JS library) in offline (https://sdk.docs.signageos.io/api/js/content/latest/js-applet-resources)
 					return sos.offline.addFilesSync([
 						{
 							uri: "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js",
@@ -47,7 +47,7 @@
 
 
 				.then(function () {
-					// Save some of your data localy & safely (https://docs.signageos.io/api/js/content/latest/js-offline-cache-simple-data)
+					// Save some of your data localy & safely (https://sdk.docs.signageos.io/api/js/content/latest/js-offline-cache-simple-data)
 					return sos.offline.cache.loadContent('first-load-timestamp');
 				})
 
@@ -72,7 +72,7 @@
 
 
 				.then(function () {
-					// Store video to offline storage (https://docs.signageos.io/api/js/content/latest/js-offline-cache-media-files)
+					// Store video to offline storage (https://sdk.docs.signageos.io/api/js/content/latest/js-offline-cache-media-files)
 					return sos.offline.cache.loadOrSaveFile('intro-video', 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4');
 				})
 				.then(function (file) {
@@ -82,13 +82,13 @@
 					// For video coordinations compution use document.body (https://docs.signageos.io/screen-width-and-height-on-webos-1/)
 					var videoAgruments = [filePath, 60, 100, document.documentElement.clientWidth - 2 * 60, Math.round((document.documentElement.clientWidth - 2 * 60) * (3 / 4))];
 					function playBack() {
-						// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/js/content/latest/js-video)
+						// Videos are identificated by URI & coordination together (https://sdk.docs.signageos.io/api/js/content/latest/js-video)
 						sos.video.prepare.apply(sos.video, videoAgruments)
 						.then(function () {
 							return sos.video.play.apply(sos.video, videoAgruments);
 						})
 						.then(function () {
-							return sos.video.onceEnded.apply(sos.video, videoAgruments); // https://docs.signageos.io/api/js/content/latest/js-video
+							return sos.video.onceEnded.apply(sos.video, videoAgruments); // https://sdk.docs.signageos.io/api/js/content/latest/js-video
 						})
 						.then(function () {
 							return sos.video.stop.apply(sos.video, videoAgruments);

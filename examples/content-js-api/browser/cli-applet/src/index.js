@@ -3,7 +3,7 @@ require('./index.css');
 
 import sos from '@signageos/front-applet';
 
-// Wait on sos data are ready (https://docs.signageos.io/api/js/content/latest/js-applet-basics)
+// Wait on sos data are ready (https://sdk.docs.signageos.io/api/js/content/latest/js-applet-basics)
 sos.onReady().then(async function () {
 	const contentElement = document.getElementById('index');
 	const buttonElement = document.getElementById('open-button');
@@ -11,7 +11,7 @@ sos.onReady().then(async function () {
 	buttonElement.addEventListener('click', (event) => {
 		event.preventDefault();
 
-		// Open link in external browser on touch devices (https://docs.signageos.io/api/js/content/latest/js-browser)
+		// Open link in external browser on touch devices (https://sdk.docs.signageos.io/api/js/content/latest/js-browser)
 		sos.browser.open('https://www.signageos.io', {
 			acl: [/^https?:\/\/.*\.google\.\w+(\/.*)?$/],
 			aclMode: 'blacklist', // or 'whitelist'

@@ -61,7 +61,7 @@
 			];
 
 			for (const video of videos) {
-				// Store video to offline storage (https://docs.signageos.io/api/js/content/latest/js-offline-cache-media-files)
+				// Store video to offline storage (https://sdk.docs.signageos.io/api/js/content/latest/js-offline-cache-media-files)
 				const {
 					filePath
 				} = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
@@ -91,7 +91,7 @@
 					promises.push((async function() {
 						const currentVideo = videos[i];
 
-						// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/js/content/latest/js-video)
+						// Videos are identificated by URI & coordination together (https://sdk.docs.signageos.io/api/js/content/latest/js-video)
 						await sos.video.prepare(...currentVideo.agruments);
 						await sos.video.play(...currentVideo.agruments);
 						await sos.video.onceEnded(...currentVideo.agruments); // Wait until video ends

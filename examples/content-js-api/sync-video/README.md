@@ -7,7 +7,7 @@ Example usage of synchronization API for synchronized playback of videos.
 
 For more information on how to write applets, read these articles:
 
-* [Synchronization API](https://docs.signageos.io/api/js/content/latest/js-sync-playback)
-* [Getting started with applets](https://docs.signageos.io/knowledge-base/applet)
-* [How to write single-file applets](https://docs.signageos.io/knowledge-base/applet-editor)
-* [How to write applets with signageOS CLI](https://docs.signageos.io/knowledge-base/setup-developer-environment)
+* [Synchronization API](https://sdk.docs.signageos.io/api/js/content/latest/js-sync-playback)
+* [Getting started with applets](https://signageos.zendesk.com/hc/en-us/articles/4405068855570-Introduction-to-Applets)
+* [How to write single-file applets](https://signageos.zendesk.com/hc/en-us/articles/4405011600274)
+* [How to write applets with signageOS CLI](https://signageos.zendesk.com/hc/en-us/articles/4405070294674)

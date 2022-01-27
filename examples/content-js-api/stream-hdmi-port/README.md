@@ -8,6 +8,6 @@ Example of displaying feed from HDMI port as Picture-in-Picture via video inputs
 For more information on how to write applets, read these articles:
 
 * [Video Inputs API](https://sdk.docs.signageos.io/api/js/content/latest/js-video-inputs-internal-ports)
-* [Getting started with applets](https://signageos.zendesk.com/hc/en-us/articles/4405068855570-Introduction-to-Applets)
-* [How to write single-file applets](https://signageos.zendesk.com/hc/en-us/articles/4405011600274)
-* [How to write applets with signageOS CLI](https://signageos.zendesk.com/hc/en-us/articles/4405070294674)
+* [Getting started with applets](https://docs.signageos.io/hc/en-us/articles/4405068855570-Introduction-to-Applets)
+* [How to write single-file applets](https://docs.signageos.io/hc/en-us/articles/4405011600274)
+* [How to write applets with signageOS CLI](https://docs.signageos.io/hc/en-us/articles/4405070294674)

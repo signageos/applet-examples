@@ -6,6 +6,6 @@ Example usage of Angular with signageOS Applet.
 
 For more information on how to write applets, read these articles:
 
-* [Tutorial for using Angular and signageOS](https://signageos.zendesk.com/hc/en-us/articles/4405238018834)
-* [Getting started with applets](https://signageos.zendesk.com/hc/en-us/articles/4405068855570-Introduction-to-Applets)
-* [How to write applets with signageOS CLI](https://signageos.zendesk.com/hc/en-us/articles/4405070294674)
+* [Tutorial for using Angular and signageOS](https://docs.signageos.io/hc/en-us/articles/4405238018834)
+* [Getting started with applets](https://docs.signageos.io/hc/en-us/articles/4405068855570-Introduction-to-Applets)
+* [How to write applets with signageOS CLI](https://docs.signageos.io/hc/en-us/articles/4405070294674)

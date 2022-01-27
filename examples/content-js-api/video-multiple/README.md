@@ -9,6 +9,6 @@ For more information on how to write applets, read these articles:
 
 * [Offline Cache API](https://sdk.docs.signageos.io/api/js/content/latest/js-offline-cache-media-files)
 * [Video API](https://sdk.docs.signageos.io/api/js/content/latest/js-video)
-* [Getting started with applets](https://signageos.zendesk.com/hc/en-us/articles/4405068855570-Introduction-to-Applets)
-* [How to write single-file applets](https://signageos.zendesk.com/hc/en-us/articles/4405011600274)
-* [How to write applets with signageOS CLI](https://signageos.zendesk.com/hc/en-us/articles/4405070294674)
+* [Getting started with applets](https://docs.signageos.io/hc/en-us/articles/4405068855570-Introduction-to-Applets)
+* [How to write single-file applets](https://docs.signageos.io/hc/en-us/articles/4405011600274)
+* [How to write applets with signageOS CLI](https://docs.signageos.io/hc/en-us/articles/4405070294674)

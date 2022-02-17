@@ -1,5 +1,4 @@
-const packageConfig = require('./package');
-
 module.exports = {
-	spec: packageConfig.sos.tests,
+	require: 'ts-node/register',
+	spec: ['tests/*.spec.ts'],
 };

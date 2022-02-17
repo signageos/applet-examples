@@ -1,10 +1,10 @@
 import Timing from "@signageos/sdk/dist/RestApi/Timing/Timing";
-import { cleanTimings, setupPlayerTiming } from "./helper";
+import { cleanTimings, setupPlayerTiming } from "../../../../tests/helper";
 import { it } from "mocha";
 import { waitUntil } from "@signageos/sdk";
 import should from "should";
 
-describe("File System", function () {
+describe("file-system", function () {
 
 	let currentTiming: Timing;
 	before(async function () {

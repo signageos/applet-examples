@@ -1,16 +1,14 @@
 import Timing from "@signageos/sdk/dist/RestApi/Timing/Timing";
-import { cleanTimings, setupPlayerTiming } from "./helper";
+import { cleanTimings, setupPlayerTiming } from "../../../../tests/helper";
 import { waitUntil } from "@signageos/sdk";
 import should from "should";
+import { appletUid, appletVersion } from "../../../../tests/general";
 
-describe('Checksum tests', function () {
+describe('md5-checksum', function () {
 
 	let currentTiming: Timing;
 	before(async function () {
-		const { timing } = await setupPlayerTiming(
-			"d496274601ded9c68cc6abc53f2e079932faae420246eb6e43",
-			"1.0.0"
-		);
+		const { timing } = await setupPlayerTiming(appletUid, appletVersion);
 		currentTiming = timing;
 		await waitUntil(async () => {
 			const consoleLogs = await currentTiming.console.log.getAll();
@@ -56,17 +54,6 @@ describe('Checksum tests', function () {
 
 		const imageHash = await currentTiming.offline.cache.getChecksumFile('image-1', 'md5');
 		const validateImageHash = await currentTiming.offline.cache.validateChecksumFile('image-1', imageHash, 'md5');
-		should(validateImageHash).be.true();
-	});
-
-	it("should generate and validate crc32 checksum", async function() {
-
-		const videoHash = await currentTiming.offline.cache.getChecksumFile('video-1', 'crc32');
-		const validateVideoHash = await currentTiming.offline.cache.validateChecksumFile('video-1', videoHash, 'crc32');
-		should(validateVideoHash).be.true();
-
-		const imageHash = await currentTiming.offline.cache.getChecksumFile('image-1', 'crc32');
-		const validateImageHash = await currentTiming.offline.cache.validateChecksumFile('image-1', imageHash, 'crc32');
 		should(validateImageHash).be.true();
 	});
 });

@@ -1,13 +1,14 @@
 import should from 'should';
 import Timing from "@signageos/sdk/dist/RestApi/Timing/Timing";
-import { cleanTimings, setupPlayerTiming } from "./helper";
 import { waitUntil } from "@signageos/sdk";
+import { cleanTimings, setupPlayerTiming } from "../../../../tests/helper";
+import { appletUid, appletVersion } from "../../../../tests/general";
 
-describe('Video and images playback', function () {
+describe('video-multiple', function () {
 
 	let currentTiming: Timing;
 	before(async function () {
-		const { timing } = await setupPlayerTiming("5397c38fa88a3b5019c3a74cf5f1b29758dcca68d5a1b4b23b", "1.0.0");
+		const { timing } = await setupPlayerTiming(appletUid, appletVersion);
 		currentTiming = timing;
 
 		await waitUntil(async () => {

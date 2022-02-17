@@ -37,9 +37,7 @@
       "@signageos/front-applet": "5.2.0-jk-new-offline-cache-monitoring-methods.1039"
     },
     "tests": [
-      "tests/fileSystemTest.spec.ts",
-      "tests/checksumTests.spec.ts",
-      "tests/videoAndImagePlayback.spec.ts"
+      "index.spec.js"
     ]
   }
 }

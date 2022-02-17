@@ -6,11 +6,13 @@
   "directories": {
     "example": "examples"
   },
-  "dependencies": {},
   "devDependencies": {
-    "@signageos/sdk": "1.7.0",
+    "@signageos/sdk": "1.8.0-jk-add-new-methods.396",
+    "@types/mocha": "9.1.0",
     "mocha": "9.1.3",
-    "should": "13.2.3"
+    "should": "13.2.3",
+    "ts-node": "^10.4.0",
+    "typescript": "4.5.5"
   },
   "scripts": {
     "upload-applet": "sos applet upload --applet-path=index.html",
@@ -32,7 +34,7 @@
   "homepage": "https://gitlab.com/signageos/applet-examples#readme",
   "sos": {
     "dependencies": {
-      "@signageos/front-applet": "4.12.0"
+      "@signageos/front-applet": "5.2.0-jk-new-offline-cache-monitoring-methods.1039"
     },
     "tests": [
       "index.spec.js"

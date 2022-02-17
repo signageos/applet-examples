@@ -1,43 +1,27 @@
-
-const { api, now, waitUntil } = require('@signageos/sdk');
+const { waitUntil } = require('@signageos/sdk');
 const should = require('should');
+const { setupPlayerTiming, cleanTimings } = require("./tests/helper");
+const { appletUid, appletVersion } = require("./tests/general");
 
 describe('My first Applet', () => {
 
 	let currentTiming;
+	before(async function () {
+		const { timing } = await setupPlayerTiming(appletUid, appletVersion);
+		currentTiming = timing;
 
-	beforeEach(async function () {
-		// Prepare timing on device with current applet & version
-		currentTiming = await api.timing.create({
-			deviceUid: process.env.SOS_DEVICE_UID,
-			appletUid: process.env.SOS_APPLET_UID,
-			appletVersion: process.env.SOS_APPLET_VERSION,
-			startsAt: now(),
-			endsAt: now(),
-			configuration: {
-				sosMonitoring: true,
-			},
-			position: 1,
-			finishEvent: {
-				type: api.timing.DURATION,
-				data: null,
-			},
-		});
+		await waitUntil(async () => {
+			await currentTiming.onLoaded();
+			const consoleLogs = await currentTiming.console.log.getAll();
+			should(consoleLogs).containEql('sOS is ready');
+		}, 60000);
 	});
 
-	afterEach(async function () {
-		await currentTiming.delete();
+	after(async function() {
+		await cleanTimings();
 	});
 
 	it('should load applet, make it ready, load jQuery library, show first time loaded message, fade it out, save video locally & play it in a loop', async function () {
-		// Wait until applet is loaded on device
-		await currentTiming.onLoaded();
-
-		// Wait until sos.onReady event is emitted 
-		await waitUntil(async () => {
-			const consoleLogs = await currentTiming.console.log.getAll();
-			should(consoleLogs).containEql('sOS is ready');
-		});
 
 		// Wait until content element contains correct expected text
 		await waitUntil(async () => {

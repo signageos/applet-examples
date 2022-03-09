@@ -12,6 +12,7 @@ describe('video-multiple', function () {
 		currentTiming = timing;
 
 		await waitUntil(async () => {
+			await currentTiming.onLoaded;
 			const consoleLogs = await currentTiming.console.log.getAll();
 			should(consoleLogs).containEql('sOS is ready');
 		}, 60000);

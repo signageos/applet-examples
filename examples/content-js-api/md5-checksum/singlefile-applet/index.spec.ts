@@ -11,7 +11,7 @@ describe('md5-checksum', function () {
 		const { timing } = await setupPlayerTiming(appletUid, appletVersion);
 		currentTiming = timing;
 		await waitUntil(async () => {
-			await currentTiming.onLoaded();
+			await currentTiming.onLoaded;
 			const consoleLogs = await currentTiming.console.log.getAll();
 			should(consoleLogs).containEql('sOS is ready');
 		}, 60000);

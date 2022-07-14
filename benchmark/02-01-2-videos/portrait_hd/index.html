@@ -15,12 +15,14 @@
 		async function startApplet() {
 
 			// Load static files
-			let files = [{
-				"uri": "https://signageostest.blob.core.windows.net/test/applet-examples/benchmark-styles.css?v=1.0.0",
-				"uid": "benchmark-styles.css-v1.0.0",
-				"type": sos.offline.types.css,
-				"flags": [sos.offline.flags.append(document.head)]
-			}];
+			let files = [
+				{
+					"uri": "https://demo.signageos.io/benchmark/styles.css?v=1.0",
+					"uid": "styles.css-v1.0.0",
+					"type": sos.offline.types.css,
+					"flags": [sos.offline.flags.append(document.head)]
+				}
+			];
 			await sos.offline.addFiles(files);
 
 			const titleElement = document.getElementById('title');
@@ -46,40 +48,40 @@
 					uid: 'video-1.mp4',
 					x: 0,
 					y: 0,
-					width: 100,
-					height: 25,
+					width: 540,
+					height: 960,
 					uri: 'https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_540x960_162896eac2b4ad0e1cbee22c75b4cb27.mp4'
 				},
 				{
 					uid: 'video-2.mp4',
 					x: 0,
 					y: 0,
-					width: 100,
-					height: 25,
+					width: 540,
+					height: 960,
 					uri: 'https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_540x960_b40e602a586bb9e0651ce82a461ae089.mp4'
 				},
 				{
 					uid: 'video-3.mp4',
 					x: 0,
 					y: 0,
-					width: 100,
-					height: 25,
+					width: 540,
+					height: 960,
 					uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_540x960_68a99254ecce6b2dba32bed3d6dd29fd.mp4'
 				},
 				{
 					uid: 'video-4.mp4',
 					x: 0,
 					y: 0,
-					width: 100,
-					height: 25,
+					width: 540,
+					height: 960,
 					uri: 'https://static.signageos.io/assets/test-videos-07_AME/video-test-08_15s_540x960_e4ff9d3a36733f781c5114d999367a0b.mp4'
 				},
 				{
 					uid: 'video-5.mp4',
 					x: 0,
 					y: 0,
-					width: 100,
-					height: 25,
+					width: 540,
+					height: 960,
 					uri: 'https://static.signageos.io/assets/test-videos-06_AME/video-test-06_15s_1080x1920_7c0f255304ee7f685f1d659f498975c5.mp4'
 				},
 			];
@@ -87,79 +89,79 @@
 			const videoSet2 = [{
 					uid: 'video-6.mp4',
 					x: 0,
-					y: 25,
-					width: 100,
-					height: 25,
+					y: 960,
+					width: 540,
+					height: 960,
 					uri: 'https://static.signageos.io/assets/test-videos-06_AME/video-test-06_15s_1080x1920_7c0f255304ee7f685f1d659f498975c5.mp4'
 				},
 				{
 					uid: 'video-7.mp4',
 					x: 0,
-					y: 25,
-					width: 100,
-					height: 25,
+					y: 960,
+					width: 540,
+					height: 960,
 					uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_540x960_68a99254ecce6b2dba32bed3d6dd29fd.mp4'
 				},
 				{
-					uid: 'video-8.mp4,
+					uid: 'video-8.mp4',
 					x: 0,
-					y: 25,
-					width: 100,
-					height: 25,
+					y: 960,
+					width: 540,
+					height: 960,
 					uri: 'https://static.signageos.io/assets/test-videos-07_AME/video-test-08_15s_540x960_e4ff9d3a36733f781c5114d999367a0b.mp4'
 				},
 				{
 					uid: 'video-9.mp4',
 					x: 0,
-					y: 25,
-					width: 100,
-					height: 25,
+					y: 960,
+					width: 540,
+					height: 960,
 					uri: 'https://static.signageos.io/assets/test-videos-05_AME/video-test-05_15s_540x960_162896eac2b4ad0e1cbee22c75b4cb27.mp4'
 				},
 				{
 					uid: 'video-10.mp4',
 					x: 0,
-					y: 25,
-					width: 100,
-					height: 25,
+					y: 960,
+					width: 540,
+					height: 960,
 					uri: 'https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_540x960_b40e602a586bb9e0651ce82a461ae089.mp4'
 				},
 			];
 
 			// Store video to offline storage for set 1 (https://sdk.docs.signageos.io/api/js/content/latest/js-offline-cache-media-files)
 			for (const video of videoSet1) {
-				const {
-					filePath
-				} = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
+				indexElement.innerHTML = "Downloading: " + video.uri;
+				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
 				video.filePath = filePath;
 				video.agruments = [
 					video.filePath,
-					Math.round(document.documentElement.clientWidth * video.x / 100),
-					Math.round(document.documentElement.clientHeight * video.y / 100),
-					Math.round(document.documentElement.clientWidth * video.width / 100),
-					Math.round(document.documentElement.clientHeight * video.height / 100),
+					video.x,
+					video.y,
+					video.width,
+					video.height,
 				];
+                indexElement.innerHTML = "Downloaded: " + video.filePath;
 			}
 
 			// Store video to offline storage for set 2 (https://sdk.docs.signageos.io/api/js/content/latest/js-offline-cache-media-files)
 			for (const video of videoSet2) {
-				const {
-					filePath
-				} = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
+				indexElement.innerHTML = "Downloading: " + video.uri;
+				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
 				video.filePath = filePath;
 				video.agruments = [
 					video.filePath,
-					Math.round(document.documentElement.clientWidth * video.x / 100),
-					Math.round(document.documentElement.clientHeight * video.y / 100),
-					Math.round(document.documentElement.clientWidth * video.width / 100),
-					Math.round(document.documentElement.clientHeight * video.height / 100),
+					video.x,
+					video.y,
+					video.width,
+					video.height,
 				];
+                indexElement.innerHTML = "Downloaded: " + video.filePath;
 			}
 
 			// When is all prepared, remove loading title and play videos
 			titleElement.innerHTML = '';
 			displayInfoElement.innerHTML = '';
-			indexElement.innerHTML = '';
+			indexElement.innerHTML = 'Ready for Playback';
 			htmlContentElement.innerHTML = '';
 
 			async function playSet1() {

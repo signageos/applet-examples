@@ -15,12 +15,14 @@
 		async function startApplet() {
 
 			// Load static files
-			let files = [{
-				"uri": "https://signageostest.blob.core.windows.net/test/applet-examples/benchmark-styles.css?v=1.0.0",
-				"uid": "benchmark-styles.css-v1.0.0",
-				"type": sos.offline.types.css,
-				"flags": [sos.offline.flags.append(document.head)]
-			}];
+			let files = [
+				{
+					"uri": "https://demo.signageos.io/benchmark/styles.css?v=1.0",
+					"uid": "styles.css-v1.0.0",
+					"type": sos.offline.types.css,
+					"flags": [sos.offline.flags.append(document.head)]
+				}
+			];
 			await sos.offline.addFiles(files);
 
 			const titleElement = document.getElementById('title');
@@ -44,7 +46,7 @@
 			// Set properties like ID and URL for stream
 			const stream = {
 				uid: 'stream-1',
-				uri: 'http://192.168.1.135:8080/index.m3u8',
+				uri: 'http://192.168.1.239/live/Play1.m3u8',
 				protocol: "HLS"
 			};
 

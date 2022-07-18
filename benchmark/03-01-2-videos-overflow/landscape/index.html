@@ -15,12 +15,14 @@
 		async function startApplet() {
 
 			// Load static files
-			let files = [{
-				"uri": "https://signageostest.blob.core.windows.net/test/applet-examples/benchmark-styles.css?v=1.0.0",
-				"uid": "benchmark-styles.css-v1.0.0",
-				"type": sos.offline.types.css,
-				"flags": [sos.offline.flags.append(document.head)]
-			}];
+			let files = [
+				{
+					"uri": "https://demo.signageos.io/benchmark/styles.css?v=1.0.0",
+					"uid": "styles.css-v1.0.0",
+					"type": sos.offline.types.css,
+					"flags": [sos.offline.flags.append(document.head)]
+				}
+			];
 			await sos.offline.addFiles(files);
 
 			const titleElement = document.getElementById('title');
@@ -29,7 +31,9 @@
 			const htmlContentElement = document.getElementById('htmlContent');
 
 			await sos.onReady(); // Wait until signageOS app is loaded and ready
-
+            console.log('sos ready');
+			
+          
 			//Get display details
 			try {
 				const fw = await sos.management.firmware.getVersion();
@@ -42,40 +46,27 @@
 			}
 
 			// Videos that will be downloaded and prepared for playing 
-			const videos = [{
-					uid: 'video0.mp4',
-					x: 0,
-					y: 0,
-					width: 100,
-					height: 100,
-					uri: 'https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1920x1080_19c539e7982228ae0527409aeadb5b88.mp4'
-				},
-				{
-					uid: 'video1.mp4',
-					x: 70,
-					y: 70,
-					width: 30,
-					height: 30,
-					uri: 'https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1920x1080_88f90af5fa281d7efb8eae17848e71d9.mp4'
-				},
+			const videos = [
+				{ uid: 'video0', x: 0, y: 0, width: 100, height: 100, uri: 'https://static.signageos.io/assets/test-videos-01_AME/video-test-01_15s_1920x1080_19c539e7982228ae0527409aeadb5b88.mp4' },
+				{ uid: 'video1', x: 70, y: 70, width: 30, height: 30, uri: 'https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1920x1080_88f90af5fa281d7efb8eae17848e71d9.mp4' },
 			];
 
 			for (const video of videos) {
-				// Store video to offline storage (https://sdk.docs.signageos.io/api/js/content/latest/js-offline-cache-media-files)
-				const {
-					filePath
-				} = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
+				// Store video to offline storage (https://docs.signageos.io/api/js/js-offline-cache-media-files)
+				indexElement.innerHTML = "Downloading: " + video.uri;
+				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
 				video.filePath = filePath;
+                indexElement.innerHTML = "Downloaded: " + video.filePath;
 			}
 
 			// Set video properties for proper play on screen
 			for (const video of videos) {
 				video.agruments = [
 					video.filePath,
-					Math.floor(document.documentElement.clientWidth * video.x / 100),
-					Math.floor(document.documentElement.clientHeight * video.y / 100),
-					Math.floor(document.documentElement.clientWidth * video.width / 100),
-					Math.floor(document.documentElement.clientHeight * video.height / 100),
+					Math.round(document.body.clientWidth * video.x / 100),
+					Math.round(document.body.clientHeight * video.y / 100),
+					Math.round(document.body.clientWidth * video.width / 100),
+                  	Math.round(document.body.clientHeight * video.height / 100),
 				];
 			}
 
@@ -88,10 +79,10 @@
 			while (true) {
 				const promises = [];
 				for (let i = 0; i < Math.min(2, videos.length); i++) { // In this applet whe have 4 videos on same screen
-					promises.push((async function() {
+					promises.push((async function () {
 						const currentVideo = videos[i];
 
-						// Videos are identificated by URI & coordination together (https://sdk.docs.signageos.io/api/js/content/latest/js-video)
+						// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/js/js-video)
 						await sos.video.prepare(...currentVideo.agruments);
 						await sos.video.play(...currentVideo.agruments);
 						await sos.video.onceEnded(...currentVideo.agruments); // Wait until video ends

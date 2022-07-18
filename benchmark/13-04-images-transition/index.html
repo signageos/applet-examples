@@ -26,12 +26,14 @@
 			await sos.onReady();
 
 			// Load static files
-			let files = [{
-				"uri": "https://signageostest.blob.core.windows.net/test/applet-examples/benchmark-styles.css?v=1.0.0",
-				"uid": "benchmark-styles.css-v1.0.0",
-				"type": sos.offline.types.css,
-				"flags": [sos.offline.flags.append(document.head)]
-			}];
+			let files = [
+				{
+					"uri": "https://demo.signageos.io/benchmark/styles.css?v=1.0",
+					"uid": "styles.css-v1.0.0",
+					"type": sos.offline.types.css,
+					"flags": [sos.offline.flags.append(document.head)]
+				}
+			];
 			await sos.offline.addFiles(files);
 
 			const contentElement = document.getElementById('index');

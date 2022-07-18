@@ -3,6 +3,12 @@
 
 <head>
 	<title>01-01-a Full-Screen-Landscape</title>
+   <style>
+      body {
+        width: 100vw!important;
+        height: 100vh!important;
+      }
+    </style>
 </head>
 
 <body>
@@ -15,12 +21,14 @@
 		async function startApplet() {
 
 			// Load static files
-			let files = [{
-				"uri": "https://signageostest.blob.core.windows.net/test/applet-examples/benchmark-styles.css?v=1.0.0",
-				"uid": "benchmark-styles.css-v1.0.0",
-				"type": sos.offline.types.css,
-				"flags": [sos.offline.flags.append(document.head)]
-			}];
+			let files = [
+				{
+				  "uri": "https://demo.signageos.io/benchmark/styles.css?v=1.0.0",	
+                  "uid": "styles.css-v1.0.0",
+					"type": sos.offline.types.css,
+					"flags": [sos.offline.flags.append(document.head)]
+				}
+			];
 			await sos.offline.addFiles(files);
 
 			const titleElement = document.getElementById('title');
@@ -29,7 +37,7 @@
 			const htmlContentElement = document.getElementById('htmlContent');
 
 			await sos.onReady(); // Wait until signageOS app is loaded and ready
-
+			
 			//Get display details
 			try {
 				const fw = await sos.management.firmware.getVersion();
@@ -42,7 +50,8 @@
 			}
 
 			// Videos that will be downloaded and prepared for playing
-			const videos = [{
+			const videos = [
+            	{
 					uid: 'video-1.mp4',
 					uri: 'https://static.signageos.io/assets/test-videos-circle_AME/circle_15s_1920x1080_c32f55b932a8df2e39265b04a90d9837.mp4'
 				},
@@ -65,41 +74,41 @@
 			];
 
 			for (const video of videos) {
-				// Store video to offline storage (https://sdk.docs.signageos.io/api/js/content/latest/js-offline-cache-media-files)
-				const {
-					filePath
-				} = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
+				// Store video to offline storage (https://docs.signageos.io/api/js/js-offline-cache-media-files)
+              	indexElement.innerHTML = "Downloading: " + video.uri;
+				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
 				video.filePath = filePath;
+                indexElement.innerHTML = "Downloaded: " + video.filePath;
 			}
 
 			// Set video properties for proper play on screen
 			for (const video of videos) {
-				video.agruments = [video.filePath, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
+				video.agruments = [video.filePath, 0, 0, 1920, 1080];
 			}
-
 			titleElement.innerHTML = '';
 			displayInfoElement.innerHTML = '';
-			indexElement.innerHTML = '';
+			indexElement.innerHTML = 'Ready to playback';
 			htmlContentElement.innerHTML = '';
+          
+          for (let i = 0; true; i = (i + 1) % videos.length) {
+                  const previousVideo = videos[(i + videos.length - 1) % videos.length];
+                  const currentVideo = videos[i];
+                  const nextVideo = videos[(i + 1) % videos.length];
 
-			await sos.video.prepare(...videos[0].agruments); // Before the first video starts, call prepare
-
-			for (let i = 0; true; i = (i + 1) % videos.length) {
-				const previousVideo = videos[(i + videos.length - 1) % videos.length];
-				const currentVideo = videos[i];
-				const nextVideo = videos[(i + 1) % videos.length];
-
-				// Videos are identificated by URI & coordination together (-video)
-				await sos.video.play(...currentVideo.agruments);
-				currentVideo.playing = true;
-				if (previousVideo.playing) {
-					await sos.video.stop(...previousVideo.agruments);
-					previousVideo.playing = false;
-				}
-				await sos.video.prepare(...nextVideo.agruments); // Before the first video end, prepare the second one
-				await sos.video.onceEnded(...currentVideo.agruments); // Wait until video ends
-			}
+                  // Videos are identificated by URI & coordination together (https://docs.signageos.io/api/js/js-video)
+                  await sos.video.play(...currentVideo.agruments);
+                  currentVideo.playing = true;
+                  if (previousVideo.playing) {
+                      await sos.video.stop(...previousVideo.agruments);
+                      previousVideo.playing = false;
+                  }
+                
+                await sos.video.prepare(...nextVideo.agruments); // Before the first video end, prepare the second one
+                await sos.video.onceEnded(...currentVideo.agruments); // Wait until video ends
+              }
+                          
 		}
+
 		// Needed check for distinction between sos open and platform in box
 		typeof sos !== 'undefined' ?
 			startApplet() :

@@ -125,7 +125,7 @@ This repository contains:
 - Run tests using command `npm test`.
 
 ### signageOS cloud running tests from Box
-- Go to https://box.signageos.io/device/__FILL_DEVICE_UID_TO_TEST_ON__/debugAndLogs
+- Go to https://box.signageos.io/device/__FILL_DEVICE_UID_TO_TEST_ON__/testing
 - Select corresponding applet & version and click "Run applet tests" in "Device Applet tests" section.
 
 ### signageOS cloud running tests from CLI

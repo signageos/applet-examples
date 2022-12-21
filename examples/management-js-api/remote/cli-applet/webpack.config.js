@@ -1,6 +1,5 @@
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const SignageOSPlugin = require('@signageos/webpack-plugin')
 
 exports = module.exports = {
@@ -29,9 +28,7 @@ exports = module.exports = {
 	plugins: [
 			new HtmlWebpackPlugin({
 				template: 'public/index.html',
-				inlineSource: '.(js|css)$', // embed all javascript and css inline
 			}),
-			new HtmlWebpackInlineSourcePlugin(),
 			new SignageOSPlugin()
 	],
 };

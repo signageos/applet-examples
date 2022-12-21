@@ -69,7 +69,7 @@
 				indexElement.innerHTML = "Downloading: " + video.uri;
 				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
 				video.filePath = filePath;
-				video.agruments = [
+				video.arguments = [
 					video.filePath,
 					video.x,
 					video.y,
@@ -84,7 +84,7 @@
 				indexElement.innerHTML = "Downloading: " + video.uri;
 				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
 				video.filePath = filePath;
-				video.agruments = [
+				video.arguments = [
 					video.filePath,
 					video.x,
 					video.y,
@@ -107,18 +107,18 @@
 					const nextVideoSet = videoSet1[(i + 1) % videoSet1.length];
 
 					// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/sos-applet-api/#Play_video)
-					await sos.video.play(...currentVideoSet.agruments);
+					await sos.video.play(...currentVideoSet.arguments);
 					currentVideoSet.playing = true;
 
 					// If previous video is playing, stop it
 					if (previousVideoSet.playing) {
-						await sos.video.stop(...previousVideoSet.agruments);
+						await sos.video.stop(...previousVideoSet.arguments);
 						previousVideoSet.playing = false;
 					}
 
 					// Prepare next video for gappless playback
-					await sos.video.prepare(...nextVideoSet.agruments);
-					await sos.video.onceEnded(...currentVideoSet.agruments); // https://docs.signageos.io/api/sos-applet-api/#onceEnded
+					await sos.video.prepare(...nextVideoSet.arguments);
+					await sos.video.onceEnded(...currentVideoSet.arguments); // https://docs.signageos.io/api/sos-applet-api/#onceEnded
 				}
 			}
 
@@ -129,18 +129,18 @@
 					const nextVideoSet = videoSet2[(i + 1) % videoSet2.length];
 
 					// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/sos-applet-api/#Play_video)
-					await sos.video.play(...currentVideoSet.agruments);
+					await sos.video.play(...currentVideoSet.arguments);
 					currentVideoSet.playing = true;
 
 					// If previous video is playing, stop it
 					if (previousVideoSet.playing) {
-						await sos.video.stop(...previousVideoSet.agruments);
+						await sos.video.stop(...previousVideoSet.arguments);
 						previousVideoSet.playing = false;
 					}
 
 					// Prepare next video for gappless playback
-					await sos.video.prepare(...nextVideoSet.agruments);
-					await sos.video.onceEnded(...currentVideoSet.agruments); // https://docs.signageos.io/api/sos-applet-api/#onceEnded
+					await sos.video.prepare(...nextVideoSet.arguments);
+					await sos.video.onceEnded(...currentVideoSet.arguments); // https://docs.signageos.io/api/sos-applet-api/#onceEnded
 				}
 			}
 

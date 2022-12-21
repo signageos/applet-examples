@@ -59,7 +59,7 @@
 			}
 			// Set video properties for proper play on screen
 			for (const video of videos) {
-				video.agruments = [
+				video.arguments = [
 					video.filePath,
 					video.x,
 					video.y,
@@ -81,10 +81,10 @@
 						const currentVideo = videos[i];
 
 						// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/js/js-video)
-						await sos.video.prepare(...currentVideo.agruments);
-						await sos.video.play(...currentVideo.agruments);
-						await sos.video.onceEnded(...currentVideo.agruments); // Wait until video ends
-						await sos.video.stop(...currentVideo.agruments); // Stop the video
+						await sos.video.prepare(...currentVideo.arguments);
+						await sos.video.play(...currentVideo.arguments);
+						await sos.video.onceEnded(...currentVideo.arguments); // Wait until video ends
+						await sos.video.stop(...currentVideo.arguments); // Stop the video
 					})());
 				}
 				await Promise.all(promises);

@@ -92,7 +92,7 @@
 					filePath
 				} = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
 				video.filePath = filePath;
-				video.agruments = [video.filePath, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
+				video.arguments = [video.filePath, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
 			}
 
 			titleElement.innerHTML = '';
@@ -113,19 +113,19 @@
 				const realCurrentVideo = videos[realCurrentVideoIndex];
 
 				// Videos are identificated by URI & coordination together (https://sdk.docs.signageos.io/api/js/content/latest/js-video)
-				await sos.video.play(...realCurrentVideo.agruments);
+				await sos.video.play(...realCurrentVideo.arguments);
 				if (previousVideo) {
-					await sos.video.stop(...previousVideo.agruments);
+					await sos.video.stop(...previousVideo.arguments);
 				}
 
 				// Create promise for waiting on end of the video (https://sdk.docs.signageos.io/api/js/content/latest/js-video)
-				const endedPromise = sos.video.onceEnded(...realCurrentVideo.agruments);
+				const endedPromise = sos.video.onceEnded(...realCurrentVideo.arguments);
 
 				const nextVideoIndex = (realCurrentVideoIndex + 1) % videos.length;
 				const nextVideo = videos[nextVideoIndex];
 
 				// Prepare next video for gapless playback
-				await sos.video.prepare(...nextVideo.agruments);
+				await sos.video.prepare(...nextVideo.arguments);
 
 				// Now wait on end of video
 				await endedPromise;

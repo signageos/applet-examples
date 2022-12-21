@@ -67,7 +67,7 @@
 			};
 
 			// Set url, resolution on screen (full screen) - (https://sdk.docs.signageos.io/api/js/content/latest/js-video-stream#play-stream)
-			stream.agruments = [
+			stream.arguments = [
 				stream.uri,
 				Math.floor(document.documentElement.clientWidth * stream.x / 100),
 				Math.floor(document.documentElement.clientHeight * stream.y / 100),
@@ -81,17 +81,17 @@
 			indexElement.innerHTML = '';
 
 			// Play stream forever (https://sdk.docs.signageos.io/api/js/content/latest/js-video-stream#play-stream)
-			await sos.stream.play(...stream.agruments);
+			await sos.stream.play(...stream.arguments);
 
 			// If stream is disconnected, stop the stream (https://sdk.docs.signageos.io/api/js/content/latest/js-video-inputs-internal-ports)
 			sos.stream.onDisconnected(async (event) => {
 				contentElement.innerHTML = 'HDMI was disconnected';
-				await sos.stream.stop(...stream.agruments);
+				await sos.stream.stop(...stream.arguments);
 			});
 
 			// If HDMI is successfully connected, start the stream (https://sdk.docs.signageos.io/api/js/content/latest/js-video-inputs-internal-ports)
 			sos.stream.onConnected(async (event) => {
-				await sos.stream.play(...stream.agruments);
+				await sos.stream.play(...stream.arguments);
 			});
 		}
 		// Needed check for distinction between sos open and platform in box

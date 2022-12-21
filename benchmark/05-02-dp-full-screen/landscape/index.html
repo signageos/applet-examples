@@ -48,7 +48,7 @@
 			};
 
 			// Set url, resolution on screen (full screen) - (https://sdk.docs.signageos.io/api/js/content/latest/js-video-stream#play-stream)
-			stream.agruments = [stream.uri, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
+			stream.arguments = [stream.uri, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
 
 			// Remove loading title
 			titleElement.innerHTML = '';
@@ -57,17 +57,17 @@
 			htmlContentElement.innerHTML = '';
 
 			// Play stream forever (https://sdk.docs.signageos.io/api/js/content/latest/js-video-stream#play-stream)
-			await sos.stream.play(...stream.agruments);
+			await sos.stream.play(...stream.arguments);
 
 			// If stream is disconnected, stop the stream (https://sdk.docs.signageos.io/api/js/content/latest/js-video-inputs-internal-ports)
 			sos.stream.onDisconnected(async (event) => {
 				displayInfoElement.innerHTML = 'DP was disconnected';
-				await sos.stream.stop(...stream.agruments);
+				await sos.stream.stop(...stream.arguments);
 			});
 
 			// If DP is successfully connected, start the stream (https://sdk.docs.signageos.io/api/js/content/latest/js-video-inputs-internal-ports)
 			sos.stream.onConnected(async (event) => {
-				await sos.stream.play(...stream.agruments);
+				await sos.stream.play(...stream.arguments);
 			});
 		}
 		// Needed check for distinction between sos open and platform in box

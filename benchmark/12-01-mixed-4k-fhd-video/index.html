@@ -69,14 +69,14 @@
             //const width = 1920;
             //const height = 1080;
 			for (const video of videos) {
-				video.agruments = [video.filePath, 0, 0, width, height, {'4k' : true}];
+				video.arguments = [video.filePath, 0, 0, width, height, {'4k' : true}];
 			}
 
 			titleElement.innerHTML = '';
 			displayInfoElement.innerHTML = '';
 			indexElement.innerHTML = '';
 			htmlContentElement.innerHTML = '';
-			await sos.video.prepare(...videos[0].agruments);
+			await sos.video.prepare(...videos[0].arguments);
 			
           for (let i = 0; true; i = (i + 1) % videos.length) {
 				const previousVideo = videos[(i + videos.length - 1) % videos.length];
@@ -84,14 +84,14 @@
 				const nextVideo = videos[(i + 1) % videos.length];
 
 				// Videos are identificated by URI & coordination together (https://sdk.docs.signageos.io/api/js/content/latest/js-video)
-				await sos.video.play(...currentVideo.agruments);
+				await sos.video.play(...currentVideo.arguments);
 				currentVideo.playing = true;
 				if (previousVideo.playing) {
-					await sos.video.stop(...previousVideo.agruments);
+					await sos.video.stop(...previousVideo.arguments);
 					previousVideo.playing = false;
 				}
-				await sos.video.prepare(...nextVideo.agruments); // Before the first video end, prepare the second one
-				await sos.video.onceEnded(...currentVideo.agruments); // Wait until video ends
+				await sos.video.prepare(...nextVideo.arguments); // Before the first video end, prepare the second one
+				await sos.video.onceEnded(...currentVideo.arguments); // Wait until video ends
 			}
 		});
 	</script>

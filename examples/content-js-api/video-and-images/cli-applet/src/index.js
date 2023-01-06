@@ -15,7 +15,11 @@ sos.onReady().then(async function () {
 	const contents = sos.config.contents ? JSON.parse(sos.config.contents) : [{
 		uid: 'video-1.mp4',
 		uri: 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4'
-	},
+		},
+		{
+			uid: 'video-1.mp4',
+			uri: 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4'
+		},
 		{
 			uid: 'image-1.png',
 			uri: 'https://static.signageos.io/assets/android-benq-amy_bbd9afbc0655ceb6da790a80fbd90290.png'
@@ -146,8 +150,16 @@ sos.onReady().then(async function () {
 		const nextContent = contents[(i + 1) % contents.length];
 
 		await playContent(currentContent);
-		await stopContent(previousContent);
-		await prepareContent(nextContent);
+		if (currentContent.filePath !== previousContent.filePath) {
+			// beware of stopping video in case you play the same video in a loop
+			// otherwise you might get black gap or interrupted playback
+			await stopContent(previousContent);
+		}
+		if (currentContent.filePath !== nextContent.filePath) {
+			// beware of preparing video in case you play the same video in a loop
+			// otherwise you might get black gap or interrupted playback
+			await prepareContent(nextContent);
+		}
 		await waitEndedContent(currentContent);
 	}
 

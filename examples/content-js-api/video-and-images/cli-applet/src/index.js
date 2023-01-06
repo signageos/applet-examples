@@ -146,8 +146,16 @@ sos.onReady().then(async function () {
 		const nextContent = contents[(i + 1) % contents.length];
 
 		await playContent(currentContent);
-		await stopContent(previousContent);
-		await prepareContent(nextContent);
+		if (currentContent.filePath !== previousContent.filePath) {
+			// beware of stopping video in case you play the same video in a loop
+			// otherwise you might get black gap or interrupted playback
+			await stopContent(previousContent);
+		}
+		if (currentContent.filePath !== nextContent.filePath) {
+			// beware of preparing video in case you play the same video in a loop
+			// otherwise you might get black gap or interrupted playback
+			await prepareContent(nextContent);
+		}
 		await waitEndedContent(currentContent);
 	}
 

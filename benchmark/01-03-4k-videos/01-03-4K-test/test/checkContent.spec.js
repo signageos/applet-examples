@@ -32,36 +32,36 @@ describe('Check content', () => {
 		await waitUntil(async () => {
 			const matchRegex1 = videos.some(video => reg1.test(video))
 			should(matchRegex1).equal(true);
-			should(playingVideos[0].width).equal(1920);
-			should(playingVideos[0].height).equal(1080);
+			should(playingVideos[0].width).equal(3840);
+			should(playingVideos[0].height).equal(2160);
 		});
 
 		await waitUntil(async () => {
 			const matchRegex2 = videos.some(video => reg2.test(video))
 			should(matchRegex2).equal(true);
-			should(playingVideos[1].width).equal(1920);
-			should(playingVideos[1].height).equal(1080);
+			should(playingVideos[1].width).equal(3840);
+			should(playingVideos[1].height).equal(2160);
 		});
 
 		await waitUntil(async () => {
 			const matchRegex3 = videos.some(video => reg3.test(video))
 			should(matchRegex3).equal(true);
-			should(playingVideos[2].width).equal(1920);
-			should(playingVideos[2].height).equal(1080);
+			should(playingVideos[2].width).equal(3840);
+			should(playingVideos[2].height).equal(2160);
 		});
 
 		await waitUntil(async () => {
 			const matchRegex4 = videos.some(video => reg4.test(video))
 			should(matchRegex4).equal(true);
-			should(playingVideos[3].width).equal(1920);
-			should(playingVideos[3].height).equal(1080);
+			should(playingVideos[3].width).equal(3840);
+			should(playingVideos[3].height).equal(2160);
 		});
 
 		await waitUntil(async () => {
 			const matchRegex5 = videos.some(video => reg5.test(video))
 			should(matchRegex5).equal(true);
-			should(playingVideos[4].width).equal(1920);
-			should(playingVideos[4].height).equal(1080);
+			should(playingVideos[4].width).equal(3840);
+			should(playingVideos[4].height).equal(2160);
 		});
 
 		if (matchRegex1 && matchRegex2 && matchRegex3 && matchRegex4 && matchRegex5) {

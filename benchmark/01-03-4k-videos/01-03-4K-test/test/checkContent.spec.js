@@ -19,50 +19,45 @@ describe('Check content', () => {
 	});
 
 
-	it("each video playing", async function () {
-
+	async function getVideoUris() {
 		const playingVideos = await currentTiming.video.play.getAll();
 		const videos = playingVideos.map(v => v.uri)
+		return videos;
+	}
+
+
+	it("each video playing", async function () {
+
 		const reg1 = /.*video-1.mp4/gm;
 		const reg2 = /.*video-2.mp4/gm;
 		const reg3 = /.*video-3.mp4/gm;
 		const reg4 = /.*video-4.mp4/gm;
 		const reg5 = /.*video-5.mp4/gm;
 
-		await waitUntil(async () => {
-			const matchRegex1 = videos.some(video => reg1.test(video))
+		const matchRegex1 = await waitUntil(async () => (await getVideoUris()).some(video => reg1.test(video)));
 			should(matchRegex1).equal(true);
 			should(playingVideos[0].width).equal(3840);
 			should(playingVideos[0].height).equal(2160);
-		});
 
-		await waitUntil(async () => {
-			const matchRegex2 = videos.some(video => reg2.test(video))
+			const matchRegex2 = await waitUntil(async () => (await getVideoUris()).some(video => reg2.test(video)));
 			should(matchRegex2).equal(true);
 			should(playingVideos[1].width).equal(3840);
 			should(playingVideos[1].height).equal(2160);
-		});
 
-		await waitUntil(async () => {
-			const matchRegex3 = videos.some(video => reg3.test(video))
+			const matchRegex3 = await waitUntil(async () => (await getVideoUris()).some(video => reg3.test(video)));
 			should(matchRegex3).equal(true);
 			should(playingVideos[2].width).equal(3840);
 			should(playingVideos[2].height).equal(2160);
-		});
-
-		await waitUntil(async () => {
-			const matchRegex4 = videos.some(video => reg4.test(video))
+	
+			const matchRegex4 = await waitUntil(async () => (await getVideoUris()).some(video => reg4.test(video)));
 			should(matchRegex4).equal(true);
 			should(playingVideos[3].width).equal(3840);
 			should(playingVideos[3].height).equal(2160);
-		});
 
-		await waitUntil(async () => {
-			const matchRegex5 = videos.some(video => reg5.test(video))
+			const matchRegex5 = await waitUntil(async () => (await getVideoUris()).some(video => reg5.test(video)));
 			should(matchRegex5).equal(true);
 			should(playingVideos[4].width).equal(3840);
 			should(playingVideos[4].height).equal(2160);
-		});
 
 		if (matchRegex1 && matchRegex2 && matchRegex3 && matchRegex4 && matchRegex5) {
 			console.log("All Videos played correctly")

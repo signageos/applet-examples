@@ -29,6 +29,8 @@ describe('Check content', () => {
 		const reg1 = /.*video-2/gm;
 		const reg2 = /.*video-6/gm;
 
+
+		console.log(videos)
 		const matchRegex1 = videos.some(video => reg1.test(video))
 		should(matchRegex1).equal(true);
 	

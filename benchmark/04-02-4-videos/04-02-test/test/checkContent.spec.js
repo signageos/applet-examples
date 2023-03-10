@@ -33,6 +33,7 @@ describe('Check content', () => {
 		const reg1 = /.*video0/gm;
 		const reg2 = /.*video1/gm;
 		const reg3 = /.*video2/gm;
+		const reg4 = /.*video3/gm;
 
 		const matchRegex1 = videos.some(video => reg1.test(video))
 		should(matchRegex1).equal(true);
@@ -44,7 +45,10 @@ describe('Check content', () => {
 		const matchRegex3 = videos.some(video => reg3.test(video))
 		should(matchRegex3).equal(true);
 
-		 if (matchRegex1 && matchRegex2 && matchRegex3 ) {
+		const matchRegex4 = videos.some(video => reg4.test(video))
+		should(matchRegex4).equal(true);
+
+		 if (matchRegex1 && matchRegex2 && matchRegex3 && matchRegex4 ) {
 			console.log("All Videos played correctly")
 		}
 	}, 120000);

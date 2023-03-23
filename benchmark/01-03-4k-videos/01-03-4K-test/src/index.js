@@ -7,6 +7,7 @@ import sos from '@signageos/front-applet';
 sos.onReady().then(async function () {
 	//const contentElement = document.getElementById('root');
 	console.log('sOS is ready');
+	console.log("device supports 4K videos",  await sos.display.supports("VIDEO_4K"))
 
 	async function startApplet() {
 // Load static files

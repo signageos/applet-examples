@@ -1,0 +1,3 @@
+[submodule "examples/framework-examples/angular-example/ng-app-example"]
+	path = examples/framework-examples/angular-example/ng-app-example
+	url = https://github.com/signageos/ng-app-example.git

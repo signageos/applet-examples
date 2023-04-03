@@ -23,7 +23,57 @@ describe('Check content', () => {
 
 	// }, 120000);
 
-	it("each video playing", async function () {
+
+
+	// it("Video 1 stored", async function () {
+
+	// 	// check that device content has been loaded to the chache memory
+	// 	await waitUntil(async () => {
+	// 		const files = await currentTiming.offline.cache.listFiles();
+	// 		console.log("video 1 before assertion", files);
+	// 		// should(files).containEql("video-0");
+	// 		console.log("video 1 after assertion", files);
+	// 	}, 900000);
+	// });
+
+
+	it("Device stored video content", async function () {
+		await waitUntil(async () => {
+
+			const files = await currentTiming.offline.cache.listFiles();
+			console.log(files);
+			should(files).containEql("video1.mp4");
+			should(files).containEql("video1.mp4");
+			should(files).containEql("video2.mp4");
+		}, 30000);
+	})
+
+
+
+	// it("Video 2 stored", async function () {
+
+	// 	// check that device content has been loaded to the chache memory
+	// 	await waitUntil(async () => {
+	// 		const files = await currentTiming.offline.cache.listFiles();
+	// 		console.log("video 2 before assertion");
+	// 		should(files).containEql("video-1");
+	// 		console.log("video 2 after assertion");
+	// 	}, 900000);
+	// });
+
+	// it("Video 3 stored", async function () {
+
+	// 	// check that device content has been loaded to the chache memory
+	// 	await waitUntil(async () => {
+	// 		const files = await currentTiming.offline.cache.listFiles();
+	// 		console.log("video 3 before assertion");
+	// 		should(files).containEql("video-2");
+	// 		console.log("video 3 after assertion");
+	// 	}, 900000);
+	// });
+
+
+	it("Each video playing", async function () {
 
 		await waitUntil(async () => {
 

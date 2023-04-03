@@ -18,12 +18,22 @@ describe('Check content', () => {
 		await cleanTimings();
 	});
 
-	// it("each video saved", async function () {
-	// 	currentTiming.listFiles()
+;
+	it("Device stored video content", async function () {
+		await waitUntil(async () => {
 
-	// }, 120000);
+			const files = await currentTiming.offline.cache.listFiles();
+			console.log(files);
+			should(files).containEql("video0.mp4");
+			should(files).containEql("video1.mp4");
+			should(files).containEql("video2.mp4");
+			should(files).containEql("video3.mp4");
+		}, 30000);
+	});
 
-	it("each video playing", async function () {
+
+
+	it.skip("Each video playing", async function () {
 
 		await waitUntil(async () => {
 

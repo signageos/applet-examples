@@ -16,7 +16,7 @@ sos.onReady().then(async function () {
 		uri
 	};
 
-	stream.arguments = [stream.uri, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight, protocolType];
+	stream.arguments = [stream.uri, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight, { protocol: protocolType }];
 
 	contentElement.innerHTML = '';
 
@@ -26,6 +26,10 @@ sos.onReady().then(async function () {
 
 	sos.stream.onConnected(streamEventListener);
 	sos.stream.onDisconnected(streamEventListener);
+	sos.stream.onError(streamEventListener);
+	sos.stream.onPrepare(streamEventListener);
+	sos.stream.onPlay(streamEventListener);
+	sos.stream.onStop(streamEventListener);
 
 	// Play stream forever (https://sdk.docs.signageos.io/api/js/content/latest/js-video-stream)
 	await sos.stream.play(...stream.arguments);

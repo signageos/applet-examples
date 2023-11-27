@@ -25,11 +25,11 @@ describe('md5-checksum', function () {
 
 		const files = [
 			{
-				uid: 'video-1',
+				uid: 'video-1.mp4',
 				uri: 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4'
 			},
 			{
-				uid: 'image-1',
+				uid: 'image-1.png',
 				uri: 'https://static.signageos.io/assets/android-benq-amy_bbd9afbc0655ceb6da790a80fbd90290.png'
 			}
 		];
@@ -49,12 +49,12 @@ describe('md5-checksum', function () {
 			await currentTiming.offline.cache.loadFile("image-1");
 		});
 
-		const videoHash = await currentTiming.offline.cache.getChecksumFile('video-1', 'md5');
-		const validateVideoHash = await currentTiming.offline.cache.validateChecksumFile('video-1', videoHash, 'md5');
+		const videoHash = await currentTiming.offline.cache.getChecksumFile('video-1.mp4', 'md5');
+		const validateVideoHash = await currentTiming.offline.cache.validateChecksumFile('video-1.mp4', videoHash, 'md5');
 		should(validateVideoHash).be.true();
 
-		const imageHash = await currentTiming.offline.cache.getChecksumFile('image-1', 'md5');
-		const validateImageHash = await currentTiming.offline.cache.validateChecksumFile('image-1', imageHash, 'md5');
+		const imageHash = await currentTiming.offline.cache.getChecksumFile('image-1.png', 'md5');
+		const validateImageHash = await currentTiming.offline.cache.validateChecksumFile('image-1.png', imageHash, 'md5');
 		should(validateImageHash).be.true();
 	});
 });

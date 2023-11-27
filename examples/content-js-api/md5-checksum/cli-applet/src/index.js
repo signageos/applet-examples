@@ -33,22 +33,22 @@ sos.onReady().then(async function () {
 	const expectedImageHash = 'bbd9afbc0655ceb6da790a80fbd90290';
 
 	// Generate hash for video
-	const videoHash = await sos.offline.cache.getChecksumFile('video-1', 'md5');
+	const videoHash = await sos.offline.cache.getChecksumFile('video-1.mp4', 'md5');
 	console.log('Video hash: ' + videoHash);
 	contentElement.innerHTML += 'Video hash: ' + videoHash + '\n';
 
 	// Generate hash for image
-	const imageHash = await sos.offline.cache.getChecksumFile('image-1', 'md5');
+	const imageHash = await sos.offline.cache.getChecksumFile('image-1.png', 'md5');
 	console.log('Image hash: ' + imageHash);
 	contentElement.innerHTML += 'Image hash: ' + imageHash + '\n';
 
 	// Validate hash for video
-	const validHashVideo1 = await sos.offline.cache.validateChecksumFile('video-1', expectedVideoHash, 'md5');
+	const validHashVideo1 = await sos.offline.cache.validateChecksumFile('video-1.mp4', expectedVideoHash, 'md5');
 	console.log('Has video same hash as request: ' + validHashVideo1);
 	contentElement.innerHTML += 'Has video same hash as request: ' + validHashVideo1 + '\n';
 
 	// Validate hash for image
-	const validHashImage1 = await sos.offline.cache.validateChecksumFile('image-1', 'incorrect-hash', 'md5');
+	const validHashImage1 = await sos.offline.cache.validateChecksumFile('image-1.png', 'incorrect-hash', 'md5');
 	console.log('Has image same hash as incorrect hash: ' + validHashImage1);
 	contentElement.innerHTML += 'Has image same hash as incorrect hash: ' + validHashImage1 + '\n';
 

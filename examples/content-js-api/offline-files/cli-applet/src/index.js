@@ -91,10 +91,10 @@ sos.onReady().then(async function () {
 	console.log('files', fileUidsBefore);
 
 	// delete a few files
-	await sos.offline.cache.deleteFile('video-2');
-	await sos.offline.cache.deleteFile('image-8');
-	await sos.offline.cache.deleteFile('image-9');
-	await sos.offline.cache.deleteFile('image-12');
+	await sos.offline.cache.deleteFile('video-2.mp4');
+	await sos.offline.cache.deleteFile('image-8.png');
+	await sos.offline.cache.deleteFile('image-9.png');
+	await sos.offline.cache.deleteFile('image-12.png');
 	console.log('deleted video-2, image-8, image-9 and image-12');
 
 	// list files again

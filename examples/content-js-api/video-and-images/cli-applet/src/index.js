@@ -53,7 +53,7 @@ sos.onReady().then(async function () {
 			uri: 'https://static.signageos.io/assets/sssp-3.0-maggie_47dfc4c8c21b49c5d6f0ef1505ece49c.png'
 		},
 		{
-			uid: 'image-8',
+			uid: 'image-8.png',
 			uri: 'https://static.signageos.io/assets/tizen-2.4-bart_96c02fbd2df936e8bdd0b345f8874224.png'
 		},
 		{

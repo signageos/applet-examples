@@ -2,6 +2,9 @@ stages:
   - publish
   - test
 
+variables:
+  SOS_DEVICE_UID_MILHOUSE: eb615ae33411f2e17ceb2bf767e49892ee290e95dddf8e0153a7a
+
 .publish-applet:
   stage: publish
   image: node:16-alpine
@@ -45,7 +48,7 @@ test-applet-device:sample:tizen-2.4:
     FILE_PATH: 'index.spec.js'
     SOS_APPLET_VERSION: 2.0.0
     SOS_APPLET_UID: ca2123037c0ceeaceab255707ff94924ecc2830aaaa3cee88c
-    SOS_DEVICE_UID: 20da0af1d66d453adf3af33145ba5afbdfb5246200864ee158f6d
+    SOS_DEVICE_UID: ${SOS_DEVICE_UID_MILHOUSE}
 
 test-applet-device:sample:tizen-2.4:sos:
   extends: .test-applet-device:sos
@@ -53,7 +56,7 @@ test-applet-device:sample:tizen-2.4:sos:
     APPLET_PATH: .
     SOS_APPLET_VERSION: 2.0.0
     SOS_APPLET_UID: ca2123037c0ceeaceab255707ff94924ecc2830aaaa3cee88c
-    SOS_DEVICE_UID: 20da0af1d66d453adf3af33145ba5afbdfb5246200864ee158f6d
+    SOS_DEVICE_UID: ${SOS_DEVICE_UID_MILHOUSE}
 
 test-applet-device:crc32-checksum:tizen-2.4:
   extends: .test-applet-device
@@ -62,7 +65,7 @@ test-applet-device:crc32-checksum:tizen-2.4:
     FILE_PATH: 'examples/content-js-api/crc32-chceksum/singlefile-applet/index.spec.ts'
     SOS_APPLET_VERSION: 1.0.0
     SOS_APPLET_UID: d496274601ded9c68cc6abc53f2e079932faae420246eb6e43
-    SOS_DEVICE_UID: 20da0af1d66d453adf3af33145ba5afbdfb5246200864ee158f6d
+    SOS_DEVICE_UID: ${SOS_DEVICE_UID_MILHOUSE}
 
 test-applet-device:md5-checksum:tizen-2.4:
   extends: .test-applet-device
@@ -71,7 +74,7 @@ test-applet-device:md5-checksum:tizen-2.4:
     FILE_PATH: 'examples/content-js-api/md5-checksum/singlefile-applet/index.spec.ts'
     SOS_APPLET_VERSION: 1.0.0
     SOS_APPLET_UID: 8d18457e85901a5c139c0d1847175745313862b2975e547d47
-    SOS_DEVICE_UID: 20da0af1d66d453adf3af33145ba5afbdfb5246200864ee158f6d
+    SOS_DEVICE_UID: ${SOS_DEVICE_UID_MILHOUSE}
 
 test-applet-device:file-system:tizen-2.4:
   extends: .test-applet-device
@@ -80,7 +83,7 @@ test-applet-device:file-system:tizen-2.4:
     FILE_PATH: 'examples/content-js-api/file-system/singlefile-applet/index.spec.ts'
     SOS_APPLET_VERSION: 2.0.0
     SOS_APPLET_UID: d1aa183da1a70ca702f9f58bb991454363e37e3c21a6c1dc42
-    SOS_DEVICE_UID: 20da0af1d66d453adf3af33145ba5afbdfb5246200864ee158f6d
+    SOS_DEVICE_UID: ${SOS_DEVICE_UID_MILHOUSE}
 
 test-applet-device:video-and-images:tizen-2.4:
   extends: .test-applet-device
@@ -89,4 +92,4 @@ test-applet-device:video-and-images:tizen-2.4:
     FILE_PATH: 'examples/content-js-api/video-and-images/singlefile-applet/index.spec.ts'
     SOS_APPLET_VERSION: 1.0.0
     SOS_APPLET_UID: 5397c38fa88a3b5019c3a74cf5f1b29758dcca68d5a1b4b23b
-    SOS_DEVICE_UID: 20da0af1d66d453adf3af33145ba5afbdfb5246200864ee158f6d
+    SOS_DEVICE_UID: ${SOS_DEVICE_UID_MILHOUSE}

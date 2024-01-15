@@ -15,7 +15,7 @@
 			const contentElement = document.getElementById('index');
 			const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-			// Wait on sos data are ready (https://sdk.docs.signageos.io/api/sos-appconst-api/#onReady)
+			// Wait on sos data are ready (https://developers.signageos.io/sdk/applet-basics)
 			await sos.onReady();
 			contentElement.innerHTML = "Display version: " + sos.display.version + "<br>";
 

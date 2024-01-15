@@ -62,7 +62,7 @@
 				uri: 'internal://hdmi1'
 			};
 
-			// Set url, resolution on screen (full screen) - (https://sdk.docs.signageos.io/api/js/content/latest/js-video-stream#play-stream)
+			// Set url, resolution on screen (full screen) - (https://developers.signageos.io/sdk/content/js-video-stream#play-stream)
 			stream.arguments = [stream.uri, 200, 200, 1200, 800];
 
 			// Remove loading title
@@ -70,16 +70,16 @@
 			displayInfoElement.innerHTML = '';
 			indexElement.innerHTML = '';
 
-			// Play stream forever (https://sdk.docs.signageos.io/api/js/content/latest/js-video-stream#play-stream)
+			// Play stream forever (https://developers.signageos.io/sdk/content/js-video-stream#play-stream)
 			await sos.stream.play(...stream.arguments);
 
-			// If stream is disconnected, stop the stream (https://sdk.docs.signageos.io/api/js/content/latest/js-video-inputs-internal-ports)
+			// If stream is disconnected, stop the stream (https://developers.signageos.io/sdk/content/js-video-inputs-internal-ports)
 			sos.stream.onDisconnected(async (event) => {
 				contentElement.innerHTML = 'HDMI was disconnected';
 				await sos.stream.stop(...stream.arguments);
 			});
 
-			// If HDMI is successfully connected, start the stream (https://sdk.docs.signageos.io/api/js/content/latest/js-video-inputs-internal-ports)
+			// If HDMI is successfully connected, start the stream (https://developers.signageos.io/sdk/content/js-video-inputs-internal-ports)
 			sos.stream.onConnected(async (event) => {
 				await sos.stream.play(...stream.arguments);
 			});

@@ -7,7 +7,7 @@ Example usage of timing API to pause/resume timing triggers.
 
 For more information on how to write applets, read these articles:
 
-* [Timing API](https://sdk.docs.signageos.io/api/js/content/latest/js-timing)
+* [Timing API](https://developers.signageos.io/sdk/content/js-timing)
 * [Getting started with applets](https://docs.signageos.io/hc/en-us/articles/4405068855570-Introduction-to-Applets)
 * [How to write single-file applets](https://docs.signageos.io/hc/en-us/articles/4405011600274)
 * [How to write applets with signageOS CLI](https://docs.signageos.io/hc/en-us/articles/4405070294674)

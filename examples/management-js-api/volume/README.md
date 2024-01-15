@@ -7,7 +7,7 @@ Example usage of audio API.
 
 For more information on how to write applets, read these articles:
 
-* [Audio API](https://sdk.docs.signageos.io/api/js/management/latest/7-js-management-volume)
+* [Audio API](https://developers.signageos.io/sdk/management/js-management-audio)
 * [Getting started with applets](https://docs.signageos.io/hc/en-us/articles/4405068855570-Introduction-to-Applets)
 * [How to write single-file applets](https://docs.signageos.io/hc/en-us/articles/4405011600274)
 * [How to write applets with signageOS CLI](https://docs.signageos.io/hc/en-us/articles/4405070294674)

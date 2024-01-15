@@ -18,7 +18,7 @@
 
 			let callsCount = 0;
 			contentElement.innerHTML = 'sOS is ready';
-			// Send commands to be safely stored for reports, monitoring etc. even when goes offline (https://sdk.docs.signageos.io/api/js/content/latest/js-command)
+			// Send commands to be safely stored for reports, monitoring etc. even when goes offline (https://developers.signageos.io/sdk/content/js-command)
 			sos.command.onCommand((commandEvent) => {
 				if (commandEvent.command.type === 'CountIt') {
 					callsCount++;

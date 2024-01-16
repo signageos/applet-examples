@@ -7,12 +7,12 @@ Example of getting various information about the device.
 
 For more information on how to write applets, read these articles:
 
-* [Basic Management API](https://sdk.docs.signageos.io/api/js/management/latest/1-js-management)
-* [App API](https://sdk.docs.signageos.io/api/js/management/latest/10-js-management-application)
-* [IR Remote Control API](https://sdk.docs.signageos.io/api/js/management/latest/3-js-management-remote-control)
-* [Screen API](https://sdk.docs.signageos.io/api/js/management/latest/5-js-management-screen)
-* [Time API](https://sdk.docs.signageos.io/api/js/management/latest/6-js-management-time)
-* [Audio API](https://sdk.docs.signageos.io/api/js/management/latest/7-js-management-volume)
+* [Basic Management API](https://developers.signageos.io/sdk/management/js-management-management)
+* [App API](https://developers.signageos.io/sdk/management/js-management-application)
+* [IR Remote Control API](https://developers.signageos.io/sdk/management/js-management-remote-control)
+* [Screen API](https://developers.signageos.io/sdk/management/js-management-screen)
+* [Time API](https://developers.signageos.io/sdk/management/js-management-time)
+* [Audio API](https://developers.signageos.io/sdk/management/js-management-audio)
 * [Getting started with applets](https://docs.signageos.io/hc/en-us/articles/4405068855570-Introduction-to-Applets)
 * [How to write single-file applets](https://docs.signageos.io/hc/en-us/articles/4405011600274)
 * [How to write applets with signageOS CLI](https://docs.signageos.io/hc/en-us/articles/4405070294674)

@@ -7,7 +7,7 @@ Example usage of debug API.
 
 For more information on how to write applets, read these articles:
 
-* [Debug API](https://sdk.docs.signageos.io/api/js/management/latest/9-js-management-debug)
+* [Debug API](https://developers.signageos.io/sdk/management/js-management-debug)
 * [Getting started with applets](https://docs.signageos.io/hc/en-us/articles/4405068855570-Introduction-to-Applets)
 * [How to write single-file applets](https://docs.signageos.io/hc/en-us/articles/4405011600274)
 * [How to write applets with signageOS CLI](https://docs.signageos.io/hc/en-us/articles/4405070294674)

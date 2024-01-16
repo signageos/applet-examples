@@ -128,7 +128,7 @@
 				},
 			];
 
-			// Store video to offline storage for set 1 (https://sdk.docs.signageos.io/api/js/content/latest/js-offline-cache-media-files)
+			// Store video to offline storage for set 1 (https://developers.signageos.io/sdk/content/js-offline-cache-media-files)
 			for (const video of videoSet1) {
 				indexElement.innerHTML = "Downloading: " + video.uri;
 				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
@@ -143,7 +143,7 @@
                 indexElement.innerHTML = "Downloaded: " + video.filePath;
 			}
 
-			// Store video to offline storage for set 2 (https://sdk.docs.signageos.io/api/js/content/latest/js-offline-cache-media-files)
+			// Store video to offline storage for set 2 (https://developers.signageos.io/sdk/content/js-offline-cache-media-files)
 			for (const video of videoSet2) {
 				indexElement.innerHTML = "Downloading: " + video.uri;
 				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
@@ -170,7 +170,7 @@
 					const currentVideoSet = videoSet1[i];
 					const nextVideoSet = videoSet1[(i + 1) % videoSet1.length];
 
-					// Videos are identificated by URI & coordination together (https://sdk.docs.signageos.io/api/js/content/latest/js-video)
+					// Videos are identificated by URI & coordination together (https://developers.signageos.io/sdk/content/js-video)
 					await sos.video.play(...currentVideoSet.arguments);
 					currentVideoSet.playing = true;
 
@@ -182,7 +182,7 @@
 
 					// Prepare next video for gappless playback
 					await sos.video.prepare(...nextVideoSet.arguments);
-					await sos.video.onceEnded(...currentVideoSet.arguments); // https://sdk.docs.signageos.io/api/js/content/latest/js-video
+					await sos.video.onceEnded(...currentVideoSet.arguments); // https://developers.signageos.io/sdk/content/js-video
 				}
 			}
 
@@ -192,7 +192,7 @@
 					const currentVideoSet = videoSet2[i];
 					const nextVideoSet = videoSet2[(i + 1) % videoSet2.length];
 
-					// Videos are identificated by URI & coordination together (https://sdk.docs.signageos.io/api/js/content/latest/js-video)
+					// Videos are identificated by URI & coordination together (https://developers.signageos.io/sdk/content/js-video)
 					await sos.video.play(...currentVideoSet.arguments);
 					currentVideoSet.playing = true;
 
@@ -204,7 +204,7 @@
 
 					// Prepare next video for gappless playback
 					await sos.video.prepare(...nextVideoSet.arguments);
-					await sos.video.onceEnded(...currentVideoSet.arguments); // https://sdk.docs.signageos.io/api/js/content/latest/js-video
+					await sos.video.onceEnded(...currentVideoSet.arguments); // https://developers.signageos.io/sdk/content/js-video
 				}
 			}
 

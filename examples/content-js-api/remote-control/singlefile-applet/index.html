@@ -17,7 +17,7 @@
 
 			contentElement.innerHTML = '';
 
-			// Bind every key up of a remote control (except remote control is locked) (https://sdk.docs.signageos.io/api/js/content/latest/js-input)
+			// Bind every key up of a remote control (except remote control is locked) (https://developers.signageos.io/sdk/content/js-input)
 			await sos.input.onKeyUp((keyUpEvent) => {
 				contentElement.innerHTML = contentElement.innerHTML + `Pressed: ${keyUpEvent.keyCode} (${keyUpEvent.keyName})\n`;
 			});

@@ -7,7 +7,7 @@ Example usage of remote control API.
 
 For more information on how to write applets, read these articles:
 
-* [IR Remote Control API](https://sdk.docs.signageos.io/api/js/management/latest/3-js-management-remote-control)
+* [IR Remote Control API](https://developers.signageos.io/sdk/management/js-management-remote-control)
 * [Getting started with applets](https://docs.signageos.io/hc/en-us/articles/4405068855570-Introduction-to-Applets)
 * [How to write single-file applets](https://docs.signageos.io/hc/en-us/articles/4405011600274)
 * [How to write applets with signageOS CLI](https://docs.signageos.io/hc/en-us/articles/4405070294674)

@@ -63,7 +63,7 @@
 			];
 
 			for (const item of items) {
-				// Store file to offline storage (https://sdk.docs.signageos.io/api/js/content/latest/js-offline-cache-media-files)
+				// Store file to offline storage (https://developers.signageos.io/sdk/content/js-offline-cache-media-files)
 				const {
 					filePath
 				} = await sos.offline.cache.loadOrSaveFile(item.uid, item.uri);
@@ -88,7 +88,7 @@
 
 				// play current
 
-				// Videos are identificated by URI & coordination together (https://sdk.docs.signageos.io/api/js/content/latest/js-video)
+				// Videos are identificated by URI & coordination together (https://developers.signageos.io/sdk/content/js-video)
 				if (realCurrent.type === 'video') {
 					await sos.video.play(...realCurrent.arguments);
 				} else if (realCurrent.type === 'image') {
@@ -116,7 +116,7 @@
 				const nextIndex = (realCurrentIndex + 1) % items.length;
 
 				if (realCurrent.type === 'video') {
-					// https://sdk.docs.signageos.io/api/js/content/latest/js-video
+					// https://developers.signageos.io/sdk/content/js-video
 					endedPromise = sos.video.onceEnded(...realCurrent.arguments);
 
 					const next = items[nextIndex];

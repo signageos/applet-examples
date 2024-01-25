@@ -23,7 +23,7 @@ sos.onReady().then(async function () {
 	},
 		{
 			uid: 'video-2.mp4',
-			uri: 'https://static.signageos.io/assets/videowall2/videowall2-top_left_def8f44d0dcac75b3b2474b705cb0f8e.mp4'
+			uri: 'https://static.signageos.io/assets/videowall2/videowall2-top-left_37a50d9ce8520bc5d1d9fa77df3c90d8.mp4'
 		},
 		{
 			uid: 'video-3.mp4',
@@ -36,7 +36,7 @@ sos.onReady().then(async function () {
 	},
 		{
 			uid: 'video-2.mp4',
-			uri: 'https://static.signageos.io/assets/videowall2/videowall2-top_right_588d44880144af36192b58ba42c18052.mp4'
+			uri: 'https://static.signageos.io/assets/videowall2/videowall2-top-right_e9aebe3e57fe7c8e56aa95750f7bd419.mp4'
 		},
 		{
 			uid: 'video-3.mp4',
@@ -49,7 +49,7 @@ sos.onReady().then(async function () {
 	},
 		{
 			uid: 'video-2.mp4',
-			uri: 'https://static.signageos.io/assets/videowall2/videowall2-bottom_left_cd0fe378929adffd4f85642bd70a7100.mp4'
+			uri: 'https://static.signageos.io/assets/videowall2/videowall2-bottom-left_05f167d439a0fdbf48c1ae83f9b02c09.mp4'
 		},
 		{
 			uid: 'video-3.mp4',
@@ -62,7 +62,7 @@ sos.onReady().then(async function () {
 	},
 		{
 			uid: 'video-2.mp4',
-			uri: 'https://static.signageos.io/assets/videowall2/videowall2-bottom_right_b0183cc35cb2c575546c9a63421db11a.mp4'
+			uri: 'https://static.signageos.io/assets/videowall2/videowall2-bottom-right_09e6b4982e9220f021bc0c37fe4eb392.mp4'
 		},
 		{
 			uid: 'video-3.mp4',

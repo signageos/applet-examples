@@ -10,7 +10,7 @@
 			function startApplet() {
 				var iframeElement = document.getElementById('iframe');
 				
-				sos.offline.cache.loadOrSaveFile('iframe8', 'https://raw.githubusercontent.com/signageos/applet-examples/master/examples/nested-iframes/iframe8.html')
+				sos.offline.cache.loadOrSaveFile('iframe8', 'https://raw.githubusercontent.com/signageos/applet-examples/master/examples/content-js-api/nested-iframes/iframe8.html')
 				.then(function (file) { iframeElement.src = file.filePath })
 				.catch(function (error) { console.error(error); });
 			}

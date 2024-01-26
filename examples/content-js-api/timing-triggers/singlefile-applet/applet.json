@@ -1,9 +1,0 @@
-{
-  "scope": "signageos",
-  "name": "timing-triggers",
-  "version": "1.0.0",
-  "main": "index.html",
-  "dependencies": {
-    "front-applet": "1.0.29"
-  }
-}

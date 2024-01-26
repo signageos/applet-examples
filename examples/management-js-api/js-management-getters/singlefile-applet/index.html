@@ -14,7 +14,7 @@
 		async function startApplet() {
 			const contentElement = document.getElementById('index');
 
-			// Wait on sos data are ready (https://sdk.docs.signageos.io/api/sos-appconst-api/#onReady)
+			// Wait on sos data are ready (https://developers.signageos.io/sdk/applet-basics)
 			await sos.onReady();
 			contentElement.innerHTML = "Display version: " + sos.display.version + "<br>";
 

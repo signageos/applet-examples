@@ -9,7 +9,7 @@ Example usage of Capabilities API - Content Part.
 
 For more information on how to write applets, read these articles:
 
-* [Capabilities](https://sdk.docs.signageos.io/api/js/content/4.5.0/js-applet-basics#capabilities)
+* [Capabilities](https://developers.signageos.io/sdk/applet-basics#capabilities)
 * [Getting started with applets](https://docs.signageos.io/hc/en-us/articles/4405068855570-Introduction-to-Applets)
 * [How to write single-file applets](https://docs.signageos.io/hc/en-us/articles/4405011600274)
 * [How to write applets with signageOS CLI](https://docs.signageos.io/hc/en-us/articles/4405070294674)

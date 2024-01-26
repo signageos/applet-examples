@@ -10,7 +10,7 @@ sos.onReady().then(async function () {
 
 	const {
 		filePath
-	} = await sos.offline.cache.loadOrSaveFile('iframe1', 'https://raw.githubusercontent.com/signageos/applet-examples/master/examples/nested-iframes/iframe1.html');
+	} = await sos.offline.cache.loadOrSaveFile('iframe1', 'https://raw.githubusercontent.com/signageos/applet-examples/master/examples/content-js-api/nested-iframes/iframe1.html');
 
 	contentElement.innerHTML = '';
 

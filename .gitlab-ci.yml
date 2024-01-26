@@ -1,9 +1,16 @@
 stages:
+  - check
   - publish
   - test
 
 variables:
   SOS_DEVICE_UID_MILHOUSE: eb615ae33411f2e17ceb2bf767e49892ee290e95dddf8e0153a7a
+
+check:links:
+  stage: check
+  image: $ECR_REGISTRY/signageos/docker:master
+  script:
+    - ./tools/check-links.sh
 
 .publish-applet:
   stage: publish

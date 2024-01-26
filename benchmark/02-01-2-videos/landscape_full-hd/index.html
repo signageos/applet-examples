@@ -67,7 +67,7 @@
 				{ uid: 'video-10.mp4', x: 960, y: 0, width: 960, height: 540, uri: 'https://static.signageos.io/assets/test-videos-02_AME/video-test-02_15s_1920x1080_59675cbf0f3d6f769325a12d5f17b057.mp4' },
 			];
 
-			// Store video to offline storage for set 1 (https://docs.signageos.io/api/js/js-offline-cache-media-files)
+			// Store video to offline storage for set 1 (https://developers.signageos.io/sdk/content/js-offline-cache-media-files)
 			for (const video of videoSet1) {
 				indexElement.innerHTML = "Downloading: " + video.uri;
 				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
@@ -82,7 +82,7 @@
                 indexElement.innerHTML = "Downloaded: " + video.filePath;
 			}
 
-			// Store video to offline storage for set 2 (https://docs.signageos.io/api/js/js-offline-cache-media-files)
+			// Store video to offline storage for set 2 (https://developers.signageos.io/sdk/content/js-offline-cache-media-files)
 			for (const video of videoSet2) {
 				indexElement.innerHTML = "Downloading: " + video.uri;
 				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
@@ -109,7 +109,7 @@
 					const currentVideoSet = videoSet1[i];
 					const nextVideoSet = videoSet1[(i + 1) % videoSet1.length];
 
-					// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/sos-applet-api/#Play_video)
+					// Videos are identificated by URI & coordination together (https://developers.signageos.io/sdk/content/js-video#Play_video)
 					await sos.video.play(...currentVideoSet.arguments);
 					currentVideoSet.playing = true;
 
@@ -121,7 +121,7 @@
 
 					// Prepare next video for gappless playback
 					await sos.video.prepare(...nextVideoSet.arguments);
-					await sos.video.onceEnded(...currentVideoSet.arguments); // https://docs.signageos.io/api/sos-applet-api/#onceEnded
+					await sos.video.onceEnded(...currentVideoSet.arguments); // https://developers.signageos.io/sdk/content/js-video#onceEnded
 				
                 	loopCount++;
               		console.log('LOOP ' + loopCount);
@@ -134,7 +134,7 @@
 					const currentVideoSet = videoSet2[i];
 					const nextVideoSet = videoSet2[(i + 1) % videoSet2.length];
 
-					// Videos are identificated by URI & coordination together (https://docs.signageos.io/api/sos-applet-api/#Play_video)
+					// Videos are identificated by URI & coordination together (https://developers.signageos.io/sdk/content/js-video#Play_video)
 					await sos.video.play(...currentVideoSet.arguments);
 					currentVideoSet.playing = true;
 
@@ -146,7 +146,7 @@
 
 					// Prepare next video for gappless playback
 					await sos.video.prepare(...nextVideoSet.arguments);
-					await sos.video.onceEnded(...currentVideoSet.arguments); // https://docs.signageos.io/api/sos-applet-api/#onceEnded
+					await sos.video.onceEnded(...currentVideoSet.arguments); // https://developers.signageos.io/sdk/content/js-video#onceEnded
 				}
 			}
 

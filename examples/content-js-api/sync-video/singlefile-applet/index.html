@@ -1,89 +1,116 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 
 <head>
 	<title>Video Sync Play</title>
 </head>
 
-<body style="text-align: center; background-color: #f4d03f; color: #333333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+<body style="
+      text-align: center;
+      background-color: #f4d03f;
+      color: #333333;
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    ">
 	<h1>Video Sync Play</h1>
 	<p id="index"></p>
 
 
 	<script type="application/ecmascript">
-		async function startApplet() {
+		window.addEventListener('sos.loaded', async function () {
 			const contentElement = document.getElementById('index');
 			await sos.onReady();
 
-			contentElement.innerHTML = '...syncing...';
-
-			// Connect to the sync server and initialize the sync group TODO add docs link
-			const syncServerUri = sos.config.sync_server || undefined;
-			const syncGroup = sos.config.sync_group || undefined;
-			await sos.sync.connect(syncServerUri);
-			await sos.sync.init(syncGroup);
-
 			contentElement.innerHTML = '...loading videos...';
 
-			const videos = [{
-					uid: 'video-1.mp4',
-					uri: 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4'
-				},
-				{
-					uid: 'video-2.mp4',
-					uri: 'https://static.signageos.io/assets/video-test-2_e2ffa51f6a4473b815f39e7fb39239da.mp4'
-				},
-				{
-					uid: 'video-3.mp4',
-					uri: 'https://static.signageos.io/assets/video-test-3_5cfd717df750e5b1d5dd8384c194a92d.mp4'
-				},
+			const videos = [
+				{ uid: 'video-1.mp4', uri: 'https://static.signageos.io/assets/test-videos-03_AME/video-test-03_15s_1920x1080_2fe7b039750a134aeac1c0a515710007.mp4' },
+				{ uid: 'video-2.mp4', uri: 'https://static.signageos.io/assets/test-videos-06_AME/video-test-06_15s_1920x1080_6bad9be8f365760ae505dab34582978b.mp4' },
+				{ uid: 'video-3.mp4', uri: 'https://static.signageos.io/assets/test-videos-04_AME/video-test-04_15s_1920x1080_88f90af5fa281d7efb8eae17848e71d9.mp4' },
 			];
 
 			for (const video of videos) {
 				// Store video to offline storage (https://developers.signageos.io/sdk/content/js-offline-cache-media-files)
-				const {
-					filePath
-				} = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
+				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
 				video.filePath = filePath;
 				video.arguments = [video.filePath, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
 			}
+
+			contentElement.innerHTML = '...syncing...';
+
+			// Connect to the sync server and initialize the sync group https://developers.signageos.io/sdk/content/js-sync-playback
+			const syncGroup = sos.config.sync_group || undefined;
+			const syncEngine = sos.config.sync_engine || undefined;
+
+			await sos.sync.connect({ engine: syncEngine });
+			await sos.sync.init(syncGroup);
 
 			contentElement.innerHTML = '';
 
 			let previousVideoIndex;
 			let currentVideoIndex = 0;
+			let preparedVideoIndex = -1;
 
 			while (true) {
+				console.log('-------------------------------------');
+
 				const previousVideo = typeof previousVideoIndex === 'undefined' ? undefined : videos[previousVideoIndex];
 				const currentVideo = videos[currentVideoIndex];
 
+				console.log('will wait, data = ' + currentVideo.uid);
 				const realCurrentVideoUid = await sos.sync.wait(currentVideo.uid, syncGroup);
+				let start = new Date();
+				console.log('wait resolved with data = ' + realCurrentVideoUid);
 				const realCurrentVideoIndex = videos.findIndex((video) => video.uid === realCurrentVideoUid);
-				const realCurrentVideo = videos[realCurrentVideoIndex];
 
-				// Videos are identificated by URI & coordination together (https://developers.signageos.io/sdk/content/js-video)
-				await sos.video.play(...realCurrentVideo.arguments);
-				if (previousVideo) {
-					await sos.video.stop(...previousVideo.arguments);
+				console.log('previousVideoIndex', previousVideoIndex);
+				console.log('currentVideoIndex', currentVideoIndex);
+				console.log('realCurrentVideoUid', realCurrentVideoUid);
+
+				if (preparedVideoIndex >= 0 && preparedVideoIndex !== realCurrentVideoIndex && preparedVideoIndex !== previousVideoIndex) {
+					console.log('stop video ' + preparedVideoIndex);
+					const preparedVideo = videos[preparedVideoIndex];
+					await sos.video.stop(...preparedVideo.arguments);
+					preparedVideoIndex = -1;
 				}
 
-				// https://developers.signageos.io/sdk/content/js-video
-				const endedPromise = sos.video.onceEnded(...realCurrentVideo.arguments);
+				let endedPromise = undefined;
+
+				// if the real video that should be played is different, don't play it now because it would be out of sync
+				// instead prepare next video and start from there
+				if (realCurrentVideoIndex === currentVideoIndex) {
+					console.log('play video ' + currentVideoIndex);
+					await sos.video.play(...currentVideo.arguments);
+					console.log('time from sync to play: ' + (new Date() - start) + 'ms');
+					if (previousVideo && previousVideoIndex !== currentVideoIndex) {
+						console.log('stop video ' + previousVideoIndex);
+						await sos.video.stop(...previousVideo.arguments);
+					}
+
+					previousVideoIndex = currentVideoIndex;
+
+					// https://developers.signageos.io/sdk/content/js-video#event-onceended
+					endedPromise = sos.video.onceEnded(...currentVideo.arguments);
+				} else {
+					console.log('real video different from expected, skipping', realCurrentVideoIndex + ' != ' + currentVideoIndex);
+				}
 
 				const nextVideoIndex = (realCurrentVideoIndex + 1) % videos.length;
 				const nextVideo = videos[nextVideoIndex];
+				console.log('prepare video ' + nextVideoIndex);
 				await sos.video.prepare(...nextVideo.arguments);
+				preparedVideoIndex = nextVideoIndex;
 
-				await endedPromise;
+				if (endedPromise) {
+					await endedPromise;
+				}
 
-				previousVideoIndex = realCurrentVideoIndex;
 				currentVideoIndex = nextVideoIndex;
 			}
-		}
-		// Needed check for distinction between sos open and platform in box
-		typeof sos !== 'undefined' ?
-			startApplet() :
-			window.addEventListener('sos.loaded', startApplet);
+		});
 	</script>
 </body>
 

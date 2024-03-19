@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Native Commands - MDC</title>
+</head>
+
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Native Commands - MDC</h1>
+	<p id="index">... loading ...</p>
+	<p id="commandResponse-1">... command response 1 ...</p>
+	<p id="commandResponse-2">... command response 2 ...</p>
+	<p id="commandResponse-3">... command response 3 ...</p>
+
+
+	<script type="application/ecmascript">
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			await sos.onReady();
+
+			// MDC Command - Get Brightness
+			const commandBrightnessResponse = await sos.native.mdc.sendOne('localhost', 0x25);
+			if (commandBrightnessResponse.type === 'ACK') {
+				contentElement.innerHTML = `Brightness: ${commandBrightnessResponse.result}%`;
+			} else {
+				contentElement.innerHTML = `Error: ${commandBrightnessResponse.result}`;
+			}
+
+			// MDC Command - Set Volume to 50%
+			const commandVolumeResponse = await sos.native.mdc.sendOne('localhost', 0x12, [50]);
+			if (commandVolumeResponse.type === 'ACK') {
+				document.getElementById('commandResponse-1').innerHTML = `Volume set to 50%`;
+			} else {
+				document.getElementById('commandResponse-1').innerHTML = `Error: ${commandVolumeResponse.result}`;
+			}
+
+			// MDC Command - Set Gamma Mode to S-Curve
+			const commandGammaResponse = await sos.native.mdc.sendOne('localhost', 0x21, [0x54, 0x03]);
+			if (commandGammaResponse.type === 'ACK') {
+				document.getElementById('commandResponse-3').innerHTML = `Gamma Mode set to S-Curve`;
+			} else {
+				document.getElementById('commandResponse-3').innerHTML = `Error: ${commandGammaResponse.result}`;
+			}
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
+</html>

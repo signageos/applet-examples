@@ -79,6 +79,7 @@ This repository contains:
 - [Timer](https://github.com/signageos/applet-examples/tree/master/examples/management-js-api/timer) for turning display On/Off based on time and day in a week 
 - [Volume](https://github.com/signageos/applet-examples/tree/master/examples/management-js-api/volume) level settings
 - [Wi-Fi Access Point](https://github.com/signageos/applet-examples/tree/master/examples/management-js-api/wifi-access-point) for setting up RPi via smartphone/PC
+- [Native Commands - MDC](https://github.com/signageos/applet-examples/tree/master/examples/management-js-api/native-command-mdc)
 
 ## SMIL playlists examples
 

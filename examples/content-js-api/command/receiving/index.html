@@ -28,7 +28,7 @@
 				}
 
 				// Command can also include additional optional payload of data
-				if (commandEvent.command.type === 'CountMultiple' && commandEvent.command.extraValue !== "") {
+				if (commandEvent.command.type === 'CountMultiple' && commandEvent.command.extraValue) {
 					const extraValue = commandEvent.command.extraValue;
 					callsCount = callsCount + extraValue;
 					contentElement.innerHTML = `Calls count: ${callsCount}`;

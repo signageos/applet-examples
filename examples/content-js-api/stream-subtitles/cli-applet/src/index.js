@@ -41,20 +41,16 @@ sos.onReady().then(async function () {
 		trackSelection: {
 			preferredAudioLanguages: ['en'],
 			preferredTextLanguages: ['en'],
-		}
-	});
-
-	// Play stream forever with some additional options (https://developers.signageos.io/sdk/content/js-video-stream#play)
-	await sos.stream.play(uri, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight, {
-		protocol: protocolType,
-		trackSelection: {
-			preferredAudioLanguages: ['en'],
-			preferredTextLanguages: ['en'],
 		},
 		drm: {
 			scheme: 'Widevine',
 			licenseUri: 'http://some.uri/licence-uri'
 		}
+	});
+
+	// Play stream forever with some additional options (https://developers.signageos.io/sdk/content/js-video-stream#play)
+	await sos.stream.play(uri, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight, {
+		protocol: protocolType
 	});
 
 	// Get all tracks of the selected stream (https://developers.signageos.io/sdk/content/js-video-stream#gettracks)

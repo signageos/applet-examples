@@ -53,10 +53,10 @@ You can learn more about triggers and sensors in the [signageOS SMIL Player docu
 <!-- Standard playlist of 2 videos, playing as default -->
 <par>
     <seq repeatCount="indefinite">
-        <video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/demo/car-rental-sensors/display/assets/pexels-gleb-albovsky-6605102.mp4" id="annons0" fit="hidden" region="main">
+        <video src="https://demo.signageos.io/smil/demo/car-rental-sensors/display/assets/pexels-gleb-albovsky-6605102.mp4" id="annons0" fit="hidden" region="main">
             <param name="cacheControl" value="auto" />
         </video>
-        <video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/demo/car-rental-sensors/display/assets/pexels-rodnae-productions-8783208.mp4" id="annons0" fit="hidden" region="main">
+        <video src="https://demo.signageos.io/smil/demo/car-rental-sensors/display/assets/pexels-rodnae-productions-8783208.mp4" id="annons0" fit="hidden" region="main">
             <param name="cacheControl" value="auto" />
         </video>
     </seq>
@@ -65,7 +65,7 @@ You can learn more about triggers and sensors in the [signageOS SMIL Player docu
 <!--  Triggered playlist of 1 video, playing if trigger `triggerGenderManTrigger` is active -->
 <par>
     <seq begin="triggerGenderManTrigger" repeatCount="1">
-        <video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/demo/car-rental-sensors/display/assets/petersen-museum.mp4" id="annons0" fit="hidden" region="main">
+        <video src="https://demo.signageos.io/smil/demo/car-rental-sensors/display/assets/petersen-museum.mp4" id="annons0" fit="hidden" region="main">
             <param name="cacheControl" value="auto" />
         </video>
     </seq>
@@ -74,7 +74,7 @@ You can learn more about triggers and sensors in the [signageOS SMIL Player docu
 <!--  Triggered playlist of 1 video, playing if trigger `triggerGenderWomanTrigger` is active -->
 <par>
     <seq begin="triggerGenderWomanTrigger" repeatCount="1">
-        <video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/demo/car-rental-sensors/display/assets/petersen-museum.mp4" id="annons0" fit="hidden" region="main">
+        <video src="https://demo.signageos.io/smil/demo/car-rental-sensors/display/assets/petersen-museum.mp4" id="annons0" fit="hidden" region="main">
             <param name="cacheControl" value="auto" />
         </video>
     </seq>
@@ -86,7 +86,7 @@ You can learn more about triggers and sensors in the [signageOS SMIL Player docu
 -->
 <par>
     <seq begin="triggerKeysPlacedDown" repeatCount="1">
-        <img src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/demo/car-rental-sensors/display/assets/keys_pickup.png" id="annons1" dur="35s" fit="hidden" region="keyPickup">
+        <img src="https://demo.signageos.io/smil/demo/car-rental-sensors/display/assets/keys_pickup.png" id="annons1" dur="35s" fit="hidden" region="keyPickup">
             <param name="cacheControl" value="auto" />
         </img>
     </seq>
@@ -98,7 +98,7 @@ You can learn more about triggers and sensors in the [signageOS SMIL Player docu
 -->
 <par>
     <seq begin="triggerKeysPickedUp" repeatCount="1">
-        <img src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/demo/car-rental-sensors/display/assets/keys_thanks.png" id="annons1" dur="15s" fit="hidden" region="keyPickup">
+        <img src="https://demo.signageos.io/smil/demo/car-rental-sensors/display/assets/keys_thanks.png" id="annons1" dur="15s" fit="hidden" region="keyPickup">
             <param name="cacheControl" value="auto" />
         </img>
     </seq>

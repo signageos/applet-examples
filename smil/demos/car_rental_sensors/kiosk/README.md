@@ -50,7 +50,7 @@ Widgets are also defined in the kiosk-smil.smil playlist:
 <!-- Default widget car-check-in-widget -->
 <par>
     <seq repeatCount="indefinite">
-        <ref src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/demo/car-rental-sensors/kiosk/car-check-in-widget.zip" 
+        <ref src="https://demo.signageos.io/smil/demo/car-rental-sensors/kiosk/car-check-in-widget.zip" 
             type="application/widget" dur="indefinite" region="main"/>
     </seq>
 </par>
@@ -62,7 +62,7 @@ Widgets are also defined in the kiosk-smil.smil playlist:
         In this sample when RFID sensor detects RFID token being placed on the RFID antenna.
     -->
     <seq begin="trigger1" repeatCount="1" >
-        <ref src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/demo/car-rental-sensors/kiosk/car-check-out-widget.zip" 
+        <ref src="https://demo.signageos.io/smil/demo/car-rental-sensors/kiosk/car-check-out-widget.zip" 
             type="application/widget" dur="indefinite" region="main"/>
     </seq>
 </par>

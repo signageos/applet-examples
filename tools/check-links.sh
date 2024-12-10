@@ -23,7 +23,7 @@ skipUrls=(
 	"https://www.rmp-streaming.com"
 	"https://docs.signageos.io/hc/en-us/articles/" # It's 403 in curl but works
 	"https://www.signageos.io/html-content.html" # Example of 404 HTML content
-	"https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/zones/play/report"
+	"https://demo.signageos.io/smil/zones/play/report"
 	"https://github.com/signageos/ng-app-example.git"
 	"https://gitlab.com/signageos/applet-examples"
 	"https://box.signageos.io/settings"

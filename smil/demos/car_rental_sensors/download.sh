@@ -1,4 +1,4 @@
-export BASE_URL=https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/demo/car-rental-sensors
+export BASE_URL=https://demo.signageos.io/smil/demo/car-rental-sensors
 
 download() {
     mkdir -p $(dirname $1)

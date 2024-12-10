@@ -22,7 +22,7 @@
 
 			<!-- Downloading resources into the internal storage -->
 			<!-- A SMIL file location is used as a base path -->
-			<!-- In our case https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/07-relative-file-paths.smil -->
+			<!-- In our case https://demo.signageos.io/smil/samples/07-relative-file-paths.smil -->
 
 			<seq>
 				<prefetch src="./assets/landscape1.mp4" />

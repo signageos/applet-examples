@@ -14,10 +14,10 @@
 
 			<!-- Downloading resources into the internal storage -->
 			<seq>
-				<video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/portrait1.mp4" region="main" soundLevel="0%"></video>
-				<video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/portrait2.mp4" region="main" soundLevel="0%"></video>
-				<prefetch src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/portrait1.jpg" />
-				<prefetch src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/portrait2.jpg" />
+				<video src="https://demo.signageos.io/smil/samples/assets/portrait1.mp4" region="main" soundLevel="0%"></video>
+				<video src="https://demo.signageos.io/smil/samples/assets/portrait2.mp4" region="main" soundLevel="0%"></video>
+				<prefetch src="https://demo.signageos.io/smil/samples/assets/portrait1.jpg" />
+				<prefetch src="https://demo.signageos.io/smil/samples/assets/portrait2.jpg" />
 
 				<seq id="__prefetchEnd" dur="1s" />
 			</seq>
@@ -27,10 +27,10 @@
 
 				<!-- indefinite loop of media files in the selected order -->
 				<seq repeatCount="indefinite">
-					<video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/portrait1.mp4" region="main" soundLevel="0%"></video>
-					<video src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/portrait2.mp4" region="main" soundLevel="0%"></video>
-					<img dur="3s" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/portrait1.jpg" region="main" fit="fill"></img>
-					<img dur="5s" src="https://signageos-demo.s3.eu-central-1.amazonaws.com/smil/samples/assets/portrait2.jpg" region="main" fit="fill"></img>
+					<video src="https://demo.signageos.io/smil/samples/assets/portrait1.mp4" region="main" soundLevel="0%"></video>
+					<video src="https://demo.signageos.io/smil/samples/assets/portrait2.mp4" region="main" soundLevel="0%"></video>
+					<img dur="3s" src="https://demo.signageos.io/smil/samples/assets/portrait1.jpg" region="main" fit="fill"></img>
+					<img dur="5s" src="https://demo.signageos.io/smil/samples/assets/portrait2.jpg" region="main" fit="fill"></img>
 				</seq>
 			</par>
 		</par>

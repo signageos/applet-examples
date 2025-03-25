@@ -7,7 +7,7 @@
     "example": "examples"
   },
   "devDependencies": {
-    "@signageos/sdk": "1.16.1",
+    "@signageos/sdk": "1.27.2",
     "@types/mocha": "9.1.0",
     "mocha": "9.1.3",
     "should": "13.2.3",
@@ -20,7 +20,8 @@
     "upload-tests": "sos applet test upload",
     "upload-tests-ci": "sos applet test upload --yes",
     "test": "mocha --timeout 120000",
-    "test-sos": "sos applet test run --yes --device-uid"
+    "test-sos": "sos applet test run --yes --device-uid",
+    "build-all": "./tools/build-cli-examples.sh"
   },
   "repository": {
     "type": "git",

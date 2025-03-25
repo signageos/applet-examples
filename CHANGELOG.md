@@ -10,4 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - new Video and Image and HTML example
 - added Capabilities examples
 - new sensors demo with SMIL
-- Add E2E tests for checksum, video playback and filesystem
+- added E2E tests for checksum, video playback and filesystem
+- added script to build all exampples
+
+### Changed
+- updated packages to latest versions
+- migrated to webpack 5

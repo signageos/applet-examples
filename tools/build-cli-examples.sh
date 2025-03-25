@@ -35,10 +35,10 @@ CURRENT=1
 
 for dir in $CLI_APPLET_DIRS; do
 
-    if [[ "$dir" == *"framework"* ]]; then
-        echo "Skipping framwrodk for now in $dir..."
-        continue
-    fi
+    # if [[ "$dir" == *"framework"* ]]; then
+    #    echo "Skipping framework-based applet in $dir..."
+    #    continue
+    # fi
 
     echo "[$CURRENT/$TOTAL_DIRS] Processing: $dir"
 

@@ -2,7 +2,7 @@
 require('./index.css');
 
 import sos from '@signageos/front-applet';
-import { CodesMDC } from '@signageos/front-applet/es6/FrontApplet/Native/MDC/CodesMDC';
+import { CodesMDC } from '@signageos/front-applet/es6/FrontApplet/NativeCommands/MDC/CodesMDC';
 
 // Wait on sos data are ready (https://developers.signageos.io/sdk/applet-basics)
 sos.onReady().then(async function () {

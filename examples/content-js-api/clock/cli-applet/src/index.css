@@ -186,7 +186,7 @@ body {
 }
 
 .clock.ios7 {
-	background: #fff url(/assets/images/posts/clocks/ios_clock.svg) no-repeat center;
+	background: #fff url("https://cssanimation.rocks/images/posts/clocks/ios_clock.svg") no-repeat center;
 	background-size: 88%;
 }
 
@@ -237,7 +237,7 @@ body {
 
 
 .clock.simple {
-	background: #fff url(/assets/images/posts/clocks/ios_clock.svg) no-repeat center;
+	background: #fff url("https://cssanimation.rocks/images/posts/clocks/ios_clock.svg") no-repeat center;
 	background-size: 88%;
 }
 

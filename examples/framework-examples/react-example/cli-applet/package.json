@@ -4,8 +4,8 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
-    "@signageos/front-display": "7.7.0",
-    "@signageos/front-applet": "4.4.0",
+    "@signageos/front-applet": "^7.2.0",
+    "@signageos/front-display": "^14.16.4",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",

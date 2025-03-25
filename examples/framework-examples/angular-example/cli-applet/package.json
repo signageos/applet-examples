@@ -22,8 +22,8 @@
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2",
-    "@signageos/front-applet": "^4.4.0",
-    "@signageos/front-display": "^7.7.0"
+    "@signageos/front-applet": "^7.2.0",
+    "@signageos/front-display": "^14.16.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1001.6",

@@ -100,8 +100,8 @@ fi
 echo "Done."
 
 # Prune logs
-# find . -name install_log.txt -print0 | xargs -0 git rm --ignore-unmatch
-# find . -name build_log.txt -print0 | xargs -0 git rm --ignore-unmatch
+# find . -name install_log.txt -print0 | xargs -0 rm -rf
+# find . -name build_log.txt -print0 | xargs -0 rm -rf
 
 # Prune node_modules
 # find . -name 'node_modules' -type d -prune -print -exec rm -rf '{}' \;

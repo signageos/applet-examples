@@ -1,0 +1,36 @@
+{
+  "name": "deproApp",
+  "version": "1.1.1",
+  "main": "dist/index.html",
+  "scripts": {
+    "prepare": "npm run clean && npm run build",
+    "upload": "sos applet upload",
+    "clean": "npx rimraf dist",
+    "escheck": "es-check --module es5 dist/*.js",
+    "postbuild": "npm run escheck",
+    "start": "webpack serve --mode development",
+    "build": "webpack --mode production && npm run escheck",
+    "connect": "webpack --watch"
+  },
+  "files": [
+    "dist"
+  ],
+  "description": "signageOS applet",
+  "repository": {},
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@babel/core": "^7.26.9",
+    "@babel/preset-env": "^7.26.9",
+    "@signageos/front-applet": "^7.1.1",
+    "@signageos/front-display": "^14.12.4",
+    "@signageos/webpack-plugin": "^1.0.8",
+    "babel-loader": "^8.4.1",
+    "copy-webpack-plugin": "^13.0.0",
+    "css-loader": "^6.11.0",
+    "html-webpack-plugin": "^5.6.3",
+    "style-loader": "^3.3.4",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.15.2"
+  }
+}

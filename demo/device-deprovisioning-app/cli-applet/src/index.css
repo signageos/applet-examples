@@ -1,0 +1,137 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: #18182c;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+}
+
+.text {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.5rem;
+    color: white;
+    max-width: 80%;
+    line-height: 1.8;
+}
+
+h1 {
+    font-size: 2rem;
+    color: white;
+}
+
+ul {
+    list-style-type: decimal;
+    text-align: left;
+    margin-top: 20px;
+    color: white;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+.left-panel {
+    width: 50vw; /* Half the width of the viewport */
+    height: 100vh; /* Full height of the viewport */
+    padding: 20px;
+    border-radius: 25px;
+    border: 2px solid rgba(253, 196, 0, 1);
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.right-panel {
+    width: 50vw; /* Half the width of the viewport */
+    height: 100vh; /* Full height of the viewport */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Center the entire QR container vertically and horizontally */
+    border-radius: 25px;
+    border: 2px solid rgba(253, 196, 0, 1);
+    box-sizing: border-box;
+}
+
+.qr-container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.qr-code {
+    width: 80%; /* QR code takes 80% of the available space */
+    max-width: 400px;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.qr-code img {
+    width: 100%;
+    height: auto;
+}
+
+h2 {
+    font-size: xx-large;
+    color: white;
+    margin-bottom: 20px;
+}
+
+/* Media Queries to handle orientation */
+
+@media screen and (max-width: 767px) {
+    /* Portrait Mode: Keep the layout the same, just adjust the panels' width to fit the portrait */
+    .left-panel, .right-panel {
+        width: 100vw;  /* Full width of the viewport */
+        height: 50vh;  /* Half height of the viewport */
+    }
+
+    .qr-code {
+        max-width: 250px;  /* QR code size in portrait mode */
+    }
+
+    h2 {
+        font-size: large;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .text {
+        font-size: 1.2rem;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    /* Landscape Mode: Keep the layout the same */
+    .left-panel, .right-panel {
+        width: 49vw;  /* 50% of the viewport width */
+        height: 97vh; /* 100% of the viewport height */
+    }
+
+    .qr-code {
+        max-width: 400px;  /* QR code size in landscape mode */
+    }
+
+    h2 {
+        font-size: xx-large;
+    }
+}

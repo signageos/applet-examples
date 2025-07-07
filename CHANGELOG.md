@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Vue3 (@vue/cli) example project `examples/framework-examples/vue-example/vue3-cli-applet` 
+- Vue3 (vite) example project `examples/framework-examples/vue-example/vue3-vite-applet` 
+
+### Changed
+- udpated `examples/framework-examples/vue-example/cli-applet` startup script
+
+## [Unreleased]
+### Added
 - new Benchmark test for mixed playback of 4k and FHD videos
 - new Video and Image and HTML example
 - added Capabilities examples

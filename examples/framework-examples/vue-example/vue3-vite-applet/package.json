@@ -4,23 +4,20 @@
   "version": "0.1.0",
   "homepage": "./",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "start": "sos applet start"
+    "build": "vite build",
+    "start": "sos applet start",
+    "watch": "vite build -w",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "vue": "^2.6.11"
+    "vue": "^3.3.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^6.2.2",
-    "vue-template-compiler": "^2.6.11",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "vite": "^4.4.5",
+    "eslint": "^8.45.0",
+    "eslint-plugin-vue": "^9.17.0",
     "@signageos/front-applet": "^7.2.0",
     "@signageos/front-display": "^14.16.4"
   },
@@ -30,11 +27,11 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/essential",
+      "plugin:vue/vue3-essential",
       "eslint:recommended"
     ],
     "parserOptions": {
-      "parser": "babel-eslint"
+      "ecmaVersion": "latest"
     },
     "rules": {}
   },
@@ -42,9 +39,6 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ],
-  "vue": {
-    "publicPath": "./"
-  }
+  ]
 }
 

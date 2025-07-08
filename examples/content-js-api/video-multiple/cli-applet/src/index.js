@@ -55,7 +55,7 @@ sos.onReady().then(async function () {
 
 	while (true) {
 		const promises = [];
-		for (let i = 0; i < Math.min(parseInt(sos.config.count || 2), videos.length); i++) {
+		for (let i = 0; i < videos.length; i++) {
 			promises.push((async function() {
 				const currentVideo = videos[i];
 

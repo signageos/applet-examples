@@ -24,7 +24,7 @@
 
 			contentElement.innerHTML = '';
 
-			// Play stream forever (https://developers.signageos.io/sdk/content/js-video-inputs-internal-ports)
+			// Play stream forever (https://developers.signageos.io/sdk/sos/stream)
 			await sos.stream.play(...stream.arguments);
 
 			sos.stream.onDisconnected(async (event) => {

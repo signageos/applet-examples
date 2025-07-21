@@ -18,7 +18,7 @@
 
 			let callsCount = 0;
 			contentElement.innerHTML = 'sOS is ready';
-			// Send commands to be safely stored for reports, monitoring etc. even when goes offline (https://developers.signageos.io/sdk/content/js-command)
+			// Send commands to be safely stored for reports, monitoring etc. even when goes offline (https://developers.signageos.io/sdk/sos/command)
 			// REST API for sending commands to device is documented here https://developers.signageos.io/api/#tag/DeviceApplet-Command
 			sos.command.onCommand((commandEvent) => {
 				// Command always has mandatory `type`

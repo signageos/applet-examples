@@ -45,7 +45,7 @@ You can define keyboard triggers as below:
 </triggers>
 ```
 
-You can learn more about triggers and sensors in the [signageOS SMIL Player documentation](https://docs.signageos.io/category/smil-guides/smil-guides/smil-docs-guides)
+You can learn more about triggers and sensors in the [signageOS SMIL Player documentation](https://developers.signageos.io/smil/)
 
 ### Triggered Content 
 

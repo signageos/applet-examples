@@ -3,13 +3,13 @@ require('./index.css');
 
 import sos from '@signageos/front-applet';
 
-// Wait on sos data are ready (https://developers.signageos.io/sdk/applet-basics)
+// Wait on sos data are ready (https://developers.signageos.io/docs/applets/getting-started/)
 sos.onReady().then(async function () {
 	const contentElement = document.getElementById('index');
 	contentElement.innerHTML = '';
 
 	for (let i = 0; i < 10; i++) {
-		// Send commands to be safely stored for reports, monitoring etc. even when goes offline (https://developers.signageos.io/sdk/content/js-command)
+		// Send commands to be safely stored for reports, monitoring etc. even when goes offline (https://developers.signageos.io/sdk/sos/command)
 		await sos.command.dispatch({
 			type: 'Loop.Item.Iterate', // mandatory *type* and custom value
 			iteration: i, // custom parameter and value

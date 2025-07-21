@@ -81,7 +81,7 @@
 			];
 
 			for (const video of videos) {
-				// Store video to offline storage (https://developers.signageos.io/sdk/content/js-offline-cache-media-files)
+				// Store video to offline storage (https://developers.signageos.io/sdk/sos/offline/cache)
 				const {
 					filePath
 				} = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
@@ -109,7 +109,7 @@
 				const currentVideo = videos[i];
 				const nextVideo = videos[(i + 1) % videos.length];
 
-				// Videos are identificated by URI & coordination together (https://developers.signageos.io/sdk/content/js-video)
+				// Videos are identificated by URI & coordination together (https://developers.signageos.io/sdk/sos/video)
 				await sos.video.play(...currentVideo.arguments);
 				currentVideo.playing = true;
 				if (previousVideo.playing) {

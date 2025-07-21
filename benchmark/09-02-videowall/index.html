@@ -50,7 +50,7 @@
 			const syncServerUri = sos.config.sync_server || undefined;
 			const syncGroup = sos.config.sync_group;
 
-			// Connect all devices by IP/URL into one group (https://developers.signageos.io/sdk/content/js-sync-playback)
+			// Connect all devices by IP/URL into one group (https://developers.signageos.io/sdk/sos/sync)
 			await sos.sync.connect(syncServerUri);
 			await sos.sync.init(syncGroup);
 
@@ -130,7 +130,7 @@
 			}
 
 			for (const video of videos) {
-				// Store video to offline storage (https://developers.signageos.io/sdk/content/js-offline-cache-media-files)
+				// Store video to offline storage (https://developers.signageos.io/sdk/sos/offline/cache)
 				const {
 					filePath
 				} = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
@@ -155,13 +155,13 @@
 				const realCurrentVideoIndex = videos.findIndex((video) => video.uid === realCurrentVideoUid);
 				const realCurrentVideo = videos[realCurrentVideoIndex];
 
-				// Videos are identificated by URI & coordination together (https://developers.signageos.io/sdk/content/js-video)
+				// Videos are identificated by URI & coordination together (https://developers.signageos.io/sdk/sos/video)
 				await sos.video.play(...realCurrentVideo.arguments);
 				if (previousVideo) {
 					await sos.video.stop(...previousVideo.arguments);
 				}
 
-				// Create promise for waiting on end of the video (https://developers.signageos.io/sdk/content/js-video)
+				// Create promise for waiting on end of the video (https://developers.signageos.io/sdk/sos/video)
 				const endedPromise = sos.video.onceEnded(...realCurrentVideo.arguments);
 
 				const nextVideoIndex = (realCurrentVideoIndex + 1) % videos.length;

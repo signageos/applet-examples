@@ -4,7 +4,7 @@ require('./index.css');
 import sos from '@signageos/front-applet';
 import Nexmosphere from '@signageos/front-applet-extension-nexmosphere';
 
-// Wait on sos data are ready (https://developers.signageos.io/sdk/applet-basics)
+// Wait on sos data are ready (https://developers.signageos.io/docs/applets/getting-started/)
 sos.onReady().then(async function () {
 	const logElement = document.getElementById('log');
 

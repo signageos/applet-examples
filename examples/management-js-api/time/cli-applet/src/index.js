@@ -3,14 +3,14 @@ require('./index.css');
 
 import sos from '@signageos/front-applet';
 
-// Wait on sos data are ready (https://developers.signageos.io/sdk/applet-basics)
+// Wait on sos data are ready (https://developers.signageos.io/docs/applets/getting-started/)
 sos.onReady().then(async function () {
 	const contentElement = document.getElementById('index');
 
 	const manualTimeButton = document.getElementById('manual-time-btn');
 	const ntpTimeButton = document.getElementById('ntp-time-btn');
 
-	// https://developers.signageos.io/sdk/management/js-management-time
+	// https://developers.signageos.io/sdk/sos_management/time
 	const timeWatch = async () => {
 		const time = await sos.management.time.get();
 		contentElement.innerHTML = `

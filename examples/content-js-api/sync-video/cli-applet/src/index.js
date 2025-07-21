@@ -3,7 +3,7 @@ require('./index.css');
 
 import sos from '@signageos/front-applet';
 
-// Wait on sos data are ready (https://developers.signageos.io/sdk/applet-basics)
+// Wait on sos data are ready (https://developers.signageos.io/docs/applets/getting-started/)
 sos.onReady().then(async function () {
 	const contentElement = document.getElementById('index');
 	contentElement.innerHTML = '...loading videos...';
@@ -15,7 +15,7 @@ sos.onReady().then(async function () {
 	];
 
 	for (const video of videos) {
-		// Store video to offline storage (https://developers.signageos.io/sdk/content/js-offline-cache-media-files)
+		// Store video to offline storage (https://developers.signageos.io/sdk/sos/offline/cache)
 		const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
 		video.filePath = filePath;
 		video.arguments = [video.filePath, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
@@ -23,7 +23,7 @@ sos.onReady().then(async function () {
 
 	contentElement.innerHTML = '...syncing...';
 
-	// Connect to the sync server and initialize the sync group https://developers.signageos.io/sdk/content/js-sync-playback
+	// Connect to the sync server and initialize the sync group https://developers.signageos.io/sdk/sos/sync
 	const syncGroup = sos.config.sync_group || undefined;
 	const syncEngine = sos.config.sync_engine || undefined;
 
@@ -74,7 +74,7 @@ sos.onReady().then(async function () {
 
 			previousVideoIndex = currentVideoIndex;
 
-			// https://developers.signageos.io/sdk/content/js-video#event-onceended
+			// https://developers.signageos.io/sdk/sos/video#onceended
 			endedPromise = sos.video.onceEnded(...currentVideo.arguments);
 		} else {
 			console.log('real video different from expected, skipping', realCurrentVideoIndex + ' != ' + currentVideoIndex);

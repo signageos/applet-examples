@@ -3,7 +3,7 @@ require('./index.css');
 
 import sos from '@signageos/front-applet';
 
-// Wait on sos data are ready (https://developers.signageos.io/sdk/applet-basics)
+// Wait on sos data are ready (https://developers.signageos.io/docs/applets/getting-started/)
 sos.onReady().then(async function () {
 	const contentElement = document.getElementById('index');
 	
@@ -19,7 +19,7 @@ sos.onReady().then(async function () {
 
 	// Save all files parallel
 	await Promise.all(files.map(async (content) => {
-		// Store files to offline storage (https://developers.signageos.io/sdk/content/js-offline-cache-media-files)
+		// Store files to offline storage (https://developers.signageos.io/sdk/sos/offline/cache)
 		const {
 			filePath
 		} = await sos.offline.cache.loadOrSaveFile(content.uid, content.uri);

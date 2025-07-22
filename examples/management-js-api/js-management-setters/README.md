@@ -7,11 +7,11 @@ Example of setting various settings on the device.
 
 For more information on how to write applets, read these articles:
 
-* [IR Remote Control API](https://developers.signageos.io/sdk/management/js-management-remote-control)
-* [Power API](https://developers.signageos.io/sdk/management/js-management-power)
-* [Screen API](https://developers.signageos.io/sdk/management/js-management-screen)
-* [Time API](https://developers.signageos.io/sdk/management/js-management-time)
-* [Audio API](https://developers.signageos.io/sdk/management/js-management-audio)
+* [IR Remote Control API](https://developers.signageos.io/sdk/sos_management/remoteControl)
+* [Power API](https://developers.signageos.io/sdk/sos_management/power)
+* [Screen API](https://developers.signageos.io/sdk/sos_management/screen)
+* [Time API](https://developers.signageos.io/sdk/sos_management/time)
+* [Audio API](https://developers.signageos.io/sdk/sos_management/audio)
 * [Getting started with applets](https://docs.signageos.io/hc/en-us/articles/4405068855570-Introduction-to-Applets)
 * [How to write single-file applets](https://docs.signageos.io/hc/en-us/articles/4405011600274)
 * [How to write applets with signageOS CLI](https://docs.signageos.io/hc/en-us/articles/4405070294674)

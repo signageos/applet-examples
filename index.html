@@ -17,13 +17,13 @@
 				contentElement.innerHTML = 'sOS is loaded';
 
 
-				// Wait on sos data are ready (https://developers.signageos.io/sdk/applet-basics)
+				// Wait on sos data are ready (https://developers.signageos.io/docs/applets/getting-started/)
 				await sos.onReady();
 				console.log('sOS is ready');
 				contentElement.innerHTML = 'sOS is ready';
 
 
-				// Allow use jQuery (or any other JS library) in offline (https://developers.signageos.io/sdk/content/js-applet-resources)
+				// Allow use jQuery (or any other JS library) in offline (https://developers.signageos.io/sdk/sos/offline/)
 				await sos.offline.addFilesSync([
 					{
 						uri: "https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js",
@@ -40,7 +40,7 @@
 				);
 
 
-				// Save some of your data localy & safely (https://developers.signageos.io/sdk/content/js-offline-cache-simple-data)
+				// Save some of your data localy & safely (https://developers.signageos.io/sdk/sos/offline/cache)
 				try {
 					// And use it any time
 					const firstLoadTimestamp = await sos.offline.cache.loadContent('first-load-timestamp');
@@ -54,17 +54,17 @@
 				);
 
 
-				// Store video to offline storage (https://developers.signageos.io/sdk/content/js-offline-cache-media-files)
+				// Store video to offline storage (https://developers.signageos.io/sdk/sos/offline/cache)
 				const { filePath } = await sos.offline.cache.loadOrSaveFile('intro-video', 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4');
 
 
 				// For video coordinations compution use document.body (https://docs.signageos.io/hc/en-us/articles/4405238230418)
 				const videoAgruments = [filePath, 60, 100, document.documentElement.clientWidth - 2 * 60, Math.round((document.documentElement.clientWidth - 2 * 60) * (3 / 4))];
 				while (true) {
-					// Videos are identificated by URI & coordination together (https://developers.signageos.io/sdk/content/js-video)
+					// Videos are identificated by URI & coordination together (https://developers.signageos.io/sdk/sos/video)
 					await sos.video.prepare(...videoAgruments);
 					await sos.video.play(...videoAgruments);
-					await sos.video.onceEnded(...videoAgruments); // https://developers.signageos.io/sdk/content/js-video
+					await sos.video.onceEnded(...videoAgruments); // https://developers.signageos.io/sdk/sos/video
 					await sos.video.stop(...videoAgruments);
 				}
 			}

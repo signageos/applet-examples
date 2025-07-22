@@ -45,7 +45,6 @@ This repository contains:
 - [Serial Port](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/serial) management and operations
 - [Streams](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/stream) like UDP, RT(S)P, HLT
 - [Sync Mixed Content](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/sync-mixed-content) for playing a list of videos and images in sync on multiple devices
-- [Timing Triggers](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/timing-triggers) pause & resume
 - [Video & Images](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/video-and-images) loop together
 - [Video, Images and HTML](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/video-and-images-and-html) loop together
 - [Video file details](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/video-details) like resolution, framerate and codec

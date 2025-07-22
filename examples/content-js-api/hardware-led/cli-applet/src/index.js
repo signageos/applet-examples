@@ -3,9 +3,9 @@ require('./index.css');
 
 import sos from '@signageos/front-applet';
 
-// Wait on sos data are ready (https://developers.signageos.io/sdk/applet-basics)
+// Wait on sos data are ready (https://developers.signageos.io/docs/applets/getting-started/)
 function setColor(hexColor) {
-	// Turn LED to selected color (https://developers.signageos.io/sdk/content/js-hardware)
+	// Turn LED to selected color (https://developers.signageos.io/sdk/sos/hardware/)
 	sos.hardware.led.setColor(hexColor);
 }
 

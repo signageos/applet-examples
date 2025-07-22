@@ -64,7 +64,7 @@
               	{ uid: 'video-7.mp4', x: 0, y: 50, width: 540, height: 960, uri: 'https://hugstatic.blob.core.windows.net/assets/test-videos-01_AME/video-test-01_15s_1080x1920_e3ff5dd66b347c8957e9a7f8bac078bb.mp4' },
 			];
 
-			// Store video to offline storage for set 1 (https://developers.signageos.io/sdk/content/js-offline-cache-media-files)
+			// Store video to offline storage for set 1 (https://developers.signageos.io/sdk/sos/offline/cache)
 			for (const video of videoSet1) {
 				indexElement.innerHTML = "Downloading: " + video.uri;
 				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
@@ -79,7 +79,7 @@
                 indexElement.innerHTML = "Downloaded: " + video.filePath;
 			}
 
-			// Store video to offline storage for set 2 (https://developers.signageos.io/sdk/content/js-offline-cache-media-files)
+			// Store video to offline storage for set 2 (https://developers.signageos.io/sdk/sos/offline/cache)
 			for (const video of videoSet2) {
 				indexElement.innerHTML = "Downloading: " + video.uri;
 				const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
@@ -106,7 +106,7 @@
 					const currentVideoSet = videoSet1[i];
 					const nextVideoSet = videoSet1[(i + 1) % videoSet1.length];
 
-					// Videos are identificated by URI & coordination together (https://developers.signageos.io/sdk/content/js-video#Play_video)
+					// Videos are identificated by URI & coordination together (https://developers.signageos.io/sdk/sos/video#play)
 					await sos.video.play(...currentVideoSet.arguments);
 					currentVideoSet.playing = true;
 
@@ -118,7 +118,7 @@
 
 					// Prepare next video for gappless playback
 					await sos.video.prepare(...nextVideoSet.arguments);
-					await sos.video.onceEnded(...currentVideoSet.arguments); // https://developers.signageos.io/sdk/content/js-video#onceEnded
+					await sos.video.onceEnded(...currentVideoSet.arguments); // https://developers.signageos.io/sdk/sos/video#onceended
 				}
 			}
 
@@ -128,7 +128,7 @@
 					const currentVideoSet = videoSet2[i];
 					const nextVideoSet = videoSet2[(i + 1) % videoSet2.length];
 
-					// Videos are identificated by URI & coordination together (https://developers.signageos.io/sdk/content/js-video#Play_video)
+					// Videos are identificated by URI & coordination together (https://developers.signageos.io/sdk/sos/video#play)
 					await sos.video.play(...currentVideoSet.arguments);
 					currentVideoSet.playing = true;
 
@@ -140,7 +140,7 @@
 
 					// Prepare next video for gappless playback
 					await sos.video.prepare(...nextVideoSet.arguments);
-					await sos.video.onceEnded(...currentVideoSet.arguments); // https://developers.signageos.io/sdk/content/js-video#onceEnded
+					await sos.video.onceEnded(...currentVideoSet.arguments); // https://developers.signageos.io/sdk/sos/video#onceended
 				}
 			}
 

@@ -3,7 +3,7 @@ require('./index.css');
 
 import sos from '@signageos/front-applet';
 
-// Wait on sos data are ready (https://developers.signageos.io/sdk/applet-basics)
+// Wait on sos data are ready (https://developers.signageos.io/docs/applets/getting-started/)
 sos.onReady().then(async function () {
 	const contentElement = document.getElementById('index');
 	
@@ -31,7 +31,7 @@ sos.onReady().then(async function () {
 	sos.stream.onPlay(streamEventListener);
 	sos.stream.onStop(streamEventListener);
 
-	// Play stream forever (https://developers.signageos.io/sdk/content/js-video-stream)
+	// Play stream forever (https://developers.signageos.io/sdk/sos/stream)
 	await sos.stream.play(...stream.arguments);
 
 });

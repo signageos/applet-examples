@@ -143,7 +143,7 @@
 				},
 			];
 
-			// Store video to offline storage for set 1 (https://developers.signageos.io/sdk/content/js-offline-cache-media-files)
+			// Store video to offline storage for set 1 (https://developers.signageos.io/sdk/sos/offline/cache)
 			for (const video of videoSet1) {
 				const {
 					filePath
@@ -158,7 +158,7 @@
 				];
 			}
 
-			// Store video to offline storage for set 2 (https://developers.signageos.io/sdk/content/js-offline-cache-media-files)
+			// Store video to offline storage for set 2 (https://developers.signageos.io/sdk/sos/offline/cache)
 			for (const video of videoSet2) {
 				const {
 					filePath
@@ -187,7 +187,7 @@
 				const currentVideoSet2 = videoSet2[i];
 				const nextVideoSet2 = videoSet2[(i + 1) % videoSet2.length];
 
-				// Videos are identificated by URI & coordination together (https://developers.signageos.io/sdk/content/js-video)
+				// Videos are identificated by URI & coordination together (https://developers.signageos.io/sdk/sos/video)
 				await sos.video.play(...currentVideoSet1.arguments);
 				await sos.video.play(...currentVideoSet2.arguments);
 				currentVideoSet1.playing = true;
@@ -208,7 +208,7 @@
 					const currentVideoSet = videoSet2[i];
 					const nextVideoSet = videoSet2[(i + 1) % videoSet2.length];
 
-					// Videos are identificated by URI & coordination together (https://developers.signageos.io/sdk/content/js-video)
+					// Videos are identificated by URI & coordination together (https://developers.signageos.io/sdk/sos/video)
 					await sos.video.play(...currentVideoSet.arguments);
 					currentVideoSet.playing = true;
 
@@ -220,7 +220,7 @@
 
 					// Prepare next video for gappless playback
 					await sos.video.prepare(...nextVideoSet.arguments);
-					await sos.video.onceEnded(...currentVideoSet.arguments); // https://developers.signageos.io/sdk/content/js-video
+					await sos.video.onceEnded(...currentVideoSet.arguments); // https://developers.signageos.io/sdk/sos/video
 				}
 			}
 

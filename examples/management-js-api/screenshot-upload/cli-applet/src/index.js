@@ -8,7 +8,16 @@ sos.onReady().then(async function () {
 	const contentElement = document.getElementById('index');
 
 	if (await sos.management.supports('SCREENSHOT_UPLOAD')) {
-		const screenshotUrl = await sos.management.screen.takeAndUploadScreenshot('https://upload-screenshot.your-cms.com');
+		const { screenshotUrl, aHash } = await sos.management.screen.takeAndUploadScreenshot(
+			'https://upload-screenshot.your-cms.com',
+			{
+				computeHash: true, // optional, default is false
+				headers: { // Additional headers if needed
+					'Authorization': 'Bearer yourTokenHere',
+					'Custom-Header': 'CustomValue'
+				}
+			}
+		);
 		const screenshotTakenAt = new Date();
 
 		contentElement.innerHTML = `

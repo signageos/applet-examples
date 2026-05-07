@@ -1,0 +1,10 @@
+{
+	"eligible": true,
+	"id": "applet-clock",
+	"name": "Clock",
+	"version": "1.0.0",
+	"description": "Displays a digital clock showing the current time on the screen",
+	"category": "content-playback",
+	"tags": ["clock", "time", "simple"],
+	"maturityLevel": "stable"
+}

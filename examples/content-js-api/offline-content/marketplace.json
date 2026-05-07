@@ -1,0 +1,10 @@
+{
+	"eligible": true,
+	"id": "applet-offline-content",
+	"name": "Offline Content",
+	"version": "1.0.0",
+	"description": "Caches and serves content offline using the signageOS Offline Cache API",
+	"category": "content-playback",
+	"tags": ["offline", "cache", "reliable"],
+	"maturityLevel": "stable"
+}

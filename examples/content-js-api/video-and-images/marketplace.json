@@ -1,0 +1,10 @@
+{
+	"eligible": true,
+	"id": "applet-video-and-images",
+	"name": "Video and Images",
+	"version": "1.0.0",
+	"description": "Plays back a combination of videos and images in a slideshow sequence",
+	"category": "content-playback",
+	"tags": ["video", "images", "media", "slideshow"],
+	"maturityLevel": "stable"
+}

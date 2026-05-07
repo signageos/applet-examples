@@ -1,0 +1,10 @@
+{
+	"eligible": true,
+	"id": "applet-stream",
+	"name": "Stream",
+	"version": "1.0.0",
+	"description": "Plays live video streams using the signageOS Stream API with HLS and DASH support",
+	"category": "content-playback",
+	"tags": ["stream", "live", "hls", "dash"],
+	"maturityLevel": "stable"
+}

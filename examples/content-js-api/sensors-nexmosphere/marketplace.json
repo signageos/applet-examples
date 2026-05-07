@@ -1,0 +1,10 @@
+{
+	"eligible": true,
+	"id": "applet-sensors-nexmosphere",
+	"name": "Nexmosphere Sensors",
+	"version": "1.0.0",
+	"description": "Integrates Nexmosphere sensors for interactive signage experiences",
+	"category": "integration",
+	"tags": ["sensors", "nexmosphere", "iot", "interactive"],
+	"maturityLevel": "beta"
+}

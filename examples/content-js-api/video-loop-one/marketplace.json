@@ -1,0 +1,10 @@
+{
+	"eligible": true,
+	"id": "applet-video-loop-one",
+	"name": "Video Loop One",
+	"version": "1.0.0",
+	"description": "Loops a single video continuously with offline caching for reliable playback",
+	"category": "content-playback",
+	"tags": ["video", "loop", "single"],
+	"maturityLevel": "stable"
+}

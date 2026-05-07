@@ -1,0 +1,10 @@
+{
+	"eligible": true,
+	"id": "applet-browser",
+	"name": "Browser",
+	"version": "1.0.0",
+	"description": "Displays web pages and URLs using the signageOS Browser API",
+	"category": "content-playback",
+	"tags": ["browser", "web", "url", "iframe"],
+	"maturityLevel": "stable"
+}

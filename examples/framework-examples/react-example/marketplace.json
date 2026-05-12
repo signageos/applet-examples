@@ -1,5 +1,5 @@
 {
-	"eligible": true,
+	"eligible": false,
 	"id": "applet-react-example",
 	"name": "React Starter Template",
 	"version": "1.0.0",

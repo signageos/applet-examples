@@ -1,0 +1,10 @@
+{
+	"eligible": true,
+	"id": "applet-videowall-4screens",
+	"name": "Video Wall (4 Screens)",
+	"version": "1.0.0",
+	"description": "Building a large-format display? Synchronize video across four screens in a 2x2 grid for an immersive, perfectly-in-sync video wall.",
+	"category": "content-playback",
+	"tags": ["videowall", "multi-screen", "sync", "4-screen"],
+	"maturityLevel": "beta"
+}

@@ -3,7 +3,7 @@
 	"id": "applet-browser",
 	"name": "Browser",
 	"version": "1.0.0",
-	"description": "Displays web pages and URLs using the signageOS Browser API",
+	"description": "Need to display a webpage on your signage screen? Embed any URL directly into your digital signage — perfect for dashboards, internal portals, or live web content.",
 	"category": "content-playback",
 	"tags": ["browser", "web", "url", "iframe"],
 	"maturityLevel": "stable"

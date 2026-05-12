@@ -1,9 +1,9 @@
 {
 	"eligible": true,
 	"id": "applet-video-loop-one",
-	"name": "Video Loop One",
+	"name": "Single Video Loop",
 	"version": "1.0.0",
-	"description": "Loops a single video continuously with offline caching for reliable playback",
+	"description": "Need a single video playing around the clock? Cache it on the device and loop it continuously — reliable 24/7 playback, even offline.",
 	"category": "content-playback",
 	"tags": ["video", "loop", "single"],
 	"maturityLevel": "stable"

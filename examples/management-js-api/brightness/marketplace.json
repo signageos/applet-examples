@@ -1,5 +1,5 @@
 {
-	"eligible": true,
+	"eligible": false,
 	"id": "applet-brightness",
 	"name": "Brightness Control",
 	"version": "1.0.0",

@@ -3,8 +3,8 @@
 	"id": "applet-offline-content",
 	"name": "Offline Content",
 	"version": "1.0.0",
-	"description": "Caches and serves content offline using the signageOS Offline Cache API",
-	"category": "content-playback",
+	"description": "Worried about content failing when the network drops? Cache data directly on the device so your screens keep running smoothly — even without internet.",
+	"category": "utility",
 	"tags": ["offline", "cache", "reliable"],
 	"maturityLevel": "stable"
 }

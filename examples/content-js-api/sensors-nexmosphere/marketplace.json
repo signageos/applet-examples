@@ -5,6 +5,6 @@
 	"version": "1.0.0",
 	"description": "Want your signage to react to people nearby? Connect Nexmosphere sensors to trigger content changes based on presence, touch, or gestures.",
 	"category": "integration",
-	"tags": ["sensors", "nexmosphere", "iot", "interactive"],
+	"tags": ["iot", "sensors", "nexmosphere", "interactive"],
 	"maturityLevel": "beta"
 }

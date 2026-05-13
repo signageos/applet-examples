@@ -1,5 +1,5 @@
 {
-	"eligible": true,
+	"eligible": false,
 	"id": "applet-video-loop-one",
 	"name": "Single Video Loop",
 	"version": "1.0.0",

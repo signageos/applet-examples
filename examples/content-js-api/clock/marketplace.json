@@ -1,5 +1,5 @@
 {
-	"eligible": true,
+	"eligible": false,
 	"id": "applet-clock",
 	"name": "Clock",
 	"version": "1.0.0",

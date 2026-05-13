@@ -1,5 +1,5 @@
 {
-	"eligible": true,
+	"eligible": false,
 	"id": "applet-videowall-4screens",
 	"name": "Video Wall (4 Screens)",
 	"version": "1.0.0",

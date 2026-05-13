@@ -1,5 +1,5 @@
 {
-	"eligible": true,
+	"eligible": false,
 	"id": "applet-video-offline-playlist",
 	"name": "Video Offline Playback Playlist",
 	"version": "1.0.0",

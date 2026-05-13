@@ -1,5 +1,5 @@
 {
-	"eligible": true,
+	"eligible": false,
 	"id": "applet-offline-content",
 	"name": "Offline Content",
 	"version": "1.0.0",

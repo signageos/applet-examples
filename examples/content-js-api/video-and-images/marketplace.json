@@ -1,0 +1,10 @@
+{
+	"eligible": true,
+	"id": "applet-video-and-images",
+	"name": "Video and Images",
+	"version": "1.0.0",
+	"description": "Need to rotate between videos and images? Play a mixed-media slideshow with smooth transitions — ideal for retail, lobbies, and waiting areas.",
+	"category": "content-playback",
+	"tags": ["video", "images", "media", "slideshow"],
+	"maturityLevel": "stable"
+}

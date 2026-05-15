@@ -1,0 +1,10 @@
+{
+	"eligible": false,
+	"id": "applet-react-example",
+	"name": "React Starter Template",
+	"version": "1.0.0",
+	"description": "Starter template for building signageOS applets with React",
+	"category": "utility",
+	"tags": ["react", "framework", "starter", "template"],
+	"maturityLevel": "stable"
+}

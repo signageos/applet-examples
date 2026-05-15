@@ -1,0 +1,10 @@
+{
+	"eligible": true,
+	"id": "applet-sensors-nexmosphere",
+	"name": "Nexmosphere Sensors",
+	"version": "1.0.0",
+	"description": "Want your signage to react to people nearby? Connect Nexmosphere sensors to trigger content changes based on presence, touch, or gestures.",
+	"category": "integration",
+	"tags": ["iot", "sensors", "nexmosphere", "interactive"],
+	"maturityLevel": "beta"
+}

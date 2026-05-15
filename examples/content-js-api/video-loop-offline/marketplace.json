@@ -1,0 +1,10 @@
+{
+	"eligible": false,
+	"id": "applet-video-offline-playlist",
+	"name": "Video Offline Playback Playlist",
+	"version": "1.0.0",
+	"description": "Need a video playlist that never buffers? Configure your own video URLs, cache them on the device, and enjoy gapless looping — no internet required during playback.",
+	"category": "content-playback",
+	"tags": ["video", "offline", "playlist", "loop", "cache"],
+	"maturityLevel": "stable"
+}

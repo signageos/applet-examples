@@ -1,0 +1,10 @@
+{
+	"eligible": false,
+	"id": "applet-brightness",
+	"name": "Brightness Control",
+	"version": "1.0.0",
+	"description": "Controls display brightness using the signageOS Screen API",
+	"category": "configuration",
+	"tags": ["brightness", "display", "management"],
+	"maturityLevel": "stable"
+}

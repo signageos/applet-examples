@@ -1,0 +1,10 @@
+{
+	"eligible": false,
+	"id": "applet-clock",
+	"name": "Clock",
+	"version": "1.0.0",
+	"description": "Need a simple time display for your screens? Show a clean digital clock — ideal as a standalone widget or a building block for custom layouts.",
+	"category": "content-playback",
+	"tags": ["clock", "time", "simple"],
+	"maturityLevel": "stable"
+}

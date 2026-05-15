@@ -2,11 +2,11 @@
 <html>
 
 <head>
-	<title>Video Loop Offline</title>
+	<title>Video Offline Playback Playlist</title>
 </head>
 
 <body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-	<h1>Video Loop Offline</h1>
+	<h1>Video Offline Playback Playlist</h1>
 	<p id="index">... loading ...</p>
 
 
@@ -15,19 +15,20 @@
 			const contentElement = document.getElementById('index');
 			await sos.onReady();
 
-			const videos = [{
-					uid: 'video-1.mp4',
-					uri: 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4'
-				},
-				{
-					uid: 'video-2.mp4',
-					uri: 'https://static.signageos.io/assets/video-test-2_e2ffa51f6a4473b815f39e7fb39239da.mp4'
-				},
-				{
-					uid: 'video-3.mp4',
-					uri: 'https://static.signageos.io/assets/video-test-3_5cfd717df750e5b1d5dd8384c194a92d.mp4'
-				},
+			const defaultVideos = [
+				'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4',
+				'https://static.signageos.io/assets/video-test-2_e2ffa51f6a4473b815f39e7fb39239da.mp4',
+				'https://static.signageos.io/assets/video-test-3_5cfd717df750e5b1d5dd8384c194a92d.mp4',
 			];
+
+			// Read video URLs from sos.config.items (comma-separated) or fall back to defaults
+			const configItems = sos.config && sos.config.items ? sos.config.items.split(',').map(s => s.trim()).filter(Boolean) : [];
+			const videoUrls = configItems.length > 0 ? configItems : defaultVideos;
+
+			const videos = videoUrls.map((uri, idx) => ({
+				uid: 'video-' + (idx + 1) + '.mp4',
+				uri: uri,
+			}));
 
 			for (const video of videos) {
 				// Store video to offline storage (https://developers.signageos.io/sdk/sos/offline/cache)

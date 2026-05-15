@@ -1,0 +1,10 @@
+{
+	"eligible": false,
+	"id": "applet-videowall-2screens",
+	"name": "Video Wall (2 Screens)",
+	"version": "1.0.0",
+	"description": "Want to create one big display from two screens? Synchronize video playback across two devices for a seamless video wall experience.",
+	"category": "content-playback",
+	"tags": ["videowall", "multi-screen", "sync"],
+	"maturityLevel": "beta"
+}

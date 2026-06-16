@@ -1,0 +1,47 @@
+#!/usr/bin/env sh
+#
+# Strip the account-bound `uid` from any staged `.sosconfig.json` before it is committed.
+#
+# The signageOS CLI writes `uid` into `.sosconfig.json` on upload; it identifies the uploader's
+# account and must never be committed or published to the Marketplace / Hub. This hook auto-removes
+# it and re-stages the file, so a clean commit happens without the contributor having to remember.
+#
+# Activate once per clone (not done automatically by git):
+#   git config core.hooksPath .githooks
+#
+set -e
+
+staged=$(git diff --cached --name-only --diff-filter=ACM | grep -E '(^|/)\.sosconfig\.json$' || true)
+[ -z "$staged" ] && exit 0
+
+if ! command -v node >/dev/null 2>&1; then
+	echo "pre-commit: node not found; cannot sanitize .sosconfig.json — aborting commit." >&2
+	exit 1
+fi
+
+echo "$staged" | while IFS= read -r f; do
+	[ -f "$f" ] || continue
+	node -e '
+		const fs = require("fs");
+		const p = process.argv[1];
+		const src = fs.readFileSync(p, "utf8");
+		if (!/"uid"\s*:/.test(src)) process.exit(0);
+		// Remove only the uid entry, preserving the file’s existing formatting (minimal diff).
+		// Handle uid as the last property (preceding comma) or a middle property (trailing comma).
+		let out = src
+			.replace(/,\s*"uid"\s*:\s*"[^"]*"/, "")
+			.replace(/"uid"\s*:\s*"[^"]*"\s*,/, "");
+		try {
+			JSON.parse(out);
+		} catch {
+			// Fallback: structural rewrite if the regex left invalid JSON (re-indents, but always valid).
+			const data = JSON.parse(src);
+			delete data.uid;
+			out = JSON.stringify(data, null, "\t") + "\n";
+		}
+		if (out === src) process.exit(0);
+		fs.writeFileSync(p, out);
+		console.error("pre-commit: stripped uid from " + p);
+	' "$f"
+	git add "$f"
+done

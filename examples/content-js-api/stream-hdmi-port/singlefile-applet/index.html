@@ -11,13 +11,25 @@
 
 
 	<script type="application/ecmascript">
+		// Maps the human-readable videoInput config option to its internal source URI.
+		const VIDEO_INPUT_URIS = {
+			'HDMI 1': 'internal://hdmi1',
+			'HDMI 2': 'internal://hdmi2',
+			'HDMI 3': 'internal://hdmi3',
+			'DisplayPort': 'internal://dp',
+			'DVI': 'internal://dvi',
+			'PC or VGA': 'internal://pc'
+		};
+
 		async function startApplet() {
 			const contentElement = document.getElementById('index');
 			await sos.onReady();
 
+			const uri = VIDEO_INPUT_URIS[sos.config.videoInput] || 'internal://hdmi1';
+
 			const stream = {
 				uid: 'stream-1',
-				uri: 'internal://hdmi1'
+				uri
 			};
 
 			stream.arguments = [stream.uri, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];

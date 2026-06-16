@@ -1,0 +1,11 @@
+{
+  "configDefinition": [
+    {
+      "name": "url",
+      "valueType": "url",
+      "mandatory": true,
+      "description": "Webpage to display full-screen on the device.",
+      "placeholder": "https://www.signageos.io"
+    }
+  ]
+}

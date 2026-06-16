@@ -1,0 +1,22 @@
+{
+  "configDefinition": [
+    {
+      "name": "buttonAddress",
+      "valueType": "number",
+      "description": "Address of the Nexmosphere button sensor.",
+      "placeholder": "1"
+    },
+    {
+      "name": "buttonIndex",
+      "valueType": "number",
+      "description": "Index of the button within the sensor unit.",
+      "placeholder": "0"
+    },
+    {
+      "name": "rfidAddress",
+      "valueType": "number",
+      "description": "Address of the Nexmosphere RFID antenna.",
+      "placeholder": "1"
+    }
+  ]
+}

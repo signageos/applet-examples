@@ -1,0 +1,10 @@
+{
+  "configDefinition": [
+    {
+      "name": "items",
+      "valueType": "string",
+      "description": "JSON array of content items, each with `uid` and `uri` (media URL). Falls back to demo content when empty.",
+      "placeholder": "[{\"uid\":\"img1\",\"uri\":\"https://example.com/photo.jpg\"}]"
+    }
+  ]
+}

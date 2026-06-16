@@ -1,0 +1,20 @@
+{
+  "configDefinition": [
+    {
+      "name": "sync_server",
+      "valueType": "string",
+      "description": "URI of the synchronization server coordinating playback across screens."
+    },
+    {
+      "name": "sync_group",
+      "valueType": "string",
+      "description": "Group identifier so screens in the same wall stay in sync."
+    },
+    {
+      "name": "items",
+      "valueType": "string",
+      "description": "JSON array of video objects ({uid, uri}) to play on this screen. Falls back to demo videos when empty.",
+      "placeholder": "[{\"uid\":\"v1\",\"uri\":\"https://example.com/video.mp4\"}]"
+    }
+  ]
+}

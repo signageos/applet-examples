@@ -1,0 +1,17 @@
+{
+  "configDefinition": [
+    {
+      "name": "uri",
+      "valueType": "string",
+      "description": "URL of the stream to play (HLS, DASH, or RTSP). Falls back to a demo stream when empty.",
+      "placeholder": "https://example.com/stream.m3u8"
+    },
+    {
+      "name": "protocolType",
+      "valueType": "enum",
+      "list": ["HLS", "UDP", "RTP", "RTSP"],
+      "description": "Streaming protocol. Defaults to HLS.",
+      "placeholder": "HLS"
+    }
+  ]
+}

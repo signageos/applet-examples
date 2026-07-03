@@ -1,58 +1,465 @@
 <!doctype html>
-<html>
+<html lang="en">
 
 <head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<meta name="theme-color" content="#13132a" />
 	<title>Stream HDMI Port</title>
+	<style>
+		:root {
+			--bg: #13132a;
+			--surface-alt: #1e1e3d;
+			--accent: #fdc400;
+			--text: #f4f4f8;
+			--text-muted: #a6a6c8;
+			--border: rgba(255, 255, 255, 0.08);
+			--warn: #f5a623;
+			--error: #ff6b6b;
+
+			--font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+			--font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+		}
+
+		*,
+		*::before,
+		*::after {
+			box-sizing: border-box;
+		}
+
+		html,
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			min-height: 100vh;
+			background-color: var(--bg);
+			color: var(--text);
+			font-family: var(--font-ui);
+			font-size: 16px;
+			line-height: 1.5;
+			-webkit-font-smoothing: antialiased;
+			text-rendering: optimizeLegibility;
+		}
+
+		.app {
+			display: flex;
+			flex-direction: column;
+			height: 100vh;
+			max-width: 1800px;
+			margin: 0 auto;
+			padding: clamp(1.5rem, 3vw, 3rem);
+			padding-bottom: clamp(2.5rem, 4vw, 4rem);
+			gap: clamp(1.5rem, 3vw, 2.5rem);
+		}
+
+		/* While the stream is playing it must own the whole display: hide the UI
+		   and drop the page background so the native stream layer shows through
+		   (whether the platform composites it above or below the webview). The UI
+		   is only visible when the input is disconnected or not yet connected. */
+		body.is-streaming {
+			background-color: transparent;
+		}
+
+		body.is-streaming .app {
+			display: none;
+		}
+
+		/* ---------- Header ---------- */
+		.app__header {
+			display: flex;
+			align-items: flex-start;
+			justify-content: space-between;
+			gap: clamp(1.5rem, 4vw, 3rem);
+			flex-wrap: wrap;
+			padding-bottom: clamp(1rem, 2vw, 1.75rem);
+			border-bottom: 1px solid var(--border);
+		}
+
+		.brand {
+			display: flex;
+			align-items: stretch;
+			gap: 1rem;
+			min-width: 0;
+			flex: 1 1 auto;
+		}
+
+		.brand__mark {
+			flex: none;
+			width: 6px;
+			border-radius: 999px;
+			background-color: var(--accent);
+		}
+
+		.brand__text {
+			min-width: 0;
+		}
+
+		.brand__title {
+			margin: 0;
+			font-size: clamp(1.5rem, 3.2vw, 2.5rem);
+			font-weight: 700;
+			letter-spacing: -0.01em;
+		}
+
+		/* ---------- Device info (top-right) ---------- */
+		.device-info {
+			flex: none;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: flex-end;
+			gap: clamp(1.25rem, 2.5vw, 2.5rem);
+		}
+
+		.device-info__item {
+			text-align: right;
+		}
+
+		.device-info__label {
+			margin: 0 0 0.35rem;
+			font-size: 0.75rem;
+			font-weight: 600;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			color: var(--accent);
+		}
+
+		.device-info__value {
+			margin: 0;
+			font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+			font-weight: 700;
+			line-height: 1.2;
+			font-variant-numeric: tabular-nums;
+		}
+
+		/* ---------- Stream status ---------- */
+		.stage {
+			flex: none;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			flex-wrap: wrap;
+			gap: clamp(1rem, 3vw, 2.5rem);
+			padding: clamp(1.1rem, 2.2vw, 1.75rem) clamp(1.25rem, 2.5vw, 1.9rem);
+			border: 1px solid var(--border);
+			border-radius: 14px;
+			background-color: var(--surface-alt);
+		}
+
+		.stage__item {
+			min-width: 0;
+		}
+
+		.stage__item--input {
+			text-align: right;
+		}
+
+		.stage__label {
+			margin: 0 0 0.35rem;
+			font-size: 0.75rem;
+			font-weight: 600;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			color: var(--accent);
+		}
+
+		.stage__value {
+			margin: 0;
+			display: flex;
+			align-items: center;
+			gap: 0.7rem;
+			font-size: clamp(1.3rem, 2.4vw, 2rem);
+			font-weight: 700;
+			line-height: 1.2;
+			font-variant-numeric: tabular-nums;
+		}
+
+		.stage__item--input .stage__value {
+			justify-content: flex-end;
+		}
+
+		.stage__dot {
+			flex: none;
+			width: 0.85rem;
+			height: 0.85rem;
+			border-radius: 50%;
+			background-color: var(--accent);
+		}
+
+		.stage__dot--warn {
+			background-color: var(--warn);
+		}
+
+		.stage__dot--error {
+			background-color: var(--error);
+		}
+
+		/* ---------- System log ---------- */
+		.log {
+			display: flex;
+			flex-direction: column;
+			flex: 1 1 auto;
+			min-height: 220px;
+			border: 1px solid var(--border);
+			border-radius: 14px;
+			background-color: var(--surface-alt);
+			overflow: hidden;
+		}
+
+		.log__header {
+			display: flex;
+			align-items: center;
+			gap: 0.6rem;
+			padding: 0.9rem 1.25rem;
+			border-bottom: 1px solid var(--border);
+			font-size: 0.8rem;
+			font-weight: 600;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			color: var(--text-muted);
+		}
+
+		.log__header::before {
+			content: "";
+			width: 0.55rem;
+			height: 0.55rem;
+			border-radius: 50%;
+			background-color: var(--accent);
+		}
+
+		.log__body {
+			flex: 1 1 auto;
+			min-height: 0;
+			margin: 0;
+			padding: 1rem 1.25rem;
+			overflow-y: auto;
+			font-family: var(--font-mono);
+			font-size: 0.9rem;
+			line-height: 1.7;
+			list-style: none;
+		}
+
+		.log__line {
+			display: flex;
+			gap: 0.85rem;
+			white-space: pre-wrap;
+			word-break: break-word;
+		}
+
+		.log__time {
+			flex: none;
+			color: var(--text-muted);
+		}
+
+		.log__message {
+			flex: 1 1 auto;
+			min-width: 0;
+			color: var(--text);
+		}
+
+		.log__message--warn {
+			color: var(--warn);
+		}
+
+		.log__message--error {
+			color: var(--error);
+		}
+		/* ---------- Mode (config) ---------- */
+		/* The stream-status stage and the log console are shown only in debug mode;
+		   production shows only the header (the title and device-info section). */
+		.stage,
+		.log {
+			display: none;
+		}
+
+		.mode-debug .stage {
+			display: flex;
+		}
+
+		.mode-debug .log {
+			display: flex;
+		}
+	</style>
 </head>
 
-<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-	<h1>Stream HDMI Port</h1>
-	<p id="index">... loading ...</p>
+<body>
+	<div class="app">
+		<header class="app__header">
+			<div class="brand">
+				<span class="brand__mark" aria-hidden="true"></span>
+				<div class="brand__text">
+					<h1 class="brand__title">Stream HDMI Port</h1>
+				</div>
+			</div>
 
+			<div class="device-info" aria-label="Device information">
+				<div class="device-info__item">
+					<p class="device-info__label">Firmware version</p>
+					<p class="device-info__value" id="firmware-version">—</p>
+				</div>
+				<div class="device-info__item">
+					<p class="device-info__label">Model</p>
+					<p class="device-info__value" id="device-model">—</p>
+				</div>
+				<div class="device-info__item">
+					<p class="device-info__label">Type</p>
+					<p class="device-info__value" id="device-type">—</p>
+				</div>
+			</div>
+		</header>
+
+		<section class="stage" aria-label="Stream status">
+			<div class="stage__item">
+				<p class="stage__label">Status</p>
+				<p class="stage__value">
+					<span class="stage__dot" id="stream-dot" aria-hidden="true"></span>
+					<span id="stream-status">Starting…</span>
+				</p>
+			</div>
+			<div class="stage__item stage__item--input">
+				<p class="stage__label">Video input</p>
+				<p class="stage__value" id="stream-input">—</p>
+			</div>
+		</section>
+
+		<section class="log" aria-label="Log">
+			<div class="log__header">Log</div>
+			<ul class="log__body" id="log"></ul>
+		</section>
+	</div>
 
 	<script type="application/ecmascript">
-		// Maps the human-readable videoInput config option to its internal source URI.
-		const VIDEO_INPUT_URIS = {
-			'HDMI 1': 'internal://hdmi1',
-			'HDMI 2': 'internal://hdmi2',
-			'HDMI 3': 'internal://hdmi3',
-			'DisplayPort': 'internal://dp',
-			'DVI': 'internal://dvi',
-			'PC or VGA': 'internal://pc'
-		};
+		(function () {
+			const logEl = document.getElementById('log');
+			const firmwareEl = document.getElementById('firmware-version');
+			const modelEl = document.getElementById('device-model');
+			const typeEl = document.getElementById('device-type');
+			const inputEl = document.getElementById('stream-input');
+			const statusEl = document.getElementById('stream-status');
+			const dotEl = document.getElementById('stream-dot');
+			let started = false;
 
-		async function startApplet() {
-			const contentElement = document.getElementById('index');
-			await sos.onReady();
-
-			const uri = VIDEO_INPUT_URIS[sos.config.videoInput] || 'internal://hdmi1';
-
-			const stream = {
-				uid: 'stream-1',
-				uri
+			// Maps the human-readable videoInput config option to its internal source URI.
+			const VIDEO_INPUT_URIS = {
+				'HDMI 1': 'internal://hdmi1',
+				'HDMI 2': 'internal://hdmi2',
+				'HDMI 3': 'internal://hdmi3',
+				'DisplayPort': 'internal://dp',
+				'DVI': 'internal://dvi',
+				'PC or VGA': 'internal://pc'
 			};
 
-			stream.arguments = [stream.uri, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
+			// Append a timestamped line to the on-screen log.
+			function log(message, level) {
+				const line = document.createElement('li');
+				line.className = 'log__line';
 
-			contentElement.innerHTML = '';
+				const time = document.createElement('span');
+				time.className = 'log__time';
+				time.textContent = new Date().toTimeString().slice(0, 8);
 
-			// Play stream forever (https://developers.signageos.io/sdk/sos/stream)
-			await sos.stream.play(...stream.arguments);
+				const text = document.createElement('span');
+				text.className = level ? `log__message log__message--${level}` : 'log__message';
+				text.textContent = message;
 
-			sos.stream.onDisconnected(async (event) => {
-				contentElement.innerHTML = 'HDMI was disconnected';
-				await sos.stream.stop(...stream.arguments);
-			});
+				line.appendChild(time);
+				line.appendChild(text);
+				logEl.appendChild(line);
 
-			sos.stream.onConnected(async (event) => {
-				contentElement.innerHTML = '';
-				await sos.stream.play(...stream.arguments);
-			});
-		}
-		// Needed check for distinction between sos open and platform in box
-		typeof sos !== 'undefined' ?
-			startApplet() :
-			window.addEventListener('sos.loaded', startApplet);
+				while (logEl.childNodes.length > 200) {
+					logEl.removeChild(logEl.firstChild);
+				}
+
+				logEl.scrollTop = logEl.scrollHeight;
+			}
+
+			function setStatus(text, level) {
+				statusEl.textContent = text;
+				dotEl.className = level ? `stage__dot stage__dot--${level}` : 'stage__dot';
+			}
+
+			function setStreaming(isStreaming) {
+				document.body.className = isStreaming ? 'is-streaming' : '';
+			}
+
+			async function loadDeviceInfo() {
+				try {
+					const firmware = await sos.management.firmware.getVersion();
+					firmwareEl.textContent = firmware;
+
+					const model = (await sos.management.supports('MODEL'))
+						? await sos.management.getModel()
+						: 'Not supported';
+					modelEl.textContent = model;
+
+					const type = await sos.management.app.getType();
+					typeEl.textContent = type;
+				} catch (error) {
+					log(`Could not read device information: ${error && error.message ? error.message : String(error)}`, 'warn');
+				}
+			}
+
+			async function startApplet() {
+				if (started) return;
+				started = true;
+				try {
+					await sos.onReady();
+					log('signageOS API ready.');
+
+					// Debug mode shows the on-screen log console; production hides
+					// everything except the header (the title and device-info section).
+					const debugMode = sos.config.mode === 'debug';
+					if (debugMode) {
+						document.documentElement.className = 'mode-debug';
+					}
+					log(`Mode: ${debugMode ? 'debug' : 'production'}.`);
+
+					loadDeviceInfo();
+
+					const uri = VIDEO_INPUT_URIS[sos.config.videoInput] || 'internal://hdmi1';
+					const selectedInput = sos.config.videoInput || 'HDMI 1 (default)';
+					inputEl.textContent = selectedInput;
+					log(`Video input: ${selectedInput} (${uri})`);
+
+					const stream = {
+						uid: 'stream-1',
+						uri
+					};
+
+					stream.arguments = [stream.uri, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
+
+					sos.stream.onConnected(() => {
+						setStatus('Streaming');
+						log('Input connected.');
+					});
+
+					sos.stream.onDisconnected(() => {
+						setStatus('Disconnected', 'error');
+						log('Input disconnected.', 'error');
+					});
+
+					log(`Playing stream at ${document.documentElement.clientWidth}×${document.documentElement.clientHeight}.`);
+
+					// Play stream forever (https://developers.signageos.io/sdk/sos/stream)
+					await sos.stream.play(...stream.arguments);
+					setStatus('Streaming');
+					log('Stream playing — input connected.');
+				} catch (error) {
+					setStatus('Error', 'error');
+					log(`Error: ${error && error.message ? error.message : String(error)}`, 'error');
+				}
+			}
+
+			log('Applet loaded.');
+
+			if (typeof sos !== 'undefined') {
+				startApplet();
+			} else {
+				setStatus('Failed to load sos object.', 'error');
+			}
+		})();
 	</script>
 </body>
 

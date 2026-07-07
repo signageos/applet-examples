@@ -9,9 +9,15 @@
     {
       "name": "protocolType",
       "valueType": "enum",
-      "list": ["HLS", "UDP", "RTP", "RTSP"],
-      "description": "Streaming protocol. Defaults to HLS.",
-      "placeholder": "HLS"
+      "list": ["HTTP", "HLS", "UDP", "RTP", "RTSP"],
+      "description": "Streaming protocol. Defaults to HTTP.",
+      "placeholder": "HTTP"
+    },
+    {
+      "name": "mode",
+      "valueType": "enum",
+      "description": "Debug shows the on-screen log console and stream-status readout; production hides everything except the title and device-info section. Defaults to production.",
+      "list": ["production", "debug"]
     }
   ]
 }

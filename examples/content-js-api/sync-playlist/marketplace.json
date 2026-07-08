@@ -1,0 +1,10 @@
+{
+	"eligible": true,
+	"id": "applet-sync-playlist",
+	"name": "Synced Playlist",
+	"version": "1.0.0",
+	"description": "Play a playlist of videos and images perfectly in sync across a group of screens. Minimal configuration — set one group id and the media, and every screen switches together.",
+	"category": "content-playback",
+	"tags": ["sync", "video", "image", "playlist", "multi-screen"],
+	"maturityLevel": "stable"
+}

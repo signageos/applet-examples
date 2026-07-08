@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Synced Takeover Menuboard</title>
+	<style>
+		html, body { margin: 0; padding: 0; width: 100%; height: 100%; }
+		/* Base menuboard layer (always running underneath). */
+		#menuboard {
+			position: absolute; inset: 0; z-index: 0;
+			background: #101828; color: #fff;
+			font-family: 'Segoe UI', system-ui, sans-serif;
+			display: flex; flex-direction: column; box-sizing: border-box; padding: 4vh 6vw;
+		}
+		#menuboard h1 { font-size: 6vh; margin: 0 0 4vh; letter-spacing: 0.02em; }
+		#clock { position: absolute; top: 4vh; right: 6vw; font-size: 4vh; opacity: 0.85; }
+		.menu-row { display: flex; justify-content: space-between; align-items: baseline;
+			font-size: 4.5vh; padding: 1.6vh 0; border-bottom: 1px solid rgba(255,255,255,0.12); }
+		.menu-row .price { color: #f9d34f; font-weight: 600; }
+		/* Full-screen takeover overlay (image path); native video covers the screen on its own layer. */
+		#takeover { position: absolute; inset: 0; z-index: 10; visibility: hidden; background: #000; }
+		#takeover-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+	</style>
+</head>
+
+<body>
+	<div id="menuboard">
+		<div id="clock"></div>
+		<h1 id="menuboard-title">Today's Menu</h1>
+		<div id="menu-rows"></div>
+	</div>
+	<div id="takeover"><img id="takeover-image" src="#" /></div>
+
+	<script type="application/ecmascript">
+		// Master example: an HTML5 menuboard that, on a shared schedule (~every interval_ms),
+		// is "taken over" across the whole group by synchronized full-screen content, then returns
+		// to the menuboard. The base menuboard runs continuously; a sync barrier (`sos.sync.wait`)
+		// makes every screen enter and leave the takeover together.
+		// See https://developers.signageos.io/sdk/sos/sync
+		//
+		// Config (all optional; sensible demo defaults):
+		//   sync_group       - group id; screens with the same id take over together
+		//   sync_server      - sync server URI; empty = signageOS default server
+		//   sync_engine      - "sync-server" (default) or "p2p-local" (LAN-only); all screens must match
+		//   interval_ms      - menuboard time between takeovers (default 30000)
+		//   takeover_ms      - how long an image takeover shows (default 10000); videos play to their end
+		//   menuboard_items  - JSON array of { name, price } rows for the menuboard
+		//   takeover_assets  - JSON array of { type: "video"|"image", uid, uri } rotated across takeovers
+
+		const DEFAULT_MENU = [
+			{ name: 'Espresso', price: '$3.0' },
+			{ name: 'Flat White', price: '$4.2' },
+			{ name: 'Cold Brew', price: '$4.5' },
+			{ name: 'Croissant', price: '$3.8' },
+			{ name: 'Avocado Toast', price: '$7.5' },
+		];
+		const DEFAULT_TAKEOVERS = [
+			{ type: 'video', uid: 'takeover-1.mp4', uri: 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4' },
+			{ type: 'image', uid: 'takeover-2.png', uri: 'https://static.signageos.io/assets/android-benq-amy_bbd9afbc0655ceb6da790a80fbd90290.png' },
+		];
+
+		const parseConfig = (raw, fallback) => {
+			try { return raw ? JSON.parse(raw) : fallback; }
+			catch (error) { console.error('Invalid config JSON, using default:', error); return fallback; }
+		};
+		const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+		function renderMenuboard(items) {
+			const rows = document.getElementById('menu-rows');
+			rows.innerHTML = '';
+			for (const item of items) {
+				const row = document.createElement('div');
+				row.className = 'menu-row';
+				row.innerHTML = '<span class="name"></span><span class="price"></span>';
+				row.querySelector('.name').textContent = item.name;
+				row.querySelector('.price').textContent = item.price;
+				rows.appendChild(row);
+			}
+		}
+		function startClock() {
+			const clock = document.getElementById('clock');
+			const tick = () => { clock.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); };
+			tick();
+			setInterval(tick, 15000);
+		}
+
+		async function startApplet() {
+			await sos.onReady();
+
+			const takeoverLayer = document.getElementById('takeover');
+			const takeoverImage = document.getElementById('takeover-image');
+
+			const syncGroup = sos.config.sync_group || undefined;
+			const syncServer = sos.config.sync_server || undefined;
+			const syncEngine = sos.config.sync_engine || 'sync-server';
+			const intervalMs = Number(sos.config.interval_ms) || 30000;
+			const takeoverMs = Number(sos.config.takeover_ms) || 10000;
+			const menu = parseConfig(sos.config.menuboard_items, DEFAULT_MENU);
+			const takeovers = parseConfig(sos.config.takeover_assets, DEFAULT_TAKEOVERS);
+
+			renderMenuboard(menu);
+			startClock();
+
+			await sos.sync.connect({ engine: syncEngine, uri: syncServer });
+			await sos.sync.joinGroup({ groupName: syncGroup });
+
+			// Pre-cache takeover assets so the synchronized flip is instant.
+			const clientWidth = document.documentElement.clientWidth;
+			const clientHeight = document.documentElement.clientHeight;
+			for (const asset of takeovers) {
+				const { filePath } = await sos.offline.cache.loadOrSaveFile(asset.uid, asset.uri);
+				asset.filePath = filePath;
+				if (asset.type === 'video') {
+					asset.arguments = [asset.filePath, 0, 0, clientWidth, clientHeight];
+				}
+			}
+
+			let takeoverIndex = 0;
+
+			while (true) {
+				// 1) Menuboard runs for interval_ms (timed locally on each device).
+				await sleep(intervalMs);
+
+				// 2) Barrier: all screens converge, then release together with the MASTER's chosen
+				//    asset uid — act on the returned value so every screen shows the same takeover.
+				const proposedUid = takeovers[takeoverIndex % takeovers.length].uid;
+				const realUid = await sos.sync.wait(proposedUid, syncGroup);
+				const realIndex = takeovers.findIndex((asset) => asset.uid === realUid);
+				const asset = takeovers[realIndex] || takeovers[0];
+
+				// 3) Show the takeover (in sync across the group).
+				if (asset.type === 'video') {
+					await sos.video.play(...asset.arguments);
+					await Promise.race([sos.video.onceEnded(...asset.arguments), sleep(takeoverMs)]);
+					await sos.video.stop(...asset.arguments);
+				} else {
+					takeoverImage.src = asset.filePath;
+					takeoverLayer.style.visibility = 'visible';
+					await sleep(takeoverMs);
+				}
+
+				// 4) Barrier again so every screen ends the takeover together, then back to menuboard.
+				await sos.sync.wait('menuboard', syncGroup);
+				takeoverLayer.style.visibility = 'hidden';
+				takeoverImage.src = '#';
+
+				takeoverIndex = (realIndex >= 0 ? realIndex : 0) + 1;
+			}
+		}
+
+		typeof sos !== 'undefined'
+			? startApplet()
+			: window.addEventListener('sos.loaded', startApplet);
+	</script>
+</body>
+
+</html>

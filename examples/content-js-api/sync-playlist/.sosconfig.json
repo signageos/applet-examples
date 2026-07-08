@@ -1,0 +1,26 @@
+{
+  "configDefinition": [
+    {
+      "name": "sync_group",
+      "valueType": "string",
+      "description": "Group identifier — screens sharing the same group play the playlist in sync."
+    },
+    {
+      "name": "sync_server",
+      "valueType": "string",
+      "description": "URI of the synchronization server. Leave empty to use the signageOS default server."
+    },
+    {
+      "name": "sync_engine",
+      "valueType": "string",
+      "description": "Sync engine: \"sync-server\" (default) or \"p2p-local\" for LAN-only. All screens in a group must match.",
+      "placeholder": "sync-server"
+    },
+    {
+      "name": "items",
+      "valueType": "string",
+      "description": "JSON array of media to play in sync: [{type:\"video\"|\"image\", uid, uri, duration?}]. duration (ms) applies to images; videos play to their end. Falls back to a demo playlist when empty.",
+      "placeholder": "[{\"type\":\"video\",\"uid\":\"v1\",\"uri\":\"https://example.com/clip.mp4\"},{\"type\":\"image\",\"uid\":\"i1\",\"uri\":\"https://example.com/promo.png\",\"duration\":8000}]"
+    }
+  ]
+}

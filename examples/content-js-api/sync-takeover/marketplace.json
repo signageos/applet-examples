@@ -1,0 +1,10 @@
+{
+	"eligible": true,
+	"id": "applet-sync-takeover",
+	"name": "Synced Takeover Menuboard",
+	"version": "1.0.0",
+	"description": "An HTML5 menuboard that is periodically taken over by full-screen promo content, in sync across every screen in the group — then returns to the menu together.",
+	"category": "content-playback",
+	"tags": ["sync", "menuboard", "takeover", "promo", "multi-screen"],
+	"maturityLevel": "beta"
+}

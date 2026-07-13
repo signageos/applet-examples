@@ -432,11 +432,13 @@
 
 					sos.stream.onConnected(() => {
 						setStatus('Streaming');
+						setStreaming(true);
 						log('Input connected.');
 					});
 
 					sos.stream.onDisconnected(() => {
 						setStatus('Disconnected', 'error');
+						setStreaming(false);
 						log('Input disconnected.', 'error');
 					});
 
@@ -445,6 +447,7 @@
 					// Play stream forever (https://developers.signageos.io/sdk/sos/stream)
 					await sos.stream.play(...stream.arguments);
 					setStatus('Streaming');
+					setStreaming(true);
 					log('Stream playing — input connected.');
 				} catch (error) {
 					setStatus('Error', 'error');
@@ -457,7 +460,7 @@
 			if (typeof sos !== 'undefined') {
 				startApplet();
 			} else {
-				setStatus('Failed to load sos object.', 'error');
+				window.addEventListener('sos.loaded', startApplet);
 			}
 		})();
 	</script>

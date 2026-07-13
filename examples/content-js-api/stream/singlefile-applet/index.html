@@ -401,9 +401,6 @@
 					await sos.onReady();
 					log('signageOS API ready.');
 
-					// Debug mode shows the stream-status stage and the on-screen log
-					// console; production hides everything except the header (the title
-					// and device-info section).
 					const debugMode = sos.config.mode === 'debug';
 					if (debugMode) {
 						document.documentElement.className = 'mode-debug';

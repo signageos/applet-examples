@@ -1,183 +1,686 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<meta name="theme-color" content="#13132a" />
 	<title>Video and Images</title>
+	<style>
+		:root {
+			--bg: #13132a;
+			--surface-alt: #1e1e3d;
+			--accent: #fdc400;
+			--text: #f4f4f8;
+			--text-muted: #a6a6c8;
+			--border: rgba(255, 255, 255, 0.08);
+			--warn: #f5a623;
+			--error: #ff6b6b;
+
+			--font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+			--font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+		}
+
+		*,
+		*::before,
+		*::after {
+			box-sizing: border-box;
+		}
+
+		html,
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			min-height: 100vh;
+			background-color: var(--bg);
+			color: var(--text);
+			font-family: var(--font-ui);
+			font-size: 16px;
+			line-height: 1.5;
+			-webkit-font-smoothing: antialiased;
+			text-rendering: optimizeLegibility;
+		}
+
+		/* ---------- Content layer ---------- */
+		/* The playlist fills the display once playback starts. Images render in these
+		   full-screen <img> elements; videos play in the platform's native layer.
+		   Hidden until then (see the Mode section) so the startup header/dashboard has
+		   a clean, opaque backdrop. */
+		.content {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+		.content__media {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+		/* ---------- Dashboard ---------- */
+		/* The startup panel. Shown by default while the applet caches and prepares
+		   content — production shows only its header (title + device info); debug adds
+		   the stage and log (see the Mode section). Hidden once playback starts. Sits
+		   on the opaque page background. */
+		.app {
+			display: flex;
+			flex-direction: column;
+			position: relative;
+			height: 100vh;
+			max-width: 1800px;
+			margin: 0 auto;
+			padding: clamp(1.5rem, 3vw, 3rem);
+			padding-bottom: clamp(2.5rem, 4vw, 4rem);
+			gap: clamp(1.5rem, 3vw, 2.5rem);
+		}
+
+		/* ---------- Header ---------- */
+		.app__header {
+			display: flex;
+			align-items: flex-start;
+			justify-content: space-between;
+			gap: clamp(1.5rem, 4vw, 3rem);
+			flex-wrap: wrap;
+			padding-bottom: clamp(1rem, 2vw, 1.75rem);
+			border-bottom: 1px solid var(--border);
+		}
+
+		.brand {
+			display: flex;
+			align-items: stretch;
+			gap: 1rem;
+			min-width: 0;
+			flex: 1 1 auto;
+		}
+
+		.brand__mark {
+			flex: none;
+			width: 6px;
+			border-radius: 999px;
+			background-color: var(--accent);
+		}
+
+		.brand__text {
+			min-width: 0;
+		}
+
+		.brand__title {
+			margin: 0;
+			font-size: clamp(1.5rem, 3.2vw, 2.5rem);
+			font-weight: 700;
+			letter-spacing: -0.01em;
+		}
+
+		/* ---------- Device info (top-right) ---------- */
+		.device-info {
+			flex: none;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: flex-end;
+			gap: clamp(1.25rem, 2.5vw, 2.5rem);
+		}
+
+		.device-info__item {
+			text-align: right;
+		}
+
+		.device-info__label {
+			margin: 0 0 0.35rem;
+			font-size: 0.75rem;
+			font-weight: 600;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			color: var(--accent);
+		}
+
+		.device-info__value {
+			margin: 0;
+			font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+			font-weight: 700;
+			line-height: 1.2;
+			font-variant-numeric: tabular-nums;
+		}
+
+		/* ---------- Playback status ---------- */
+		.stage {
+			flex: none;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			flex-wrap: wrap;
+			gap: clamp(1rem, 3vw, 2.5rem);
+			padding: clamp(1.1rem, 2.2vw, 1.75rem) clamp(1.25rem, 2.5vw, 1.9rem);
+			border: 1px solid var(--border);
+			border-radius: 14px;
+			background-color: var(--surface-alt);
+		}
+
+		.stage__item {
+			min-width: 0;
+		}
+
+		.stage__item--end {
+			text-align: right;
+		}
+
+		.stage__label {
+			margin: 0 0 0.35rem;
+			font-size: 0.75rem;
+			font-weight: 600;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			color: var(--accent);
+		}
+
+		.stage__value {
+			margin: 0;
+			display: flex;
+			align-items: center;
+			gap: 0.7rem;
+			font-size: clamp(1.3rem, 2.4vw, 2rem);
+			font-weight: 700;
+			line-height: 1.2;
+			font-variant-numeric: tabular-nums;
+			word-break: break-word;
+		}
+
+		.stage__item--end .stage__value {
+			justify-content: flex-end;
+		}
+
+		.stage__dot {
+			flex: none;
+			width: 0.85rem;
+			height: 0.85rem;
+			border-radius: 50%;
+			background-color: var(--accent);
+		}
+
+		.stage__dot--warn {
+			background-color: var(--warn);
+		}
+
+		.stage__dot--error {
+			background-color: var(--error);
+		}
+
+		/* ---------- System log ---------- */
+		.log {
+			display: flex;
+			flex-direction: column;
+			flex: 1 1 auto;
+			min-height: 220px;
+			border: 1px solid var(--border);
+			border-radius: 14px;
+			background-color: var(--surface-alt);
+			overflow: hidden;
+		}
+
+		.log__header {
+			display: flex;
+			align-items: center;
+			gap: 0.6rem;
+			padding: 0.9rem 1.25rem;
+			border-bottom: 1px solid var(--border);
+			font-size: 0.8rem;
+			font-weight: 600;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			color: var(--text-muted);
+		}
+
+		.log__header::before {
+			content: "";
+			width: 0.55rem;
+			height: 0.55rem;
+			border-radius: 50%;
+			background-color: var(--accent);
+		}
+
+		.log__body {
+			flex: 1 1 auto;
+			min-height: 0;
+			margin: 0;
+			padding: 1rem 1.25rem;
+			overflow-y: auto;
+			font-family: var(--font-mono);
+			font-size: 0.9rem;
+			line-height: 1.7;
+			list-style: none;
+		}
+
+		.log__line {
+			display: flex;
+			gap: 0.85rem;
+			white-space: pre-wrap;
+			word-break: break-word;
+		}
+
+		.log__time {
+			flex: none;
+			color: var(--text-muted);
+		}
+
+		.log__message {
+			flex: 1 1 auto;
+			min-width: 0;
+			color: var(--text);
+		}
+
+		.log__message--warn {
+			color: var(--warn);
+		}
+
+		.log__message--error {
+			color: var(--error);
+		}
+
+		/* ---------- Mode / phase ---------- */
+		/* Startup view (while caching and preparing content). The .app container — and
+		   with it the header (title + device info) — is shown by default (see the .app
+		   rule above), in both production and debug. Production shows ONLY the header;
+		   the stage and log are debug-only. */
+		.stage,
+		.log {
+			display: none;
+		}
+
+		.mode-debug .stage,
+		.mode-debug .log {
+			display: flex;
+		}
+
+		/* Content is hidden until playback starts, so the startup header/dashboard has
+		   a clean, opaque backdrop. */
+		.content {
+			display: none;
+		}
+
+		/* Once playback starts (production and debug alike), hide the whole dashboard
+		   and play content full-screen. In debug, an error removes `is-playing` (see
+		   log()), bringing the dashboard back so the failure is never hidden. */
+		.is-playing .app {
+			display: none;
+		}
+
+		.is-playing .content {
+			display: block;
+		}
+	</style>
 </head>
 
-<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
-	<h1>Video and Images</h1>
-	<p id="index">... loading ...</p>
-	<img id="image-1" style="position: absolute; display: none; width: 100%; height: 100%; left: 0; top: 0" />
-	<img id="image-2" style="position: absolute; display: none; width: 100%; height: 100%; left: 0; top: 0" />
+<body>
+	<div class="content" aria-hidden="true">
+		<img id="image-1" class="content__media" style="display: none;" alt="" />
+		<img id="image-2" class="content__media" style="display: none;" alt="" />
+	</div>
 
+	<div class="app">
+		<header class="app__header">
+			<div class="brand">
+				<span class="brand__mark" aria-hidden="true"></span>
+				<div class="brand__text">
+					<h1 class="brand__title">Video and Images</h1>
+				</div>
+			</div>
+
+			<div class="device-info" aria-label="Device information">
+				<div class="device-info__item">
+					<p class="device-info__label">Firmware version</p>
+					<p class="device-info__value" id="firmware-version">—</p>
+				</div>
+				<div class="device-info__item">
+					<p class="device-info__label">Model</p>
+					<p class="device-info__value" id="device-model">—</p>
+				</div>
+				<div class="device-info__item">
+					<p class="device-info__label">Type</p>
+					<p class="device-info__value" id="device-type">—</p>
+				</div>
+			</div>
+		</header>
+
+		<section class="stage" aria-label="Playback status">
+			<div class="stage__item">
+				<p class="stage__label">Status</p>
+				<p class="stage__value">
+					<span class="stage__dot" id="status-dot" aria-hidden="true"></span>
+					<span id="status-text">Starting…</span>
+				</p>
+			</div>
+			<div class="stage__item stage__item--end">
+				<p class="stage__label">Now playing</p>
+				<p class="stage__value" id="now-playing">—</p>
+			</div>
+		</section>
+
+		<section class="log" aria-label="Log">
+			<div class="log__header">Log</div>
+			<ul class="log__body" id="log"></ul>
+		</section>
+	</div>
 
 	<script type="application/ecmascript">
-		async function startApplet() {
-			const contentElement = document.getElementById('index');
-			const imgElements = [document.getElementById('image-1'), document.getElementById('image-2')]
+		(function () {
+			const logEl = document.getElementById('log');
+			const firmwareEl = document.getElementById('firmware-version');
+			const modelEl = document.getElementById('device-model');
+			const typeEl = document.getElementById('device-type');
+			const statusEl = document.getElementById('status-text');
+			const dotEl = document.getElementById('status-dot');
+			const nowPlayingEl = document.getElementById('now-playing');
+			let started = false;
+			let debugMode = false;
 
-			function getImgElement(...args) {
-				return imgElements.find((imgElement) => imgElement.getAttribute('data-args') === JSON.stringify(args)) ||
-					imgElements.find((imgElement) => imgElement.style.display === 'none');
-			}
-			await sos.onReady();
+			// Append a timestamped line to the on-screen log (visible in debug mode).
+			function log(message, level) {
+				const line = document.createElement('li');
+				line.className = 'log__line';
 
-			const contents = sos.config.items ? JSON.parse(sos.config.items) : [{
-					uid: 'video-1.mp4',
-					uri: 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4'
-				},
-				{
-				uid: 'video-1.mp4',
-				uri: 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4'
-				},
-				{
-					uid: 'image-1.png',
-					uri: 'https://static.signageos.io/assets/android-benq-amy_bbd9afbc0655ceb6da790a80fbd90290.png'
-				},
-				{
-					uid: 'image-2.png',
-					uri: 'https://static.signageos.io/assets/android-nec-roberto_3f9b985e2214b59e3d1f296e69e86fdd.png'
-				},
-				{
-					uid: 'image-3.png',
-					uri: 'https://static.signageos.io/assets/android-panasonic-pikachu_347af960f123f7c56f5f967882108bdf.png'
-				},
-				{
-					uid: 'image-4.png',
-					uri: 'https://static.signageos.io/assets/brightsign-4.7-nelson_9fed77987aac013a712eed87adbcf0d9.png'
-				},
-				{
-					uid: 'image-5.png',
-					uri: 'https://static.signageos.io/assets/chrome-os-krusty_99c97ad4680ccf06517b220b61327a5c.png'
-				},
-				{
-					uid: 'video-2.mp4',
-					uri: 'https://static.signageos.io/assets/video-test-2_e2ffa51f6a4473b815f39e7fb39239da.mp4'
-				},
-				{
-					uid: 'image-6.png',
-					uri: 'https://static.signageos.io/assets/sssp-2.0-burns_2a17095aec4332358d91b47999862647.png'
-				},
-				{
-					uid: 'image-7.png',
-					uri: 'https://static.signageos.io/assets/sssp-3.0-maggie_47dfc4c8c21b49c5d6f0ef1505ece49c.png'
-				},
-				{
-					uid: 'image-8.png',
-					uri: 'https://static.signageos.io/assets/tizen-2.4-bart_96c02fbd2df936e8bdd0b345f8874224.png'
-				},
-				{
-					uid: 'image-9.png',
-					uri: 'https://static.signageos.io/assets/tizen-3.0-apu_e300ee67c93b616ee36f51202234d429.png'
-				},
-				{
-					uid: 'video-3.mp4',
-					uri: 'https://static.signageos.io/assets/video-test-3_5cfd717df750e5b1d5dd8384c194a92d.mp4'
-				},
-				{
-					uid: 'image-10.png',
-					uri: 'https://static.signageos.io/assets/webos-1.0-krabappel_60b520b38756789dce877dc2feac92fb.png'
-				},
-				{
-					uid: 'image-11.png',
-					uri: 'https://static.signageos.io/assets/webos-2.0-farnsworth_413fc194707fdeb82052b3e2541fb50a.png'
-				},
-				{
-					uid: 'image-12.png',
-					uri: 'https://static.signageos.io/assets/webos-3.0-zapp_951665bdb0a145befd8cf9382c93bd77.png'
-				},
-				{
-					uid: 'image-13.png',
-					uri: 'https://static.signageos.io/assets/webos-3.2-bender_19043283cc5147bf441265fc494a0505.png'
-				},
-			];
+				const time = document.createElement('span');
+				time.className = 'log__time';
+				time.textContent = new Date().toTimeString().slice(0, 8);
 
-			// Save all files parallel
-			await Promise.all(contents.map(async (content) => {
-				// Store files to offline storage (https://developers.signageos.io/sdk/sos/offline/cache)
-				const {
-					filePath
-				} = await sos.offline.cache.loadOrSaveFile(content.uid, content.uri);
-				content.filePath = filePath;
-			}));
+				const text = document.createElement('span');
+				text.className = level ? `log__message log__message--${level}` : 'log__message';
+				text.textContent = message;
 
-			for (const content of contents) {
-				content.arguments = [content.filePath, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
-			}
+				line.appendChild(time);
+				line.appendChild(text);
+				logEl.appendChild(line);
 
-			contentElement.innerHTML = '';
-
-			async function playContent(content) {
-				if (content.uid.indexOf('video-') === 0) {
-					await sos.video.play(...content.arguments);
+				if (debugMode && level === 'error') {
+					document.documentElement.className = 'mode-debug';
 				}
-				if (content.uid.indexOf('image-') === 0) {
-					getImgElement(...content.arguments).style.display = 'block';
+
+				while (logEl.childNodes.length > 200) {
+					logEl.removeChild(logEl.firstChild);
 				}
-				content.playing = true;
+
+				logEl.scrollTop = logEl.scrollHeight;
 			}
 
-			async function stopContent(content) {
-				if (content.playing) {
-					if (content.uid.indexOf('video-') === 0) {
-						await sos.video.stop(...content.arguments);
+			function setStatus(text, level) {
+				statusEl.textContent = text;
+				dotEl.className = level ? `stage__dot stage__dot--${level}` : 'stage__dot';
+			}
+
+			function setNowPlaying(text) {
+				nowPlayingEl.textContent = text;
+			}
+
+			// Classify a content item as 'video' or 'image'. Prefer the file extension
+			// (of the uid, then the uri); fall back to the legacy `video-` / `image-`
+			// uid prefix. Returns '' when the type can't be determined.
+			function mediaType(content) {
+				function fromExtension(value) {
+					const path = String(value || '').split(/[?#]/)[0];
+					if (/\.(mp4|m4v|mov|webm|ogv|ogg|avi|mkv|ts|m2ts)$/i.test(path)) return 'video';
+					if (/\.(png|jpe?g|gif|webp|bmp|svg|avif)$/i.test(path)) return 'image';
+					return '';
+				}
+				const uid = String(content.uid || '');
+				return fromExtension(uid) || fromExtension(content.uri) ||
+					(uid.indexOf('video-') === 0 ? 'video' : '') ||
+					(uid.indexOf('image-') === 0 ? 'image' : '');
+			}
+
+			async function loadDeviceInfo() {
+				try {
+					const firmware = await sos.management.firmware.getVersion();
+					firmwareEl.textContent = firmware;
+
+					const model = (await sos.management.supports('MODEL'))
+						? await sos.management.getModel()
+						: 'Not supported';
+					modelEl.textContent = model;
+
+					const type = await sos.management.app.getType();
+					typeEl.textContent = type;
+
+					log(`Device: ${model} · firmware ${firmware} · ${type}`);
+				} catch (error) {
+					log(`Could not read device information: ${error && error.message ? error.message : String(error)}`, 'warn');
+				}
+			}
+
+			async function startApplet() {
+				if (started) return;
+				started = true;
+				try {
+					const imgElements = [document.getElementById('image-1'), document.getElementById('image-2')];
+
+					function getImgElement(...args) {
+						return imgElements.find((imgElement) => imgElement.getAttribute('data-args') === JSON.stringify(args)) ||
+							imgElements.find((imgElement) => imgElement.style.display === 'none');
 					}
-					if (content.uid.indexOf('image-') === 0) {
-						const imgElement = getImgElement(...content.arguments);
-						imgElement.src = '';
-						imgElement.setAttribute('data-args', '');
-						imgElement.style.display = 'none';
+
+					await sos.onReady();
+					log('signageOS API ready.');
+
+					debugMode = sos.config.mode === 'debug';
+					document.documentElement.className = debugMode ? 'mode-debug' : '';
+					log(`Mode: ${debugMode ? 'debug' : 'production'}.`);
+
+					loadDeviceInfo();
+
+					const DEMO_CONTENTS = [{
+							uid: 'video-1.mp4',
+							uri: 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4'
+						},
+						{
+						uid: 'video-1.mp4',
+						uri: 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4'
+						},
+						{
+							uid: 'image-1.png',
+							uri: 'https://static.signageos.io/assets/android-benq-amy_bbd9afbc0655ceb6da790a80fbd90290.png'
+						},
+						{
+							uid: 'image-2.png',
+							uri: 'https://static.signageos.io/assets/android-nec-roberto_3f9b985e2214b59e3d1f296e69e86fdd.png'
+						},
+						{
+							uid: 'image-3.png',
+							uri: 'https://static.signageos.io/assets/android-panasonic-pikachu_347af960f123f7c56f5f967882108bdf.png'
+						},
+						{
+							uid: 'image-4.png',
+							uri: 'https://static.signageos.io/assets/brightsign-4.7-nelson_9fed77987aac013a712eed87adbcf0d9.png'
+						},
+						{
+							uid: 'image-5.png',
+							uri: 'https://static.signageos.io/assets/chrome-os-krusty_99c97ad4680ccf06517b220b61327a5c.png'
+						},
+						{
+							uid: 'video-2.mp4',
+							uri: 'https://static.signageos.io/assets/video-test-2_e2ffa51f6a4473b815f39e7fb39239da.mp4'
+						},
+						{
+							uid: 'image-6.png',
+							uri: 'https://static.signageos.io/assets/sssp-2.0-burns_2a17095aec4332358d91b47999862647.png'
+						},
+						{
+							uid: 'image-7.png',
+							uri: 'https://static.signageos.io/assets/sssp-3.0-maggie_47dfc4c8c21b49c5d6f0ef1505ece49c.png'
+						},
+						{
+							uid: 'image-8.png',
+							uri: 'https://static.signageos.io/assets/tizen-2.4-bart_96c02fbd2df936e8bdd0b345f8874224.png'
+						},
+						{
+							uid: 'image-9.png',
+							uri: 'https://static.signageos.io/assets/tizen-3.0-apu_e300ee67c93b616ee36f51202234d429.png'
+						},
+						{
+							uid: 'video-3.mp4',
+							uri: 'https://static.signageos.io/assets/video-test-3_5cfd717df750e5b1d5dd8384c194a92d.mp4'
+						},
+						{
+							uid: 'image-10.png',
+							uri: 'https://static.signageos.io/assets/webos-1.0-krabappel_60b520b38756789dce877dc2feac92fb.png'
+						},
+						{
+							uid: 'image-11.png',
+							uri: 'https://static.signageos.io/assets/webos-2.0-farnsworth_413fc194707fdeb82052b3e2541fb50a.png'
+						},
+						{
+							uid: 'image-12.png',
+							uri: 'https://static.signageos.io/assets/webos-3.0-zapp_951665bdb0a145befd8cf9382c93bd77.png'
+						},
+						{
+							uid: 'image-13.png',
+							uri: 'https://static.signageos.io/assets/webos-3.2-bender_19043283cc5147bf441265fc494a0505.png'
+						},
+					];
+
+					// Parse and validate the `items` config. Fall back to demo content when
+					// it is not set; fail loudly with a clear, logged error when it is
+					// malformed, rather than silently doing nothing.
+					let contents;
+					if (sos.config.items) {
+						try {
+							contents = JSON.parse(sos.config.items);
+						} catch (parseError) {
+							throw new Error('`items` is not valid JSON — use double-quoted keys and values, e.g. [{"uid":"clip.mp4","uri":"https://…/clip.mp4"}]. (' + parseError.message + ')');
+						}
+						if (!Array.isArray(contents)) {
+							throw new Error('`items` must be a JSON array, e.g. [{"uid":"clip.mp4","uri":"https://…/clip.mp4"}].');
+						}
+						log(`Loaded ${contents.length} content item(s) from config.`);
+					} else {
+						contents = DEMO_CONTENTS;
+						log(`No items configured — using ${contents.length} demo item(s).`);
 					}
-					content.playing = false;
+
+					contents = contents.filter((content) => {
+						if (!content || !content.uid || !content.uri) {
+							log(`Ignoring an item missing "uid" or "uri": ${JSON.stringify(content)}`, 'error');
+							return false;
+						}
+						content.type = mediaType(content);
+						if (!content.type) {
+							log(`Ignoring "${content.uid}" — cannot tell if it is a video or image. Use a .mp4 / .png / … extension, or a "video-" / "image-" uid prefix.`, 'error');
+							return false;
+						}
+						return true;
+					});
+					if (!contents.length) {
+						throw new Error('No playable items — each entry in `items` needs a "uid" and "uri" pointing to a video or image file.');
+					}
+
+					// Save all files parallel
+					setStatus('Caching…', 'warn');
+					log(`Caching ${contents.length} file(s) to offline storage…`);
+					await Promise.all(contents.map(async (content) => {
+						// Store files to offline storage (https://developers.signageos.io/sdk/sos/offline/cache)
+						const {
+							filePath
+						} = await sos.offline.cache.loadOrSaveFile(content.uid, content.uri);
+						content.filePath = filePath;
+						log(`Cached ${content.uid}`);
+					}));
+					log('All files cached.');
+
+					for (const content of contents) {
+						content.arguments = [content.filePath, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
+					}
+
+					async function playContent(content) {
+						if (content.type === 'video') {
+							await sos.video.play(...content.arguments);
+						}
+						if (content.type === 'image') {
+							getImgElement(...content.arguments).style.display = 'block';
+						}
+						content.playing = true;
+					}
+
+					async function stopContent(content) {
+						if (content.playing) {
+							if (content.type === 'video') {
+								await sos.video.stop(...content.arguments);
+							}
+							if (content.type === 'image') {
+								const imgElement = getImgElement(...content.arguments);
+								imgElement.src = '';
+								imgElement.setAttribute('data-args', '');
+								imgElement.style.display = 'none';
+							}
+							content.playing = false;
+						}
+					}
+
+					async function prepareContent(content) {
+						if (content.type === 'video') {
+							await sos.video.prepare(...content.arguments);
+						}
+						if (content.type === 'image') {
+							const imgElement = getImgElement(...content.arguments);
+							imgElement.src = content.filePath;
+							imgElement.setAttribute('data-args', JSON.stringify(content.arguments));
+						}
+					}
+
+					async function waitEndedContent(content) {
+						if (content.type === 'video') {
+							await sos.video.onceEnded(...content.arguments);
+						}
+						if (content.type === 'image') {
+							await new Promise((resolve) => setTimeout(resolve, 3e3));
+						}
+					}
+
+					await prepareContent(contents[0]);
+					setStatus('Playing');
+					log(`Playback started — ${contents.length} item(s) in rotation.`);
+
+					document.documentElement.className = debugMode ? 'mode-debug is-playing' : 'is-playing';
+
+					for (let i = 0; true; i = (i + 1) % contents.length) {
+						const previousContent = contents[(i + contents.length - 1) % contents.length];
+						const currentContent = contents[i];
+						const nextContent = contents[(i + 1) % contents.length];
+
+						const kind = currentContent.type;
+						setNowPlaying(`${currentContent.uid} · ${i + 1}/${contents.length}`);
+						log(`Playing ${kind} ${currentContent.uid} (${i + 1}/${contents.length}).`);
+
+						await playContent(currentContent);
+						if (currentContent.filePath !== previousContent.filePath) {
+							// beware of stopping video in case you play the same video in a loop
+							// otherwise you might get black gap or interrupted playback
+							await stopContent(previousContent);
+						}
+						if (currentContent.filePath !== nextContent.filePath) {
+							// beware of preparing video in case you play the same video in a loop
+							// otherwise you might get black gap or interrupted playback
+							await prepareContent(nextContent);
+						}
+						await waitEndedContent(currentContent);
+					}
+				} catch (error) {
+					setStatus('Error', 'error');
+					log(`Error: ${error && error.message ? error.message : String(error)}`, 'error');
 				}
 			}
 
-			async function prepareContent(content) {
-				if (content.uid.indexOf('video-') === 0) {
-					await sos.video.prepare(...content.arguments);
-				}
-				if (content.uid.indexOf('image-') === 0) {
-					const imgElement = getImgElement(...content.arguments);
-					imgElement.src = content.filePath;
-					imgElement.setAttribute('data-args', JSON.stringify(content.arguments));
-				}
+			log('Applet loaded.');
+
+			if (typeof sos !== 'undefined') {
+				startApplet();
+			} else {
+				window.addEventListener('sos.loaded', startApplet);
 			}
-
-			async function waitEndedContent(content) {
-				if (content.uid.indexOf('video-') === 0) {
-					await sos.video.onceEnded(...content.arguments);
-				}
-				if (content.uid.indexOf('image-') === 0) {
-					await new Promise((resolve) => setTimeout(resolve, 3e3));
-				}
-			}
-
-			await prepareContent(contents[0]);
-
-			for (let i = 0; true; i = (i + 1) % contents.length) {
-				const previousContent = contents[(i + contents.length - 1) % contents.length];
-				const currentContent = contents[i];
-				const nextContent = contents[(i + 1) % contents.length];
-
-				await playContent(currentContent);
-				if (currentContent.filePath !== previousContent.filePath) {
-					// beware of stopping video in case you play the same video in a loop
-					// otherwise you might get black gap or interrupted playback
-					await stopContent(previousContent);
-				}
-				if (currentContent.filePath !== nextContent.filePath) {
-					// beware of preparing video in case you play the same video in a loop
-					// otherwise you might get black gap or interrupted playback
-					await prepareContent(nextContent);
-				}
-				await waitEndedContent(currentContent);
-			}
-		}
-		// Needed check for distinction between sos open and platform in box
-		typeof sos !== 'undefined' ?
-			startApplet() :
-			window.addEventListener('sos.loaded', startApplet);
+		})();
 	</script>
 </body>
 

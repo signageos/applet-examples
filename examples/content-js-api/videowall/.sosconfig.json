@@ -15,6 +15,12 @@
       "valueType": "string",
       "description": "JSON array of video objects ({uid, uri}) to play on this screen. Falls back to demo videos when empty.",
       "placeholder": "[{\"uid\":\"v1\",\"uri\":\"https://example.com/video.mp4\"}]"
+    },
+    {
+      "name": "mode",
+      "valueType": "enum",
+      "description": "Debug shows the playback-status readout and on-screen log console; production hides everything except the title and device-info section. Defaults to production.",
+      "list": ["production", "debug"]
     }
   ]
 }

@@ -1,0 +1,10 @@
+{
+	"eligible": true,
+	"id": "applet-sync-pingpong",
+	"name": "Sync Ping-Pong",
+	"version": "1.0.0",
+	"description": "A ball bounces across a row of screens as one continuous field, crossing seamlessly from one TV to the next - a lively way to show multi-screen synchronization.",
+	"category": "content-playback",
+	"tags": ["sync", "demo", "video-wall", "animation", "multi-screen"],
+	"maturityLevel": "stable"
+}

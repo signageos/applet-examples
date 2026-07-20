@@ -19,14 +19,14 @@
     {
       "name": "interval_ms",
       "valueType": "string",
-      "description": "How long the menuboard shows between takeovers, in milliseconds (default 30000).",
-      "placeholder": "30000"
+      "description": "How long the menuboard shows between takeovers, in milliseconds (default 15000).",
+      "placeholder": "15000"
     },
     {
       "name": "takeover_ms",
       "valueType": "string",
-      "description": "How long an image takeover shows, in milliseconds (default 10000). Video takeovers play to their end.",
-      "placeholder": "10000"
+      "description": "How long each takeover shows, in milliseconds (default 6000).",
+      "placeholder": "6000"
     },
     {
       "name": "menuboard_items",
@@ -35,10 +35,10 @@
       "placeholder": "[{\"name\":\"Espresso\",\"price\":\"$3.0\"}]"
     },
     {
-      "name": "takeover_assets",
+      "name": "wait_timeout_ms",
       "valueType": "string",
-      "description": "JSON array of takeover content rotated each cycle: [{type:\"video\"|\"image\", uid, uri}]. Falls back to demo assets when empty.",
-      "placeholder": "[{\"type\":\"image\",\"uid\":\"promo1\",\"uri\":\"https://example.com/promo.png\"}]"
+      "description": "Barrier wait timeout in milliseconds; on timeout the loop retries instead of stalling (default 15000).",
+      "placeholder": "15000"
     }
   ]
 }

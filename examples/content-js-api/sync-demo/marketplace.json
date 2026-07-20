@@ -1,0 +1,10 @@
+{
+	"eligible": true,
+	"id": "applet-sync-demo",
+	"name": "Sync Demo",
+	"version": "1.0.0",
+	"description": "A minimal synchronization visualiser: every screen in the group advances a lock-step counter and flips colour together, so multi-screen sync is obvious at a glance.",
+	"category": "content-playback",
+	"tags": ["sync", "demo", "diagnostic", "multi-screen"],
+	"maturityLevel": "stable"
+}

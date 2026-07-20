@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<meta name="theme-color" content="#000000" />
+	<title>Synced Takeover Menuboard</title>
+	<style>
+		html, body { margin: 0; padding: 0; width: 100%; height: 100%; }
+		/* Base menuboard layer (always running underneath). */
+		#menuboard {
+			position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
+			background: #101828; color: #fff;
+			font-family: 'Segoe UI', system-ui, sans-serif;
+			display: flex; flex-direction: column; box-sizing: border-box; padding: 4vh 6vw;
+		}
+		#menuboard h1 { font-size: 6vh; margin: 0 0 4vh; letter-spacing: 0.02em; }
+		#clock { position: absolute; top: 4vh; right: 6vw; font-size: 4vh; opacity: 0.85; }
+		.menu-row { display: flex; justify-content: space-between; align-items: baseline;
+			font-size: 4.5vh; padding: 1.6vh 0; border-bottom: 1px solid rgba(255,255,255,0.12); }
+		.menu-row .price { color: #f9d34f; font-weight: 600; }
+		/* Full-screen synced takeover overlay: a big lock-step number + colour flip (no videos). */
+		#takeover {
+			position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;
+			visibility: hidden; background: #101828; color: #fff;
+			font-family: 'Segoe UI', system-ui, sans-serif;
+			display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+		}
+		#takeover-num { font-size: 42vh; font-weight: 800; line-height: 1; }
+		#takeover-label { font-size: 5vh; letter-spacing: 0.15em; opacity: 0.9; margin-top: 2vh; }
+	</style>
+</head>
+
+<body>
+	<div id="menuboard">
+		<div id="clock"></div>
+		<h1 id="menuboard-title">Today's Menu</h1>
+		<div id="menu-rows"></div>
+	</div>
+	<div id="takeover">
+		<div id="takeover-num">–</div>
+		<div id="takeover-label">SYNCED TAKEOVER</div>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,10 @@
+{
+  "configDefinition": [
+    {
+      "name": "supraAppLauncherSdkUrl",
+      "valueType": "url",
+      "description": "Trusted URL of the Supra App Launcher browser SDK. Defaults to ./supra-app-launcher-sdk.js next to index.html.",
+      "placeholder": "https://example.com/supra-app-launcher-sdk.js"
+    }
+  ]
+}

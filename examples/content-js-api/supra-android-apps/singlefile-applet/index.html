@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Supra Android apps</title>
+	<style>
+		:root {
+			--header-height: 64px;
+			--background: #121229;
+			--surface: #1d1d3b;
+			--accent: #fdc400;
+			--danger: #dc3545;
+			--text: #f7f7fb;
+			--muted: #aaaac9;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		html,
+		body {
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			overflow: hidden;
+			background: var(--background);
+			color: var(--text);
+			font-family: Arial, Helvetica, sans-serif;
+		}
+
+		.header {
+			display: flex;
+			position: fixed;
+			z-index: 1;
+			top: 0;
+			left: 0;
+			align-items: center;
+			width: 100%;
+			height: var(--header-height);
+			padding: 8px 12px;
+			gap: 8px;
+			background: var(--surface);
+			border-bottom: 2px solid var(--accent);
+		}
+
+		.header__title {
+			margin: 0 12px 0 0;
+			font-size: 18px;
+			white-space: nowrap;
+		}
+
+		.header__status {
+			min-width: 0;
+			margin-left: auto;
+			overflow: hidden;
+			color: var(--muted);
+			font-size: 14px;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.button {
+			height: 40px;
+			padding: 0 15px;
+			border: 1px solid var(--muted);
+			border-radius: 5px;
+			background: transparent;
+			color: var(--text);
+			font-weight: 700;
+			cursor: pointer;
+		}
+
+		.button[aria-pressed="true"] {
+			border-color: var(--accent);
+			background: var(--accent);
+			color: #121229;
+		}
+
+		.button--stop {
+			border-color: var(--danger);
+			background: var(--danger);
+		}
+
+		.button:disabled {
+			cursor: wait;
+			opacity: 0.45;
+		}
+
+		.stage {
+			position: fixed;
+			top: var(--header-height);
+			right: 0;
+			bottom: 0;
+			left: 0;
+			display: grid;
+			place-items: center;
+			color: var(--muted);
+		}
+	</style>
+</head>
+<body>
+	<header id="header" class="header">
+		<h1 class="header__title">Supra Android</h1>
+		<button class="button app-toggle" data-package-id="com.rovio.angrybirds" aria-pressed="false">
+			Angry Birds
+		</button>
+		<button class="button app-toggle" data-package-id="com.rovio.angrybirdstransformers" aria-pressed="false">
+			Angry Birds Transformers
+		</button>
+		<button id="stop" class="button button--stop" disabled>Stop all</button>
+		<span id="status" class="header__status" role="status">Loading Supra Screen SDK...</span>
+	</header>
+	<main class="stage">Android application renders in this area.</main>
+
+	<script>
+		(function () {
+			'use strict';
+
+			var DEFAULT_SDK_URL = './supra-screen-sdk.js';
+			var DEFAULT_APP_PACKAGE_ID = 'com.rovio.angrybirds';
+			var header = document.getElementById('header');
+			var status = document.getElementById('status');
+			var stopButton = document.getElementById('stop');
+			var appButtons = Array.prototype.slice.call(document.querySelectorAll('.app-toggle'));
+			var supraScreen;
+			var activeApp;
+			var activePackageId;
+			var busy = true;
+
+			function setStatus(message) {
+				status.textContent = message;
+			}
+
+			function renderControls() {
+				appButtons.forEach(function (button) {
+					button.disabled = busy;
+					button.setAttribute('aria-pressed', String(button.dataset.packageId === activePackageId));
+				});
+				stopButton.disabled = busy || !activeApp;
+			}
+
+			function getGeometry() {
+				var headerHeight = Math.ceil(header.getBoundingClientRect().height);
+				return {
+					x: 0,
+					y: headerHeight,
+					width: window.innerWidth,
+					height: Math.max(1, window.innerHeight - headerHeight),
+				};
+			}
+
+			async function terminateActiveApp() {
+				if (!activeApp) {
+					return;
+				}
+
+				var appToStop = activeApp;
+				activeApp = undefined;
+				activePackageId = undefined;
+				await appToStop.stop({ terminate: true });
+			}
+
+			async function switchApp(packageId) {
+				if (busy || packageId === activePackageId) {
+					return;
+				}
+
+				busy = true;
+				renderControls();
+				setStatus('Switching application...');
+
+				try {
+					await terminateActiveApp();
+					activeApp = await supraScreen.start({
+						androidApp: packageId,
+						geometry: getGeometry(),
+					});
+					activePackageId = packageId;
+					setStatus('Running ' + packageId);
+				} catch (error) {
+					setStatus('Failed: ' + (error && error.message ? error.message : String(error)));
+				} finally {
+					busy = false;
+					renderControls();
+				}
+			}
+
+			async function stopAll() {
+				if (busy || !activeApp) {
+					return;
+				}
+
+				busy = true;
+				renderControls();
+				setStatus('Stopping Android application...');
+
+				try {
+					await terminateActiveApp();
+					setStatus('All Android applications stopped');
+				} catch (error) {
+					setStatus('Failed to stop: ' + (error && error.message ? error.message : String(error)));
+				} finally {
+					busy = false;
+					renderControls();
+				}
+			}
+
+			function loadScript(url) {
+				return new Promise(function (resolve, reject) {
+					var script = document.createElement('script');
+					script.src = url;
+					script.onload = resolve;
+					script.onerror = function () {
+						reject(new Error('Cannot load SDK from ' + url));
+					};
+					document.head.appendChild(script);
+				});
+			}
+
+			function createSupraScreen() {
+				var sdk = window.SupraScreen;
+				var SupraScreenClass = typeof sdk === 'function' ? sdk : sdk && sdk.SupraScreen;
+				if (!SupraScreenClass) {
+					throw new Error('SDK bundle does not export SupraScreen');
+				}
+				return new SupraScreenClass();
+			}
+
+			appButtons.forEach(function (button) {
+				button.addEventListener('click', function () {
+					switchApp(button.dataset.packageId);
+				});
+			});
+			stopButton.addEventListener('click', stopAll);
+			window.addEventListener('beforeunload', function () {
+				if (activeApp) {
+					activeApp.stop({ terminate: true });
+				}
+			});
+
+			sos.onReady().then(async function () {
+				try {
+					var sdkUrl = sos.config.supraScreenSdkUrl || DEFAULT_SDK_URL;
+					await loadScript(sdkUrl);
+					supraScreen = createSupraScreen();
+					busy = false;
+					renderControls();
+					await switchApp(DEFAULT_APP_PACKAGE_ID);
+				} catch (error) {
+					setStatus('Failed: ' + (error && error.message ? error.message : String(error)));
+				}
+			});
+		})();
+	</script>
+</body>
+</html>

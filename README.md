@@ -44,6 +44,7 @@ This repository contains:
 - [Sensors by Nexmosphere](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/sensors-nexmosphere) and how to use them in the JS
 - [Serial Port](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/serial) management and operations
 - [Streams](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/stream) like UDP, RT(S)P, HLT
+- [Supra Android Applications](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/supra-android-apps) with app switching and reserved header geometry
 - [Sync Mixed Content](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/sync-mixed-content) for playing a list of videos and images in sync on multiple devices
 - [Video & Images](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/video-and-images) loop together
 - [Video, Images and HTML](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/video-and-images-and-html) loop together

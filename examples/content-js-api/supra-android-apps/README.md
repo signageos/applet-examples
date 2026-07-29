@@ -3,6 +3,7 @@
 This example uses the Supra Screen SDK to start and switch Android applications while keeping a fixed 64-pixel applet header visible. Only one Android application is rendered at a time. **Stop all** terminates the active Supra application process.
 
 - [Single-file applet](singlefile-applet/index.html)
+- [CLI applet](cli-applet/)
 
 ## Applications
 
@@ -15,9 +16,9 @@ APKPure is a third-party source, not signageOS or Rovio. Confirm that you may us
 
 ## Prepare the applet
 
-The example includes a minified Supra Screen browser SDK at `singlefile-applet/supra-screen-sdk.js`. To update it, build the SDK from the [`signageos/applet/supra-screen`](https://gitlab.com/signageos/applet/supra-screen) repository and replace the file with `dist-sdk/supra-screen-sdk.js`. Alternatively, set applet configuration property `supraScreenSdkUrl` to a trusted hosted bundle URL.
+Both variants include a minified Supra Screen browser SDK. To update it, build the SDK from the [`signageos/applet/supra-screen`](https://gitlab.com/signageos/applet/supra-screen) repository and replace both `singlefile-applet/supra-screen-sdk.js` and `cli-applet/src/supra-screen-sdk.js` with `dist-sdk/supra-screen-sdk.js`. Alternatively, set applet configuration property `supraScreenSdkUrl` to a trusted hosted bundle URL.
 
-Upload the `singlefile-applet` directory as an applet in the same Box organization as the Supra Server device. The SDK uses the device's `sos.config` Supra connection and authentication properties.
+For the single-file variant, upload the `singlefile-applet` directory as an applet. For the CLI variant, run `npm install` and `npm run build` in `cli-applet`, then upload its generated `dist` directory. Upload the selected variant in the same Box organization as the Supra Server device. The SDK uses the device's `sos.config` Supra connection and authentication properties.
 
 ## Upload and install APKs
 

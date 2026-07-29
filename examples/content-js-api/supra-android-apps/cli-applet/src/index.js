@@ -1,6 +1,6 @@
 import sos from '@signageos/front-applet';
 
-import sdkBundleUrl from './supra-screen-sdk.js?url';
+import { SupraScreen } from './supra-screen-sdk';
 import './index.css';
 
 const DEFAULT_APP_PACKAGE_ID = 'com.rovio.angrybirds';
@@ -91,23 +91,6 @@ const stopAll = async () => {
 	}
 };
 
-const loadScript = (url) => new Promise((resolve, reject) => {
-	const script = document.createElement('script');
-	script.src = url;
-	script.onload = resolve;
-	script.onerror = () => reject(new Error(`Cannot load SDK from ${url}`));
-	document.head.appendChild(script);
-});
-
-const createSupraScreen = () => {
-	const sdk = window.SupraScreen;
-	const SupraScreenClass = typeof sdk === 'function' ? sdk : sdk && sdk.SupraScreen;
-	if (!SupraScreenClass) {
-		throw new Error('SDK bundle does not export SupraScreen');
-	}
-	return new SupraScreenClass();
-};
-
 appButtons.forEach((button) => {
 	button.addEventListener('click', () => switchApp(button.dataset.packageId));
 });
@@ -120,9 +103,7 @@ window.addEventListener('beforeunload', () => {
 
 sos.onReady().then(async () => {
 	try {
-		const sdkUrl = sos.config.supraScreenSdkUrl || sdkBundleUrl;
-		await loadScript(sdkUrl);
-		supraScreen = createSupraScreen();
+		supraScreen = new SupraScreen();
 		busy = false;
 		renderControls();
 		await switchApp(DEFAULT_APP_PACKAGE_ID);

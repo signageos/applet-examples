@@ -16,7 +16,7 @@ APKPure is a third-party source, not signageOS or Rovio. Confirm that you may us
 
 ## Prepare the applet
 
-Both variants include a minified Supra Screen browser SDK. To update it, build the SDK from the [`signageos/applet/supra-screen`](https://gitlab.com/signageos/applet/supra-screen) repository and replace both `singlefile-applet/supra-screen-sdk.js` and `cli-applet/src/supra-screen-sdk.js` with `dist-sdk/supra-screen-sdk.js`. Alternatively, set applet configuration property `supraScreenSdkUrl` to a trusted hosted bundle URL.
+Both variants include the Supra Screen browser SDK. To update it, build the SDK from the [`signageos/applet/supra-screen`](https://gitlab.com/signageos/applet/supra-screen) repository and replace both `singlefile-applet/supra-screen-sdk.js` and `cli-applet/src/supra-screen-sdk.js` with `dist-sdk/supra-screen-sdk.js`. The CLI variant imports the SDK as a module and Webpack bundles it into `index.js`; it does not load a separate SDK URL at runtime.
 
 For the single-file variant, upload the `singlefile-applet` directory as an applet. For the CLI variant, run `npm install` and `npm run build` in `cli-applet`, then upload its generated `dist` directory. Upload the selected variant in the same Box organization as the Supra Server device. The SDK uses the device's `sos.config` Supra connection and authentication properties.
 

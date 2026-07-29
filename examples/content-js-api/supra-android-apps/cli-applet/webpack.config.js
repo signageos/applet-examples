@@ -5,6 +5,7 @@ module.exports = {
 	entry: './src/index.js',
 	output: {
 		filename: 'index.js',
+		clean: true,
 	},
 	resolve: {
 		extensions: ['.js'],
@@ -16,17 +17,8 @@ module.exports = {
 				use: ['style-loader', 'css-loader'],
 			},
 			{
-				test: /supra-screen-sdk\.js$/,
-				resourceQuery: /url/,
-				type: 'asset/resource',
-				generator: {
-					filename: 'supra-screen-sdk.js',
-				},
-			},
-			{
 				test: /.jsx?$/,
-				exclude: /node_modules/,
-				resourceQuery: { not: [/url/] },
+				exclude: [/node_modules/, /supra-screen-sdk\.js$/],
 				loader: 'babel-loader',
 				options: { presets: [require.resolve('@babel/preset-env')] },
 				enforce: 'post',

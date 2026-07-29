@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const SignageOSPlugin = require('@signageos/webpack-plugin');
 
@@ -7,8 +8,20 @@ module.exports = {
 		filename: 'index.js',
 		clean: true,
 	},
+	experiments: {
+		typescript: false,
+	},
 	resolve: {
 		extensions: ['.js'],
+		fallback: {
+			buffer: require.resolve('buffer'),
+			crypto: require.resolve('crypto-browserify'),
+			events: require.resolve('events/'),
+			os: require.resolve('os-browserify/browser'),
+			path: require.resolve('path-browserify'),
+			stream: require.resolve('stream-browserify'),
+			vm: require.resolve('vm-browserify'),
+		},
 	},
 	module: {
 		rules: [
@@ -18,7 +31,7 @@ module.exports = {
 			},
 			{
 				test: /.jsx?$/,
-				exclude: [/node_modules/, /supra-screen-sdk\.js$/],
+				exclude: /node_modules/,
 				loader: 'babel-loader',
 				options: { presets: [require.resolve('@babel/preset-env')] },
 				enforce: 'post',
@@ -26,6 +39,9 @@ module.exports = {
 		],
 	},
 	plugins: [
+		new webpack.DefinePlugin({
+			'process.env.TARGET': JSON.stringify('browser'),
+		}),
 		new HtmlWebpackPlugin({
 			template: 'public/index.html',
 		}),

@@ -1,6 +1,6 @@
 import sos from '@signageos/front-applet';
 
-import { SupraScreen } from './supra-screen-sdk';
+import { SupraScreen } from '@signageos/supra-screen/es6/sdk';
 import './index.css';
 
 const DEFAULT_APP_PACKAGE_ID = 'com.rovio.angrybirds';

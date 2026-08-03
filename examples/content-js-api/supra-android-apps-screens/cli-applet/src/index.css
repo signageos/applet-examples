@@ -1,0 +1,104 @@
+:root {
+	--header-height: 64px;
+	--background: #121229;
+	--surface: #1d1d3b;
+	--accent: #fdc400;
+	--danger: #dc3545;
+	--text: #f7f7fb;
+	--muted: #aaaac9;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	overflow: hidden;
+	background: var(--background);
+	color: var(--text);
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.header {
+	display: flex;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	align-items: center;
+	width: 100%;
+	height: var(--header-height);
+	padding: 8px 12px;
+	gap: 8px;
+	background: var(--surface);
+	border-bottom: 2px solid var(--accent);
+}
+
+.header__title {
+	margin: 0 12px 0 0;
+	font-size: 18px;
+	white-space: nowrap;
+}
+
+.header__status {
+	min-width: 0;
+	margin-left: auto;
+	overflow: hidden;
+	color: var(--muted);
+	font-size: 14px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.apps {
+	display: flex;
+	min-width: 0;
+	gap: 8px;
+	overflow-x: auto;
+}
+
+.apps .button {
+	flex-shrink: 0;
+}
+
+.button {
+	height: 40px;
+	padding: 0 15px;
+	border: 1px solid var(--muted);
+	border-radius: 5px;
+	background: transparent;
+	color: var(--text);
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.button[aria-pressed='true'] {
+	border-color: var(--accent);
+	background: var(--accent);
+	color: #121229;
+}
+
+.button--stop {
+	border-color: var(--danger);
+	background: var(--danger);
+}
+
+.button:disabled {
+	cursor: wait;
+	opacity: 0.45;
+}
+
+.stage {
+	position: fixed;
+	top: var(--header-height);
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: grid;
+	place-items: center;
+	color: var(--muted);
+}

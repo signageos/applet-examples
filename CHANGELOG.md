@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Supra Android apps screens example using a separate Supra screen (stream) for each Android app
 - Vue3 (@vue/cli) example project `examples/framework-examples/vue-example/vue3-cli-applet` 
 - Vue3 (vite) example project `examples/framework-examples/vue-example/vue3-vite-applet` 
 

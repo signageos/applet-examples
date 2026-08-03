@@ -45,6 +45,7 @@ This repository contains:
 - [Serial Port](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/serial) management and operations
 - [Streams](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/stream) like UDP, RT(S)P, HLT
 - [Supra Android apps screens](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/supra-android-apps-screens) runs Android apps in separate Supra screens (streams) through the Supra Screen SDK
+- [Supra Android apps launcher](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/supra-android-apps-launcher) runs one Supra App Launcher screen and switches Android app rendered objects inside it
 - [Sync Mixed Content](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/sync-mixed-content) for playing a list of videos and images in sync on multiple devices
 - [Video & Images](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/video-and-images) loop together
 - [Video, Images and HTML](https://github.com/signageos/applet-examples/tree/master/examples/content-js-api/video-and-images-and-html) loop together

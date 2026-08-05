@@ -3,12 +3,14 @@
     {
       "name": "uri",
       "valueType": "string",
+      "mandatory": true,
       "description": "URL of the stream to play (HLS, DASH, or RTSP). Falls back to a demo stream when empty.",
       "placeholder": "https://example.com/stream.m3u8"
     },
     {
       "name": "protocolType",
       "valueType": "enum",
+      "mandatory": true,
       "list": ["HTTP", "HLS", "UDP", "RTP", "RTSP"],
       "description": "Streaming protocol. Defaults to HTTP.",
       "placeholder": "HTTP"
@@ -16,6 +18,7 @@
     {
       "name": "mode",
       "valueType": "enum",
+      "mandatory": true,
       "description": "Debug shows the on-screen log console and stream-status readout; production hides everything except the title and device-info section. Defaults to production.",
       "list": ["production", "debug"]
     }

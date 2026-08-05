@@ -7,23 +7,20 @@
 	<meta name="theme-color" content="#13132a" />
 	<title>Video Wall</title>
 	<style>
-		:root {
-			--bg: #13132a;
-			--surface-alt: #1e1e3d;
-			--accent: #fdc400;
-			--text: #f4f4f8;
-			--text-muted: #a6a6c8;
-			--border: rgba(255, 255, 255, 0.08);
-			--warn: #f5a623;
-			--error: #ff6b6b;
+		/* Target: Chrome 28 (oldest supported signage webview).
+		   Three modern features are therefore avoided throughout:
+		     - CSS custom properties (Chrome 49+) — the palette below is inlined.
+		     - clamp() (Chrome 79+) — sizes step at a 1280px media query instead.
+		     - flexbox gap (Chrome 84+) — every gap is a margin on the child.
+		   Flex properties also need the -webkit- prefix, which Chrome 21-28 requires.
 
-			--font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-			--font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-		}
+		   Palette: bg #13132a · surface #1e1e3d · accent #fdc400 · text #f4f4f8
+		            muted #a6a6c8 · border rgba(255,255,255,.08) · warn #f5a623 · error #ff6b6b */
 
 		*,
 		*::before,
 		*::after {
+			-webkit-box-sizing: border-box;
 			box-sizing: border-box;
 		}
 
@@ -35,9 +32,9 @@
 
 		body {
 			min-height: 100vh;
-			background-color: var(--bg);
-			color: var(--text);
-			font-family: var(--font-ui);
+			background-color: #13132a;
+			color: #f4f4f8;
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 			font-size: 16px;
 			line-height: 1.5;
 			-webkit-font-smoothing: antialiased;
@@ -45,40 +42,57 @@
 		}
 
 		.app {
+			display: -webkit-flex;
 			display: flex;
+			-webkit-flex-direction: column;
 			flex-direction: column;
 			height: 100vh;
 			max-width: 1800px;
 			margin: 0 auto;
-			padding: clamp(1.5rem, 3vw, 3rem);
-			padding-bottom: clamp(2.5rem, 4vw, 4rem);
-			gap: clamp(1.5rem, 3vw, 2.5rem);
+			padding: 1.5rem;
+			padding-bottom: 2.5rem;
+		}
+
+		/* Stands in for `.app { gap }`. */
+		.app > * + * {
+			margin-top: 1.5rem;
 		}
 
 		/* ---------- Header ---------- */
 		.app__header {
+			display: -webkit-flex;
 			display: flex;
+			-webkit-align-items: flex-start;
 			align-items: flex-start;
+			-webkit-justify-content: space-between;
 			justify-content: space-between;
-			gap: clamp(1.5rem, 4vw, 3rem);
+			-webkit-flex-wrap: wrap;
 			flex-wrap: wrap;
-			padding-bottom: clamp(1rem, 2vw, 1.75rem);
-			border-bottom: 1px solid var(--border);
+			padding-bottom: 1rem;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 		}
 
 		.brand {
+			display: -webkit-flex;
 			display: flex;
+			-webkit-align-items: stretch;
 			align-items: stretch;
-			gap: 1rem;
 			min-width: 0;
+			-webkit-flex: 1 1 auto;
 			flex: 1 1 auto;
+			/* Stands in for `.app__header { gap }`. Kept as padding rather than a
+			   margin so it never lands on the outside edge when the header wraps. */
+			padding-right: 1.5rem;
 		}
 
 		.brand__mark {
+			-webkit-flex: none;
 			flex: none;
 			width: 6px;
 			border-radius: 999px;
-			background-color: var(--accent);
+			background-color: #fdc400;
+			/* Stands in for `.brand { gap }`. */
+			margin-right: 1rem;
 		}
 
 		.brand__text {
@@ -87,22 +101,31 @@
 
 		.brand__title {
 			margin: 0;
-			font-size: clamp(1.5rem, 3.2vw, 2.5rem);
+			font-size: 1.5rem;
 			font-weight: 700;
 			letter-spacing: -0.01em;
 		}
 
 		/* ---------- Device info (top-right) ---------- */
 		.device-info {
+			-webkit-flex: none;
 			flex: none;
+			display: -webkit-flex;
 			display: flex;
+			-webkit-flex-wrap: wrap;
 			flex-wrap: wrap;
+			-webkit-justify-content: flex-end;
 			justify-content: flex-end;
-			gap: clamp(1.25rem, 2.5vw, 2.5rem);
 		}
 
 		.device-info__item {
 			text-align: right;
+		}
+
+		/* Stands in for `.device-info { gap }`. Without it the firmware, model and
+		   type values render as one unbroken string. */
+		.device-info__item + .device-info__item {
+			margin-left: 1.25rem;
 		}
 
 		.device-info__label {
@@ -111,33 +134,43 @@
 			font-weight: 600;
 			letter-spacing: 0.08em;
 			text-transform: uppercase;
-			color: var(--accent);
+			color: #fdc400;
 		}
 
 		.device-info__value {
 			margin: 0;
-			font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+			font-size: 1.1rem;
 			font-weight: 700;
 			line-height: 1.2;
-			font-variant-numeric: tabular-nums;
+			-webkit-font-feature-settings: "tnum";
+			font-feature-settings: "tnum";
 		}
 
 		/* ---------- Playback status ---------- */
 		.stage {
+			-webkit-flex: none;
 			flex: none;
+			display: -webkit-flex;
 			display: flex;
+			-webkit-align-items: center;
 			align-items: center;
+			-webkit-justify-content: space-between;
 			justify-content: space-between;
+			-webkit-flex-wrap: wrap;
 			flex-wrap: wrap;
-			gap: clamp(1rem, 3vw, 2.5rem);
-			padding: clamp(1.1rem, 2.2vw, 1.75rem) clamp(1.25rem, 2.5vw, 1.9rem);
-			border: 1px solid var(--border);
+			padding: 1.1rem 1.25rem;
+			border: 1px solid rgba(255, 255, 255, 0.08);
 			border-radius: 14px;
-			background-color: var(--surface-alt);
+			background-color: #1e1e3d;
 		}
 
 		.stage__item {
 			min-width: 0;
+		}
+
+		/* Stands in for `.stage { gap }`. */
+		.stage__item + .stage__item {
+			margin-left: 1rem;
 		}
 
 		.stage__item--now {
@@ -150,63 +183,73 @@
 			font-weight: 600;
 			letter-spacing: 0.08em;
 			text-transform: uppercase;
-			color: var(--accent);
+			color: #fdc400;
 		}
 
 		.stage__value {
 			margin: 0;
+			display: -webkit-flex;
 			display: flex;
+			-webkit-align-items: center;
 			align-items: center;
-			gap: 0.7rem;
-			font-size: clamp(1.3rem, 2.4vw, 2rem);
+			font-size: 1.3rem;
 			font-weight: 700;
 			line-height: 1.2;
-			font-variant-numeric: tabular-nums;
+			-webkit-font-feature-settings: "tnum";
+			font-feature-settings: "tnum";
 		}
 
 		.stage__item--now .stage__value {
+			-webkit-justify-content: flex-end;
 			justify-content: flex-end;
 		}
 
 		.stage__dot {
+			-webkit-flex: none;
 			flex: none;
 			width: 0.85rem;
 			height: 0.85rem;
 			border-radius: 50%;
-			background-color: var(--accent);
+			background-color: #fdc400;
+			/* Stands in for `.stage__value { gap }`. */
+			margin-right: 0.7rem;
 		}
 
 		.stage__dot--warn {
-			background-color: var(--warn);
+			background-color: #f5a623;
 		}
 
 		.stage__dot--error {
-			background-color: var(--error);
+			background-color: #ff6b6b;
 		}
 
 		/* ---------- System log ---------- */
 		.log {
+			display: -webkit-flex;
 			display: flex;
+			-webkit-flex-direction: column;
 			flex-direction: column;
+			-webkit-flex: 1 1 auto;
 			flex: 1 1 auto;
 			min-height: 220px;
-			border: 1px solid var(--border);
+			border: 1px solid rgba(255, 255, 255, 0.08);
 			border-radius: 14px;
-			background-color: var(--surface-alt);
+			background-color: #1e1e3d;
 			overflow: hidden;
 		}
 
 		.log__header {
+			display: -webkit-flex;
 			display: flex;
+			-webkit-align-items: center;
 			align-items: center;
-			gap: 0.6rem;
 			padding: 0.9rem 1.25rem;
-			border-bottom: 1px solid var(--border);
+			border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 			font-size: 0.8rem;
 			font-weight: 600;
 			letter-spacing: 0.08em;
 			text-transform: uppercase;
-			color: var(--text-muted);
+			color: #a6a6c8;
 		}
 
 		.log__header::before {
@@ -214,45 +257,52 @@
 			width: 0.55rem;
 			height: 0.55rem;
 			border-radius: 50%;
-			background-color: var(--accent);
+			background-color: #fdc400;
+			/* Stands in for `.log__header { gap }`. */
+			margin-right: 0.6rem;
 		}
 
 		.log__body {
+			-webkit-flex: 1 1 auto;
 			flex: 1 1 auto;
 			min-height: 0;
 			margin: 0;
 			padding: 1rem 1.25rem;
 			overflow-y: auto;
-			font-family: var(--font-mono);
+			font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 			font-size: 0.9rem;
 			line-height: 1.7;
 			list-style: none;
 		}
 
 		.log__line {
+			display: -webkit-flex;
 			display: flex;
-			gap: 0.85rem;
 			white-space: pre-wrap;
 			word-break: break-word;
 		}
 
 		.log__time {
+			-webkit-flex: none;
 			flex: none;
-			color: var(--text-muted);
+			color: #a6a6c8;
+			/* Stands in for `.log__line { gap }`. */
+			margin-right: 0.85rem;
 		}
 
 		.log__message {
+			-webkit-flex: 1 1 auto;
 			flex: 1 1 auto;
 			min-width: 0;
-			color: var(--text);
+			color: #f4f4f8;
 		}
 
 		.log__message--warn {
-			color: var(--warn);
+			color: #f5a623;
 		}
 
 		.log__message--error {
-			color: var(--error);
+			color: #ff6b6b;
 		}
 
 		/* ---------- Mode / phase ---------- */
@@ -266,6 +316,7 @@
 
 		.mode-debug .stage,
 		.mode-debug .log {
+			display: -webkit-flex;
 			display: flex;
 		}
 
@@ -275,6 +326,52 @@
 		   the failure is never hidden. */
 		.is-playing .app {
 			display: none;
+		}
+
+		/* ---------- Large displays ---------- */
+		/* Stands in for the upper bound of the clamp() sizes this design started
+		   from. Below 1280px the base sizes above apply. */
+		@media (min-width: 1280px) {
+			.app {
+				padding: 3rem;
+				padding-bottom: 4rem;
+			}
+
+			.app > * + * {
+				margin-top: 2.5rem;
+			}
+
+			.app__header {
+				padding-bottom: 1.75rem;
+			}
+
+			.brand {
+				padding-right: 3rem;
+			}
+
+			.brand__title {
+				font-size: 2.5rem;
+			}
+
+			.device-info__item + .device-info__item {
+				margin-left: 2.5rem;
+			}
+
+			.device-info__value {
+				font-size: 1.4rem;
+			}
+
+			.stage {
+				padding: 1.75rem 1.9rem;
+			}
+
+			.stage__item + .stage__item {
+				margin-left: 2.5rem;
+			}
+
+			.stage__value {
+				font-size: 2rem;
+			}
 		}
 	</style>
 </head>
@@ -326,28 +423,46 @@
 	</div>
 
 	<script type="application/ecmascript">
+		// ES5 only — Chrome 28 has no async/await, arrow functions, template
+		// literals, let/const, spread or destructuring. Promises come from the
+		// signageOS SDK and are chained with .then(); the Promise constructor is
+		// never used, since Chrome gained it only in 32.
 		(function () {
-			const logEl = document.getElementById('log');
-			const firmwareEl = document.getElementById('firmware-version');
-			const modelEl = document.getElementById('device-model');
-			const typeEl = document.getElementById('device-type');
-			const statusEl = document.getElementById('sync-status');
-			const dotEl = document.getElementById('sync-dot');
-			const nowPlayingEl = document.getElementById('now-playing');
-			let started = false;
-			let debugMode = false;
+			var logEl = document.getElementById('log');
+			var firmwareEl = document.getElementById('firmware-version');
+			var modelEl = document.getElementById('device-model');
+			var typeEl = document.getElementById('device-type');
+			var statusEl = document.getElementById('sync-status');
+			var dotEl = document.getElementById('sync-dot');
+			var nowPlayingEl = document.getElementById('now-playing');
+			var started = false;
+			var debugMode = false;
+
+			function errorMessage(error) {
+				return error && error.message ? error.message : String(error);
+			}
+
+			// Stands in for Array.prototype.findIndex (Chrome 45+).
+			function indexOfUid(list, uid) {
+				for (var i = 0; i < list.length; i++) {
+					if (list[i].uid === uid) {
+						return i;
+					}
+				}
+				return -1;
+			}
 
 			// Append a timestamped line to the on-screen log (visible in debug mode).
 			function log(message, level) {
-				const line = document.createElement('li');
+				var line = document.createElement('li');
 				line.className = 'log__line';
 
-				const time = document.createElement('span');
+				var time = document.createElement('span');
 				time.className = 'log__time';
 				time.textContent = new Date().toTimeString().slice(0, 8);
 
-				const text = document.createElement('span');
-				text.className = level ? `log__message log__message--${level}` : 'log__message';
+				var text = document.createElement('span');
+				text.className = level ? 'log__message log__message--' + level : 'log__message';
 				text.textContent = message;
 
 				line.appendChild(time);
@@ -367,39 +482,117 @@
 
 			function setStatus(text, level) {
 				statusEl.textContent = text;
-				dotEl.className = level ? `stage__dot stage__dot--${level}` : 'stage__dot';
+				dotEl.className = level ? 'stage__dot stage__dot--' + level : 'stage__dot';
 			}
 
-			async function loadDeviceInfo() {
-				try {
-					const firmware = await sos.management.firmware.getVersion();
+			function handleError(error) {
+				setStatus('Error', 'error');
+				log('Error: ' + errorMessage(error), 'error');
+			}
+
+			function loadDeviceInfo() {
+				return sos.management.firmware.getVersion().then(function (firmware) {
 					firmwareEl.textContent = firmware;
-					log(`Firmware version: ${firmware}`);
-
-					const model = (await sos.management.supports('MODEL'))
-						? await sos.management.getModel()
-						: 'Not supported';
+					log('Firmware version: ' + firmware);
+					return sos.management.supports('MODEL');
+				}).then(function (isModelSupported) {
+					return isModelSupported ? sos.management.getModel() : 'Not supported';
+				}).then(function (model) {
 					modelEl.textContent = model;
-					log(`Model: ${model}`);
-
-					const type = await sos.management.app.getType();
+					log('Model: ' + model);
+					return sos.management.app.getType();
+				}).then(function (type) {
 					typeEl.textContent = type;
-					log(`Type: ${type}`);
-				} catch (error) {
-					log(`Could not read device information: ${error && error.message ? error.message : String(error)}`, 'warn');
-				}
+					log('Type: ' + type);
+				}).catch(function (error) {
+					log('Could not read device information: ' + errorMessage(error), 'warn');
+				});
 			}
 
-			async function startApplet() {
-				if (started) return;
+			function startApplet() {
+				if (started) {
+					return;
+				}
 				started = true;
-				try {
-					await sos.onReady();
+
+				var videos;
+				var syncGroup;
+				var previousVideoIndex;
+				var currentVideoIndex = 0;
+				var preparedVideoIndex = -1;
+
+				// One pass of the playback loop. The original `while (true)` with awaits
+				// is not available on ES5; chaining `return playPass()` instead would
+				// leave one pending promise per video alive for the lifetime of the
+				// applet, so each pass is scheduled detached and carries its own catch.
+				function playPass() {
+					var previousVideo = typeof previousVideoIndex === 'undefined' ? undefined : videos[previousVideoIndex];
+					var currentVideo = videos[currentVideoIndex];
+					var realCurrentVideoUid;
+					var realCurrentVideoIndex;
+					var nextVideoIndex;
+					var syncedAt;
+					var endedPromise;
+
+					log('Waiting for sync: ' + currentVideo.uid + '…');
+
+					sos.sync.wait(currentVideo.uid, syncGroup).then(function (syncedUid) {
+						realCurrentVideoUid = syncedUid;
+						syncedAt = new Date().getTime();
+						realCurrentVideoIndex = indexOfUid(videos, realCurrentVideoUid);
+
+						// Stop a previously prepared video that is now neither playing nor
+						// about to play, so it doesn't hold a decoder open.
+						if (preparedVideoIndex >= 0 && preparedVideoIndex !== realCurrentVideoIndex && preparedVideoIndex !== previousVideoIndex) {
+							var preparedVideo = videos[preparedVideoIndex];
+							log('Stopping stale prepared video ' + preparedVideo.uid + '.');
+							return sos.video.stop.apply(sos.video, preparedVideo.arguments).then(function () {
+								preparedVideoIndex = -1;
+							});
+						}
+						return undefined;
+					}).then(function () {
+						// Only play when the synchronized video is the one we expected;
+						// otherwise it would be out of sync — skip and resync from the next.
+						if (realCurrentVideoIndex !== currentVideoIndex) {
+							log('Out of sync — expected ' + currentVideo.uid + ', got ' + realCurrentVideoUid + '; resyncing from next.', 'warn');
+							return undefined;
+						}
+
+						return sos.video.play.apply(sos.video, currentVideo.arguments).then(function () {
+							nowPlayingEl.textContent = currentVideo.uid;
+							log('Playing ' + currentVideo.uid + ' (sync→play ' + (new Date().getTime() - syncedAt) + 'ms).');
+
+							if (previousVideo && previousVideoIndex !== currentVideoIndex) {
+								return sos.video.stop.apply(sos.video, previousVideo.arguments);
+							}
+							return undefined;
+						}).then(function () {
+							previousVideoIndex = currentVideoIndex;
+
+							// https://developers.signageos.io/sdk/sos/video#onceended
+							endedPromise = sos.video.onceEnded.apply(sos.video, currentVideo.arguments);
+						});
+					}).then(function () {
+						nextVideoIndex = (realCurrentVideoIndex + 1) % videos.length;
+						var nextVideo = videos[nextVideoIndex];
+						log('Preparing ' + nextVideo.uid + '.');
+						return sos.video.prepare.apply(sos.video, nextVideo.arguments);
+					}).then(function () {
+						preparedVideoIndex = nextVideoIndex;
+						return endedPromise;
+					}).then(function () {
+						currentVideoIndex = nextVideoIndex;
+						setTimeout(playPass, 0);
+					}).catch(handleError);
+				}
+
+				sos.onReady().then(function () {
 					log('signageOS API ready.');
 
 					debugMode = sos.config.mode === 'debug';
 					document.documentElement.className = debugMode ? 'mode-debug' : '';
-					log(`Mode: ${debugMode ? 'debug' : 'production'}.`);
+					log('Mode: ' + (debugMode ? 'debug' : 'production') + '.');
 
 					loadDeviceInfo();
 					setStatus('Loading videos…');
@@ -407,7 +600,7 @@
 
 					// Parse video list from sos.config.items (JSON array of {uid, uri} objects)
 					// Each screen in the video wall should be configured with its own pre-sliced video segments.
-					const defaultVideos = [
+					var defaultVideos = [
 						{
 							uid: 'video-1.mp4',
 							uri: 'https://static.signageos.io/assets/videowall1/videowall1-left_145ee3fa78a472f39dcca5b70d65e98b.mp4'
@@ -422,16 +615,23 @@
 						},
 					];
 
-					const videos = sos.config.items ? JSON.parse(sos.config.items) : defaultVideos;
-					log(`${videos.length} video(s) queued${sos.config.items ? '' : ' (demo content)'}.`);
+					videos = sos.config.items ? JSON.parse(sos.config.items) : defaultVideos;
+					log(videos.length + ' video(s) queued' + (sos.config.items ? '' : ' (demo content)') + '.');
 
-					for (const video of videos) {
-						// Store video to offline storage
-						log(`Caching ${video.uid}…`);
-						const { filePath } = await sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
-						video.filePath = filePath;
-						video.arguments = [video.filePath, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
-					}
+					// Cache each video in turn, then record its play arguments.
+					var cacheChain = sos.onReady();
+					videos.forEach(function (video) {
+						cacheChain = cacheChain.then(function () {
+							// Store video to offline storage
+							log('Caching ' + video.uid + '…');
+							return sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
+						}).then(function (cachedFile) {
+							video.filePath = cachedFile.filePath;
+							video.arguments = [video.filePath, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
+						});
+					});
+					return cacheChain;
+				}).then(function () {
 					log('All videos cached.');
 
 					document.documentElement.className = debugMode ? 'mode-debug is-playing' : 'is-playing';
@@ -439,80 +639,28 @@
 					// Connect to the sync server and join the sync group
 					setStatus('Syncing…');
 					log('Connecting to sync server…');
-					const syncServerUri = sos.config.sync_server || undefined;
-					const syncGroup = sos.config.sync_group || undefined;
-					await sos.sync.connect(syncServerUri ? { engine: 'sync-server', uri: syncServerUri } : undefined);
-					await sos.sync.joinGroup({ groupName: syncGroup });
-					log(`Synchronized (group: ${syncGroup || 'default'}).`);
+					var syncServerUri = sos.config.sync_server || undefined;
+					syncGroup = sos.config.sync_group || undefined;
+					return sos.sync.connect(syncServerUri ? { engine: 'sync-server', uri: syncServerUri } : undefined);
+				}).then(function () {
+					return sos.sync.joinGroup({ groupName: syncGroup });
+				}).then(function () {
+					log('Synchronized (group: ' + (syncGroup || 'default') + ').');
 
 					setStatus('Playing');
-					log(`Playing at ${document.documentElement.clientWidth}×${document.documentElement.clientHeight}.`);
+					log('Playing at ' + document.documentElement.clientWidth + '×' + document.documentElement.clientHeight + '.');
 
-					let previousVideoIndex;
-					let currentVideoIndex = 0;
-					let preparedVideoIndex = -1;
-
-					while (true) {
-						const previousVideo = typeof previousVideoIndex === 'undefined' ? undefined : videos[previousVideoIndex];
-						const currentVideo = videos[currentVideoIndex];
-
-						log(`Waiting for sync: ${currentVideo.uid}…`);
-						const realCurrentVideoUid = await sos.sync.wait(currentVideo.uid, syncGroup);
-						const syncedAt = new Date();
-						const realCurrentVideoIndex = videos.findIndex((video) => video.uid === realCurrentVideoUid);
-
-						// Stop a previously prepared video that is now neither playing nor
-						// about to play, so it doesn't hold a decoder open.
-						if (preparedVideoIndex >= 0 && preparedVideoIndex !== realCurrentVideoIndex && preparedVideoIndex !== previousVideoIndex) {
-							const preparedVideo = videos[preparedVideoIndex];
-							log(`Stopping stale prepared video ${preparedVideo.uid}.`);
-							await sos.video.stop(...preparedVideo.arguments);
-							preparedVideoIndex = -1;
-						}
-
-						let endedPromise;
-
-						// Only play when the synchronized video is the one we expected;
-						// otherwise it would be out of sync — skip and resync from the next.
-						if (realCurrentVideoIndex === currentVideoIndex) {
-							await sos.video.play(...currentVideo.arguments);
-							nowPlayingEl.textContent = currentVideo.uid;
-							log(`Playing ${currentVideo.uid} (sync→play ${new Date() - syncedAt}ms).`);
-							if (previousVideo && previousVideoIndex !== currentVideoIndex) {
-								await sos.video.stop(...previousVideo.arguments);
-							}
-
-							previousVideoIndex = currentVideoIndex;
-
-							// https://developers.signageos.io/sdk/sos/video#onceended
-							endedPromise = sos.video.onceEnded(...currentVideo.arguments);
-						} else {
-							log(`Out of sync — expected ${currentVideo.uid}, got ${realCurrentVideoUid}; resyncing from next.`, 'warn');
-						}
-
-						const nextVideoIndex = (realCurrentVideoIndex + 1) % videos.length;
-						const nextVideo = videos[nextVideoIndex];
-						log(`Preparing ${nextVideo.uid}.`);
-						await sos.video.prepare(...nextVideo.arguments);
-						preparedVideoIndex = nextVideoIndex;
-
-						if (endedPromise) {
-							await endedPromise;
-						}
-
-						currentVideoIndex = nextVideoIndex;
-					}
-				} catch (error) {
-					setStatus('Error', 'error');
-					log(`Error: ${error && error.message ? error.message : String(error)}`, 'error');
-				}
+					playPass();
+				}).catch(handleError);
 			}
 
 			log('Applet loaded.');
 
-			typeof sos !== 'undefined' ?
-				startApplet() :
+			if (typeof sos !== 'undefined') {
+				startApplet();
+			} else {
 				window.addEventListener('sos.loaded', startApplet);
+			}
 		})();
 	</script>
 </body>

@@ -319,6 +319,10 @@
 			display: flex;
 		}
 
+		.is-playing body {
+			background-color: transparent;
+		}
+
 		/* ---------- Large displays ---------- */
 		/* Stands in for the upper bound of the clamp() sizes this design started
 		   from. Below 1280px the base sizes above apply. */
@@ -427,6 +431,8 @@
 			var statusEl = document.getElementById('stream-status');
 			var dotEl = document.getElementById('stream-dot');
 			var started = false;
+			// Module-level so setStreaming() can rebuild the root class list.
+			var debugMode = false;
 
 			function errorMessage(error) {
 				return error && error.message ? error.message : String(error);
@@ -459,6 +465,17 @@
 			function setStatus(text, level) {
 				statusEl.textContent = text;
 				dotEl.className = level ? 'stage__dot stage__dot--' + level : 'stage__dot';
+			}
+
+			// Drop the opaque page background while the stream is on screen, and put
+			// it back once it stops, so the display is never left transparent with
+			// nothing behind it.
+			function setStreaming(isStreaming) {
+				var classNames = debugMode ? ['mode-debug'] : [];
+				if (isStreaming) {
+					classNames.push('is-playing');
+				}
+				document.documentElement.className = classNames.join(' ');
 			}
 
 			// Turns a raw stream event type (e.g. "connected") into a readable status label.
@@ -504,10 +521,8 @@
 				sos.onReady().then(function () {
 					log('signageOS API ready.');
 
-					var debugMode = sos.config.mode === 'debug';
-					if (debugMode) {
-						document.documentElement.className = 'mode-debug';
-					}
+					debugMode = sos.config.mode === 'debug';
+					setStreaming(false);
 					log('Mode: ' + (debugMode ? 'debug' : 'production') + '.');
 
 					loadDeviceInfo();
@@ -529,6 +544,14 @@
 						var eventUri = (event.srcArguments && event.srcArguments.uri) || uri;
 						var level = eventLevel(type);
 						setStatus(formatStatus(type), level);
+						// A level means stopped, disconnected or errored — nothing is on
+						// screen, so paint the background back. `prepare` has not put a
+						// picture up yet either.
+						if (level) {
+							setStreaming(false);
+						} else if (String(type).toLowerCase() !== 'prepare') {
+							setStreaming(true);
+						}
 						log('Stream ' + type + ': ' + eventUri, level);
 					}
 
@@ -545,8 +568,10 @@
 					return sos.stream.play.apply(sos.stream, streamArguments);
 				}).then(function () {
 					setStatus('Playing');
+					setStreaming(true);
 					log('Stream playing.');
 				}).catch(function (error) {
+					setStreaming(false);
 					setStatus('Error', 'error');
 					log('Error: ' + errorMessage(error), 'error');
 				});

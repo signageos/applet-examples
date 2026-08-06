@@ -3,24 +3,41 @@
     {
       "name": "sync_server",
       "valueType": "string",
+      "mandatory": true,
       "description": "URI of the synchronization server coordinating playback across the two screens."
     },
     {
       "name": "sync_group",
       "valueType": "string",
+      "mandatory": true,
       "description": "Group identifier so both screens in the pair stay in sync."
+    },
+    {
+      "name": "items",
+      "valueType": "string",
+      "mandatory": true,
+      "description": "JSON array of video objects ({uid, uri}) — this screen's pre-sliced segments. Required. Both screens must list the same uids in the same order so they wait on the same sync barriers; only the uri differs per side.",
+      "placeholder": "[{\"uid\":\"video-1.mp4\",\"uri\":\"https://example.com/left-1.mp4\"}]"
     },
     {
       "name": "placement",
       "valueType": "enum",
-      "description": "Which half of the wall this screen displays. Defaults to left.",
-      "list": ["left", "right"]
+      "mandatory": true,
+      "description": "Which half of the wall this screen displays. Labels the screen in the log and diagnostics; the content itself comes from `items`. Defaults to left.",
+      "list": [
+        "left",
+        "right"
+      ]
     },
     {
       "name": "mode",
       "valueType": "enum",
+      "mandatory": true,
       "description": "Debug shows the playback-status readout and on-screen log console; production hides everything except the title and device-info section. Defaults to production.",
-      "list": ["production", "debug"]
+      "list": [
+        "production",
+        "debug"
+      ]
     }
   ]
 }

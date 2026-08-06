@@ -10,6 +10,7 @@
     {
       "name": "mode",
       "valueType": "enum",
+      "mandatory": true,
       "description": "Debug shows the on-screen log console; production hides everything except the title and device-info section. Defaults to production.",
       "list": ["production", "debug"]
     }

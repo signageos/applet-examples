@@ -3,12 +3,14 @@
     {
       "name": "items",
       "valueType": "string",
-      "description": "JSON array of content items, each with `uid` and `uri` (media URL). Video vs. image is detected from the file extension (e.g. .mp4 → video, .png → image). Falls back to demo content when empty.",
+      "mandatory": true,
+      "description": "JSON array of content items, each with `uid` and `uri` (media URL). Video vs. image is detected from the file extension (e.g. .mp4 → video, .png → image). Required — the applet has nothing to play without it.",
       "placeholder": "[{\"uid\":\"img1\",\"uri\":\"https://example.com/photo.jpg\"}]"
     },
     {
       "name": "mode",
       "valueType": "enum",
+      "mandatory": true,
       "description": "Debug shows an on-screen diagnostic dashboard (device info, playback status, log console) during startup and whenever an error occurs, and plays full-screen the rest of the time; production always plays full-screen. Defaults to production.",
       "list": ["production", "debug"]
     }

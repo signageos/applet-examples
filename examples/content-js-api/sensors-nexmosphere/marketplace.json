@@ -1,5 +1,5 @@
 {
-	"eligible": true,
+	"eligible": false,
 	"id": "applet-sensors-nexmosphere",
 	"name": "Nexmosphere Sensors",
 	"version": "1.0.0",

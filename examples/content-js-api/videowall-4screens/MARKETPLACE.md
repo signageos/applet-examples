@@ -18,7 +18,8 @@ Build a 2x2 video wall from four signageOS devices. Each screen plays its assign
 |-----------|------|---------|-------------|
 | `sync_server` | string | — | URI of the synchronization server |
 | `sync_group` | string | — | Group identifier for this video wall group |
-| `placement` | enum | `top_left` | Quadrant this screen displays: `top_left`, `top_right`, `bottom_left`, or `bottom_right` |
+| `items` | string (JSON) | *(required)* | JSON array of video objects (`{uid, uri}`) — this screen's pre-sliced segments. All four screens must list the same uids in the same order; only the `uri` differs per screen |
+| `placement` | enum | `top_left` | Quadrant this screen displays: `top_left`, `top_right`, `bottom_left`, or `bottom_right`. Labels the screen in the log; the content comes from `items` |
 | `mode` | enum | `production` | Either `production` to show only the title and device-info header, or `debug` to also reveal the playback-status readout and on-screen log console |
 
 ## Use Cases
@@ -31,7 +32,7 @@ Build a 2x2 video wall from four signageOS devices. Each screen plays its assign
 
 ## Getting Started
 
-Install on all four devices. Set the same `sync_server` and `sync_group` on each, then assign `placement` to the appropriate quadrant (`top_left`, `top_right`, `bottom_left`, `bottom_right`). The applet synchronizes playback automatically. Switch `mode` to `debug` when you need the playback-status readout and on-screen log console to troubleshoot sync or playback.
+Install on all four devices. Set the same `sync_server` and `sync_group` on each, then assign `placement` to the appropriate quadrant (`top_left`, `top_right`, `bottom_left`, `bottom_right`). Give each screen its own `items` — the quadrant of the pre-sliced content it should play — using the **same uids in the same order on all four screens**, with only the `uri` differing per screen. That shared uid order is what the sync barriers key on; if the lists disagree, the screens will not stay in step. Switch `mode` to `debug` when you need the playback-status readout and on-screen log console to troubleshoot sync or playback.
 
 ## Synchronization
 

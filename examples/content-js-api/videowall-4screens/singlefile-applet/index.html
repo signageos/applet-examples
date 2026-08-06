@@ -456,6 +456,46 @@
 				return -1;
 			}
 
+			// Parse and validate the `items` config (JSON array of {uid, uri} objects).
+			// Each screen is configured with its own pre-sliced segments, so there is no
+			// built-in playlist to fall back on.
+			function parseItems(raw) {
+				var items;
+				var seen = {};
+				var i;
+
+				if (!raw) {
+					throw new Error('`items` is not set — configure this screen\'s video segments, e.g. [{"uid":"video-1.mp4","uri":"https://…/left-1.mp4"}].');
+				}
+				try {
+					items = JSON.parse(raw);
+				} catch (parseError) {
+					throw new Error('`items` is not valid JSON — use double-quoted keys and values, e.g. [{"uid":"video-1.mp4","uri":"https://…/left-1.mp4"}]. (' + parseError.message + ')');
+				}
+				if (!Array.isArray(items)) {
+					throw new Error('`items` must be a JSON array, e.g. [{"uid":"video-1.mp4","uri":"https://…/left-1.mp4"}].');
+				}
+				if (!items.length) {
+					throw new Error('`items` is empty — add at least one segment, e.g. [{"uid":"video-1.mp4","uri":"https://…/left-1.mp4"}].');
+				}
+
+				for (i = 0; i < items.length; i++) {
+					// A bad entry is never skipped: every screen in the sync group has to wait
+					// on the same uids in the same order, so a short or reordered list on one
+					// screen desynchronises the whole wall.
+					if (!items[i] || !items[i].uid || !items[i].uri) {
+						throw new Error('`items[' + i + ']` needs both "uid" and "uri" — every screen in the group must queue the same uids in the same order.');
+					}
+					// hasOwnProperty, not `seen[uid]` — a uid like "constructor" would inherit a
+					// truthy value straight off Object.prototype.
+					if (Object.prototype.hasOwnProperty.call(seen, items[i].uid)) {
+						throw new Error('`items` repeats the uid "' + items[i].uid + '" — sync barriers are keyed by uid, so every segment needs a distinct one.');
+					}
+					seen[items[i].uid] = true;
+				}
+				return items;
+			}
+
 			// Append a timestamped line to the on-screen log (visible in debug mode).
 			function log(message, level) {
 				var line = document.createElement('li');
@@ -602,81 +642,13 @@
 					setStatus('Loading videos…');
 					log('Loading videos…');
 
-					// Video sets are sliced in pre-production — one quadrant per screen.
-					// This screen plays the quadrant selected by its `placement` config.
-					var videosTopLeft = [
-						{
-							uid: 'video-1.mp4',
-							uri: 'https://static.signageos.io/assets/videowall1/videowall1-top_left_0478fd10ebd4cdc9b888db783e0810ea.mp4'
-						},
-						{
-							uid: 'video-2.mp4',
-							uri: 'https://static.signageos.io/assets/videowall2/videowall2-top-left_37a50d9ce8520bc5d1d9fa77df3c90d8.mp4'
-						},
-						{
-							uid: 'video-3.mp4',
-							uri: 'https://static.signageos.io/assets/videowall3/videowall3-top_left_5c9b686dd52629562092d393c0180288.mp4'
-						},
-					];
-					var videosTopRight = [
-						{
-							uid: 'video-1.mp4',
-							uri: 'https://static.signageos.io/assets/videowall1/videowall1-top_right_3be4db1ded91836bb778c2fbd8810005.mp4'
-						},
-						{
-							uid: 'video-2.mp4',
-							uri: 'https://static.signageos.io/assets/videowall2/videowall2-top-right_e9aebe3e57fe7c8e56aa95750f7bd419.mp4'
-						},
-						{
-							uid: 'video-3.mp4',
-							uri: 'https://static.signageos.io/assets/videowall3/videowall3-top_right_09cf689c776ef65560de2115a46354db.mp4'
-						},
-					];
-					var videosBottomLeft = [
-						{
-							uid: 'video-1.mp4',
-							uri: 'https://static.signageos.io/assets/videowall1/videowall1-bottom_left_4e7c71fbb015ed9947e379f46daf941b.mp4'
-						},
-						{
-							uid: 'video-2.mp4',
-							uri: 'https://static.signageos.io/assets/videowall2/videowall2-bottom-left_05f167d439a0fdbf48c1ae83f9b02c09.mp4'
-						},
-						{
-							uid: 'video-3.mp4',
-							uri: 'https://static.signageos.io/assets/videowall3/videowall3-bottom_left_d2fb186ee0716c13304867317db6e7dc.mp4'
-						},
-					];
-					var videosBottomRight = [
-						{
-							uid: 'video-1.mp4',
-							uri: 'https://static.signageos.io/assets/videowall1/videowall1-bottom_right_49db19005399d29d6872da2be7354208.mp4'
-						},
-						{
-							uid: 'video-2.mp4',
-							uri: 'https://static.signageos.io/assets/videowall2/videowall2-bottom-right_09e6b4982e9220f021bc0c37fe4eb392.mp4'
-						},
-						{
-							uid: 'video-3.mp4',
-							uri: 'https://static.signageos.io/assets/videowall3/videowall3-bottom_right_57a344c5675d5460c0f94065c3584212.mp4'
-						},
-					];
-
-					// Choose this screen's quadrant based on the placement config (default top_left).
-					switch (sos.config.placement) {
-						case 'top_right':
-							videos = videosTopRight;
-							break;
-						case 'bottom_left':
-							videos = videosBottomLeft;
-							break;
-						case 'bottom_right':
-							videos = videosBottomRight;
-							break;
-						case 'top_left':
-						default:
-							videos = videosTopLeft;
-					}
-					log('Placement: ' + (sos.config.placement || 'top_left (default)') + '. ' + videos.length + ' video(s) queued.');
+					// Each screen plays its own pre-sliced quadrant, configured through `items`.
+					// All four screens must list identical uids (e.g. video-1/2/3) in the same
+					// order so they wait on the same sync barriers — only the uri differs.
+					// `placement` no longer selects content; it just labels this screen.
+					var placement = sos.config.placement || 'top_left (default)';
+					videos = parseItems(sos.config.items);
+					log('Placement: ' + placement + '. ' + videos.length + ' video(s) queued.');
 
 					// Cache each video in turn, then record its play arguments.
 					var cacheChain = sos.onReady();

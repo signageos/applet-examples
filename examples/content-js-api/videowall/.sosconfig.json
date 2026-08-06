@@ -16,7 +16,7 @@
       "name": "items",
       "valueType": "string",
       "mandatory": true,
-      "description": "JSON array of video objects ({uid, uri}) to play on this screen. Falls back to demo videos when empty.",
+      "description": "JSON array of video objects ({uid, uri}) to play on this screen. Required — the applet has nothing to play without it. Every screen in the sync group must use the same uids in the same order; only the uri differs per screen.",
       "placeholder": "[{\"uid\":\"v1\",\"uri\":\"https://example.com/video.mp4\"}]"
     },
     {

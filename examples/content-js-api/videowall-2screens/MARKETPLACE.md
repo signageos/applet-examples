@@ -18,7 +18,8 @@ Create a side-by-side video wall from two signageOS devices. Each screen plays i
 |-----------|------|---------|-------------|
 | `sync_server` | string | — | URI of the synchronization server |
 | `sync_group` | string | — | Group identifier for this video wall pair |
-| `placement` | enum | `left` | Which half this screen displays: `left` or `right` |
+| `items` | string (JSON) | *(required)* | JSON array of video objects (`{uid, uri}`) — this screen's pre-sliced segments. Both screens must list the same uids in the same order; only the `uri` differs per side |
+| `placement` | enum | `left` | Which half this screen displays: `left` or `right`. Labels the screen in the log; the content comes from `items` |
 | `mode` | enum | `production` | Either `production` to show only the title and device-info header, or `debug` to also reveal the playback-status readout and on-screen log console |
 
 ## Use Cases
@@ -30,7 +31,7 @@ Create a side-by-side video wall from two signageOS devices. Each screen plays i
 
 ## Getting Started
 
-Install on both devices. Set the same `sync_server` and `sync_group` on each, then assign `placement` to `left` on one screen and `right` on the other. The applet handles the rest. Switch `mode` to `debug` when you need the playback-status readout and on-screen log console to troubleshoot sync or playback.
+Install on both devices. Set the same `sync_server` and `sync_group` on each, then assign `placement` to `left` on one screen and `right` on the other. Give each screen its own `items` — the half of the pre-sliced content it should play — using the **same uids in the same order on both screens**, with only the `uri` differing per side. That shared uid order is what the sync barriers key on; if the two lists disagree, the screens will not stay in step. Switch `mode` to `debug` when you need the playback-status readout and on-screen log console to troubleshoot sync or playback.
 
 ## Synchronization
 

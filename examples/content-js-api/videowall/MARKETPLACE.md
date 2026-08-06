@@ -20,7 +20,7 @@ Supports any grid arrangement — 2x1, 3x1, 2x2, 3x3, or custom layouts.
 |-----------|------|---------|-------------|
 | `sync_server` | string | — | URI of the synchronization server coordinating playback |
 | `sync_group` | string | — | Group identifier so screens in the same wall stay in sync |
-| `items` | string (JSON) | *(demo videos)* | JSON array of video objects (`{uid, uri}`) to play on this screen |
+| `items` | string (JSON) | *(required)* | JSON array of video objects (`{uid, uri}`) to play on this screen. Every screen in the sync group must use the same uids in the same order — only the `uri` differs per screen |
 | `mode` | enum | `production` | Either `production` to show only the title and device-info header, or `debug` to also reveal the playback-status readout and on-screen log console |
 
 ## Use Cases

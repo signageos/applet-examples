@@ -38,7 +38,7 @@ module.exports = {
 						[
 							require.resolve('@babel/preset-env'),
 							{
-								targets: { chrome: '47' },
+								targets: { chrome: '34' },
 								forceAllTransforms: true,
 							},
 						],

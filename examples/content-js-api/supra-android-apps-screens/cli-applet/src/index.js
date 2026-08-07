@@ -7,8 +7,11 @@ const DEFAULT_APP_PACKAGE_IDS = ['com.rovio.angrybirds', 'com.rovio.BadPiggies']
 const header = document.getElementById('header');
 const apps = document.getElementById('apps');
 const status = document.getElementById('status');
+const stage = document.getElementById('stage');
 const stopButton = document.getElementById('stop');
+const terminateButton = document.getElementById('terminate');
 const appButtons = [];
+const startedApps = Object.create(null);
 let supraScreen;
 let activeApp;
 let activePackageId;
@@ -36,6 +39,12 @@ const renderControls = () => {
 		button.setAttribute('aria-pressed', String(button.dataset.packageId === activePackageId));
 	});
 	stopButton.disabled = busy || !activeApp;
+	terminateButton.disabled = busy || Object.keys(startedApps).length === 0;
+	if (activeApp) {
+		stage.setAttribute('hidden', '');
+	} else {
+		stage.removeAttribute('hidden');
+	}
 };
 
 const getGeometry = () => {
@@ -48,7 +57,7 @@ const getGeometry = () => {
 	};
 };
 
-const terminateActiveApp = async () => {
+const stopActiveApp = async () => {
 	if (!activeApp) {
 		return;
 	}
@@ -69,12 +78,13 @@ const switchApp = async (packageId) => {
 	setStatus('Switching application...');
 
 	try {
-		await terminateActiveApp();
+		await stopActiveApp();
 		activeApp = await supraScreen.start({
 			androidApp: packageId,
 			geometry: getGeometry(),
 		});
 		activePackageId = packageId;
+		startedApps[packageId] = activeApp;
 		setStatus(`Running ${packageId}`);
 	} catch (error) {
 		setStatus(`Failed: ${error && error.message ? error.message : String(error)}`);
@@ -107,7 +117,7 @@ const stopAll = async () => {
 	setStatus('Stopping Android application...');
 
 	try {
-		await terminateActiveApp();
+		await stopActiveApp();
 		setStatus('All Android applications stopped');
 	} catch (error) {
 		setStatus(`Failed to stop: ${error && error.message ? error.message : String(error)}`);
@@ -117,7 +127,42 @@ const stopAll = async () => {
 	}
 };
 
+const terminateAll = async () => {
+	const packageIds = Object.keys(startedApps);
+	if (busy || packageIds.length === 0) {
+		return;
+	}
+
+	busy = true;
+	renderControls();
+	setStatus('Terminating all Android applications...');
+
+	const errors = [];
+	for (const packageId of packageIds) {
+		try {
+			await startedApps[packageId].stop({ terminate: true });
+			delete startedApps[packageId];
+			if (activePackageId === packageId) {
+				activeApp = undefined;
+				activePackageId = undefined;
+			}
+		} catch (error) {
+			errors.push(error);
+		}
+	}
+
+	if (errors.length > 0) {
+		const error = errors[0];
+		setStatus(`Failed to terminate: ${error && error.message ? error.message : String(error)}`);
+	} else {
+		setStatus('All Android applications terminated');
+	}
+	busy = false;
+	renderControls();
+};
+
 stopButton.addEventListener('click', stopAll);
+terminateButton.addEventListener('click', terminateAll);
 window.addEventListener('beforeunload', () => {
 	if (activeApp) {
 		activeApp.stop();

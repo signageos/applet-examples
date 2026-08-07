@@ -92,6 +92,10 @@ body {
 	opacity: 0.45;
 }
 
+.stage[hidden] {
+	display: none;
+}
+
 .stage {
 	position: fixed;
 	top: var(--header-height);

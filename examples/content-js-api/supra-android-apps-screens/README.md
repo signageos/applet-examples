@@ -1,6 +1,6 @@
 # Supra Android apps screens
 
-This example uses the Supra Screen SDK directly. Each selected Android app runs in its own Supra screen (stream), with geometry that keeps the applet header visible. Switching apps stops the current screen and starts a separate screen for the selected app. **Stop all** terminates the active Supra screen and its Android app.
+This example uses the Supra Screen SDK directly. Each selected Android app runs in its own Supra screen (stream), with geometry that keeps the applet header visible. Switching apps stops the current screen and starts a separate screen for the selected app. **Stop all** stops the active Supra screen. **Terminate all** stops every Android app started by this applet with `terminate: true`, terminating all their processes.
 
 Use this variant when the applet should create and manage a separate Supra screen for each Android app. To keep one launcher screen running and switch Android app rendered objects inside it, see [Supra Android apps launcher](../supra-android-apps-launcher/).
 

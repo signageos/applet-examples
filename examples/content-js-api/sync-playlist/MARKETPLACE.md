@@ -17,9 +17,10 @@ Point any number of screens at the same group and they play the same playlist in
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `sync_group` | string | *(default group)* | Group id — screens with the same id stay in sync |
-| `sync_server` | string | *(signageOS default)* | Sync server URI; empty uses the default server |
-| `sync_engine` | string | `sync-server` | `sync-server` or `p2p-local` (LAN-only); all screens in a group must match |
+| `sync_server` | url | *(signageOS default)* | Sync server URI; empty uses the default server |
+| `sync_engine` | enum | `sync-server` | `sync-server` or `p2p-local` (LAN-only); all screens in a group must match |
 | `items` | string (JSON) | *(demo playlist)* | `[{type:"video"\|"image", uid, uri, duration?}]` |
+| `wait_timeout_ms` | number | `15000` | Barrier wait timeout in ms; on timeout the loop retries instead of stalling |
 
 ## Use Cases
 

@@ -57,6 +57,28 @@
 		];
 
 		function sleep(ms) { return new Promise(function (resolve) { setTimeout(resolve, ms); }); }
+
+		// The initial connect+joinGroup can fail transiently (e.g. a flaky native sync service on
+		// the device) with no auto-retry from the platform. Left unguarded, a single failure here
+		// rejects the whole startup chain and the screen is stuck on "connecting…" forever. Retry
+		// indefinitely so a transient failure recovers instead of stranding the device.
+		async function connectAndJoinGroup(args) {
+			while (true) {
+				try {
+					await sos.sync.connect({ engine: args.engine, uri: args.uri });
+					await sos.sync.joinGroup({ groupName: args.groupName });
+					return;
+				} catch (error) {
+					console.error('sync connect/joinGroup failed, retrying:', error && error.message);
+					try {
+						await sos.sync.close();
+					} catch (closeError) {
+						// best-effort cleanup before retry
+					}
+					await sleep(1000);
+				}
+			}
+		}
 		function parseJson(raw, fallback) {
 			try { return raw ? JSON.parse(raw) : fallback; }
 			catch (error) { console.error('Invalid config JSON, using default:', error); return fallback; }
@@ -83,7 +105,7 @@
 			setInterval(tick, 15000);
 		}
 
-		window.addEventListener('sos.loaded', async function () {
+		async function startApplet() {
 			await sos.onReady();
 
 			var takeoverLayer = document.getElementById('takeover');
@@ -100,8 +122,7 @@
 			renderMenuboard(menu);
 			startClock();
 
-			await sos.sync.connect({ engine: syncEngine, uri: syncServer });
-			await sos.sync.joinGroup({ groupName: syncGroup });
+			await connectAndJoinGroup({ engine: syncEngine, uri: syncServer, groupName: syncGroup });
 
 			var index = 0;
 			while (true) {
@@ -131,7 +152,12 @@
 					await sleep(500);
 				}
 			}
-		});
+		}
+
+		// Distinguish between sos "open" (dev) and the platform in Box.
+		typeof sos !== 'undefined'
+			? startApplet()
+			: window.addEventListener('sos.loaded', startApplet);
 	</script>
 </body>
 

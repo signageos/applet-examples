@@ -17,12 +17,12 @@ Run a live menuboard on every screen, and on a shared interval (default every 15
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `sync_group` | string | *(default group)* | Group id — screens with the same id take over together |
-| `sync_server` | string | *(signageOS default)* | Sync server URI; empty uses the default server |
-| `sync_engine` | string | `sync-server` | `sync-server` or `p2p-local` (LAN-only); all screens in a group must match |
-| `interval_ms` | string | `15000` | Menuboard time between takeovers (ms) |
-| `takeover_ms` | string | `6000` | Takeover duration (ms) |
+| `sync_server` | url | *(signageOS default)* | Sync server URI; empty uses the default server |
+| `sync_engine` | enum | `sync-server` | `sync-server` or `p2p-local` (LAN-only); all screens in a group must match |
+| `interval_ms` | number | `15000` | Menuboard time between takeovers (ms) |
+| `takeover_ms` | number | `6000` | Takeover duration (ms) |
 | `menuboard_items` | string (JSON) | *(demo menu)* | `[{name, price}]` rows |
-| `wait_timeout_ms` | string | `15000` | Barrier wait timeout (ms); on timeout the loop retries instead of stalling |
+| `wait_timeout_ms` | number | `15000` | Barrier wait timeout (ms); on timeout the loop retries instead of stalling |
 
 ## Use Cases
 

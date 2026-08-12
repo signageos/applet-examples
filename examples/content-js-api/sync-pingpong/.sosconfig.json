@@ -2,27 +2,35 @@
   "configDefinition": [
     {
       "name": "screen_index",
-      "valueType": "string",
+      "valueType": "number",
       "description": "0-based position of this screen in the row (0 = leftmost). Set a different value on each screen.",
-      "placeholder": "0"
+      "placeholder": "0",
+      "min": 0,
+      "max": 99
     },
     {
       "name": "screen_count",
-      "valueType": "string",
+      "valueType": "number",
       "description": "Total number of screens in the row. Same value on every screen.",
-      "placeholder": "3"
+      "placeholder": "3",
+      "min": 1,
+      "max": 100
     },
     {
       "name": "cycle_ms",
-      "valueType": "string",
+      "valueType": "number",
       "description": "Time for one full round trip of the ball across the field and back, in milliseconds (default 10000).",
-      "placeholder": "10000"
+      "placeholder": "10000",
+      "min": 1000,
+      "max": 600000
     },
     {
       "name": "hop_count",
-      "valueType": "string",
+      "valueType": "number",
       "description": "Number of bounces during one cycle (whole number; default 10).",
-      "placeholder": "10"
+      "placeholder": "10",
+      "min": 1,
+      "max": 100
     },
     {
       "name": "sync_group",
@@ -31,20 +39,23 @@
     },
     {
       "name": "sync_server",
-      "valueType": "string",
+      "valueType": "url",
       "description": "URI of the synchronization server. Leave empty to use the signageOS default server."
     },
     {
       "name": "sync_engine",
-      "valueType": "string",
+      "valueType": "enum",
+      "list": ["sync-server", "p2p-local"],
       "description": "Sync engine: \"sync-server\" (default) or \"p2p-local\" for LAN-only. All screens in a group must match.",
       "placeholder": "sync-server"
     },
     {
       "name": "wait_timeout_ms",
-      "valueType": "string",
+      "valueType": "number",
       "description": "Barrier wait timeout in milliseconds; on timeout the loop retries instead of stalling (default 15000).",
-      "placeholder": "15000"
+      "placeholder": "15000",
+      "min": 1000,
+      "max": 120000
     }
   ]
 }

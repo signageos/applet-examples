@@ -15,14 +15,14 @@ Line several screens up side by side and a single ball travels across the full w
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `screen_index` | string | `0` | 0-based position of this screen in the row (0 = leftmost); set a different value per screen |
-| `screen_count` | string | `1` | Total number of screens in the row; same on every screen |
-| `cycle_ms` | string | `10000` | Time for one full round trip across the field and back (ms) |
-| `hop_count` | string | `10` | Number of bounces during one cycle (whole number) |
+| `screen_index` | number | `0` | 0-based position of this screen in the row (0 = leftmost); set a different value per screen |
+| `screen_count` | number | `1` | Total number of screens in the row; same on every screen |
+| `cycle_ms` | number | `10000` | Time for one full round trip across the field and back (ms) |
+| `hop_count` | number | `10` | Number of bounces during one cycle (whole number) |
 | `sync_group` | string | *(default group)* | Group id — screens with the same id animate together |
-| `sync_server` | string | *(signageOS default)* | Sync server URI; empty uses the default server |
-| `sync_engine` | string | `sync-server` | `sync-server` or `p2p-local` (LAN-only); all screens in a group must match |
-| `wait_timeout_ms` | string | `15000` | Barrier wait timeout (ms); on timeout the loop retries instead of stalling |
+| `sync_server` | url | *(signageOS default)* | Sync server URI; empty uses the default server |
+| `sync_engine` | enum | `sync-server` | `sync-server` or `p2p-local` (LAN-only); all screens in a group must match |
+| `wait_timeout_ms` | number | `15000` | Barrier wait timeout (ms); on timeout the loop retries instead of stalling |
 
 ## Getting Started
 

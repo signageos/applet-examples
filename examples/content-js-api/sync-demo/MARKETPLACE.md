@@ -16,10 +16,10 @@ Every screen in the same group advances a shared counter in lock-step: on each t
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `sync_group` | string | *(default group)* | Group id — screens with the same id tick together |
-| `sync_server` | string | *(signageOS default)* | Sync server URI; empty uses the default server |
-| `sync_engine` | string | `sync-server` | `sync-server` or `p2p-local` (LAN-only); all screens in a group must match |
-| `tick_ms` | string | `1000` | Dwell time on each step (ms) |
-| `wait_timeout_ms` | string | `15000` | Barrier wait timeout (ms); on timeout the tick retries instead of stalling |
+| `sync_server` | url | *(signageOS default)* | Sync server URI; empty uses the default server |
+| `sync_engine` | enum | `sync-server` | `sync-server` or `p2p-local` (LAN-only); all screens in a group must match |
+| `tick_ms` | number | `1000` | Dwell time on each step (ms) |
+| `wait_timeout_ms` | number | `15000` | Barrier wait timeout (ms); on timeout the tick retries instead of stalling |
 
 ## Getting Started
 

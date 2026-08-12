@@ -1,15 +1,15 @@
 {
 	"name": "sync-demo-timecode",
-	"version": "1.0.0",
+	"version": "1.0.5",
 	"main": "dist/index.html",
 	"files": [
 		"dist"
 	],
 	"devDependencies": {
-		"@signageos/front-applet": "^7.2.0",
+		"@signageos/front-applet": "^8.8.0",
 		"@babel/core": "^7.26.10",
 		"@babel/preset-env": "^7.26.9",
-		"@signageos/front-display": "^14.16.4",
+		"@signageos/front-display": "^14.41.0",
 		"@signageos/webpack-plugin": "1.0.8",
 		"@webpack-cli/serve": "^3.0.1",
 		"babel-loader": "^10.0.0",
@@ -22,6 +22,6 @@
 	},
 	"scripts": {
 		"start": "webpack-dev-server --mode development",
-		"build": "webpack --mode production"
+		"build": "webpack --mode production && node postbuild.js"
 	}
 }

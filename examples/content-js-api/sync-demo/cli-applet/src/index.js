@@ -21,6 +21,28 @@ import sos from '@signageos/front-applet';
 const COLORS = ['#e5484d', '#f76808', '#f9d34f', '#30a46c', '#0091ff', '#8e4ec6', '#e93d82', '#12a594'];
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+// The initial connect+joinGroup can fail transiently (e.g. a flaky native sync service on the
+// device) with no auto-retry from the platform. Left unguarded, a single failure here rejects the
+// whole startup chain and the screen is stuck on "connecting…" forever. Retry indefinitely so a
+// transient failure recovers instead of stranding the device.
+async function connectAndJoinGroup({ engine, uri, groupName }) {
+	while (true) {
+		try {
+			await sos.sync.connect({ engine, uri });
+			await sos.sync.joinGroup({ groupName });
+			return;
+		} catch (error) {
+			console.error('sync connect/joinGroup failed, retrying:', error && error.message);
+			try {
+				await sos.sync.close();
+			} catch (closeError) {
+				// best-effort cleanup before retry
+			}
+			await sleep(1000);
+		}
+	}
+}
+
 function pad(n, width) {
 	let s = String(n);
 	while (s.length < width) s = '0' + s;
@@ -48,8 +70,7 @@ sos.onReady().then(async function () {
 	setInterval(() => { clockEl.textContent = nowTimecode(); }, 40);
 
 	groupEl.textContent = 'group: ' + (syncGroup || '(default)') + '  ·  connecting…';
-	await sos.sync.connect({ engine: syncEngine, uri: syncServer });
-	await sos.sync.joinGroup({ groupName: syncGroup });
+	await connectAndJoinGroup({ engine: syncEngine, uri: syncServer, groupName: syncGroup });
 	groupEl.textContent = 'group: ' + (syncGroup || '(default)');
 
 	sos.sync.onStatus((status) => {

@@ -427,10 +427,7 @@
 	</div>
 
 	<script type="application/ecmascript">
-		// ES5 only — Chrome 28 has no async/await, arrow functions, template
-		// literals, let/const, spread or destructuring. Promises come from the
-		// signageOS SDK and are chained with .then(); the Promise constructor is
-		// never used, since Chrome gained it only in 32.
+		// ES5 only — Chrome 28: no async/await, arrows, template literals, let/const or the Promise constructor; promises come from the signageOS SDK.
 		(function () {
 			var logEl = document.getElementById('log');
 			var firmwareEl = document.getElementById('firmware-version');
@@ -441,6 +438,28 @@
 			var nowPlayingEl = document.getElementById('now-playing');
 			var started = false;
 			var debugMode = false;
+
+			var RESTART_KEY = 'videowall.restart';
+			// A fixed restart index: two screens that both believe they are master issue the same instruction, so a split brain converges.
+			var RESTART_VIDEO_INDEX = 0;
+			// Explicit wait timeout — the 30s default would fire every lap on longer segments; exceeding it is survivable via the retry in playPass.
+			var WAIT_TIMEOUT_MS = 120000;
+			var RETRY_DELAY_MS = 1000;
+			// Restart ids remembered for dedup; only needs to outlast duplicate deliveries of the same instruction.
+			var APPLIED_ID_HISTORY = 50;
+			// Regenerated per applet start; makes this screen's restart instruction ids unique across the group without coordination.
+			var selfToken = 'screen-' + new Date().getTime() + '-' + Math.floor(Math.random() * 1000000);
+			var deviceIdentification;
+			var handedOverToVideo = false;
+
+			// Hands the display to the native video layer, once, only when something genuinely plays — any earlier and a screen parked at the sync barrier looks blank.
+			function markVideoOnScreen() {
+				if (handedOverToVideo) {
+					return;
+				}
+				handedOverToVideo = true;
+				document.documentElement.className = debugMode ? 'mode-debug is-playing' : 'is-playing';
+			}
 
 			function errorMessage(error) {
 				return error && error.message ? error.message : String(error);
@@ -456,9 +475,7 @@
 				return -1;
 			}
 
-			// Parse and validate the `items` config (JSON array of {uid, uri} objects).
-			// Each screen is configured with its own pre-sliced segments, so there is no
-			// built-in playlist to fall back on.
+			// Parse and validate the `items` config (JSON array of {uid, uri}); there is no built-in playlist to fall back on.
 			function parseItems(raw) {
 				var items;
 				var seen = {};
@@ -480,14 +497,11 @@
 				}
 
 				for (i = 0; i < items.length; i++) {
-					// A bad entry is never skipped: every screen in the sync group has to wait
-					// on the same uids in the same order, so a short or reordered list on one
-					// screen desynchronises the whole wall.
+					// Never skip a bad entry: a short or reordered uid list on one screen desynchronises the whole wall.
 					if (!items[i] || !items[i].uid || !items[i].uri) {
 						throw new Error('`items[' + i + ']` needs both "uid" and "uri" — every screen in the group must queue the same uids in the same order.');
 					}
-					// hasOwnProperty, not `seen[uid]` — a uid like "constructor" would inherit a
-					// truthy value straight off Object.prototype.
+					// hasOwnProperty, not `seen[uid]` — a uid like "constructor" inherits a truthy value off Object.prototype.
 					if (Object.prototype.hasOwnProperty.call(seen, items[i].uid)) {
 						throw new Error('`items` repeats the uid "' + items[i].uid + '" — sync barriers are keyed by uid, so every segment needs a distinct one.');
 					}
@@ -564,13 +578,25 @@
 				var previousVideoIndex;
 				var currentVideoIndex = 0;
 				var preparedVideoIndex = -1;
+				var stopBeforePlayIndex = -1; // stopped at the barrier's release and played cold — a restart onto the on-screen video
 
-				// One pass of the playback loop. The original `while (true)` with awaits
-				// is not available on ES5; chaining `return playPass()` instead would
-				// leave one pending promise per video alive for the lifetime of the
-				// applet, so each pass is scheduled detached and carries its own catch.
-				function playPass() {
-					var previousVideo = typeof previousVideoIndex === 'undefined' ? undefined : videos[previousVideoIndex];
+				var playbackGeneration = 0; // bumped by every restart; stamps each playPass chain
+				var appliedRestartIds = {}; // instruction ids already applied here
+				var appliedRestartOrder = []; // same ids in arrival order, to bound the map above
+				var issuedRestartCount = 0; // makes this screen's own instruction ids unique
+				var knownPeers = null; // null until the first onStatus seeded the baseline
+				var warnedAboutPeers = false;
+				var hasSeenStatus = false; // true once onStatus has fired at least once
+				var isMasterFromStatus = false; // mastership flag from the last onStatus event (see requestRestart)
+				var deferredRestartReason = null; // restart requested before the first status
+
+				// One detached pass of the playback loop with its own catch (a chained `return playPass()` would leak one pending promise per video).
+				// A restart bumps playbackGeneration, turning every step of an older chain into a no-op; Chrome 28 has no Promise constructor, so stale work is guarded at each step rather than cancelled.
+				function playPass(generation) {
+					if (!isCurrentPass(generation)) {
+						return;
+					}
+
 					var currentVideo = videos[currentVideoIndex];
 					var realCurrentVideoUid;
 					var realCurrentVideoIndex;
@@ -580,55 +606,385 @@
 
 					log('Waiting for sync: ' + currentVideo.uid + '…');
 
-					sos.sync.wait(currentVideo.uid, syncGroup).then(function (syncedUid) {
+					sos.sync.wait(currentVideo.uid, syncGroup, WAIT_TIMEOUT_MS).then(function (syncedUid) {
+						if (!isCurrentPass(generation)) {
+							return undefined;
+						}
+
 						realCurrentVideoUid = syncedUid;
 						syncedAt = new Date().getTime();
 						realCurrentVideoIndex = indexOfUid(videos, realCurrentVideoUid);
 
-						// Stop a previously prepared video that is now neither playing nor
-						// about to play, so it doesn't hold a decoder open.
+						// Stop a prepared video that is now neither playing nor about to play, so it doesn't hold a decoder open.
 						if (preparedVideoIndex >= 0 && preparedVideoIndex !== realCurrentVideoIndex && preparedVideoIndex !== previousVideoIndex) {
 							var preparedVideo = videos[preparedVideoIndex];
 							log('Stopping stale prepared video ' + preparedVideo.uid + '.');
+							swallowEndedRejection(preparedVideo);
 							return sos.video.stop.apply(sos.video, preparedVideo.arguments).then(function () {
 								preparedVideoIndex = -1;
 							});
 						}
 						return undefined;
 					}).then(function () {
-						// Only play when the synchronized video is the one we expected;
-						// otherwise it would be out of sync — skip and resync from the next.
-						if (realCurrentVideoIndex !== currentVideoIndex) {
-							log('Out of sync — expected ' + currentVideo.uid + ', got ' + realCurrentVideoUid + '; resyncing from next.', 'warn');
+						if (!isCurrentPass(generation)) {
 							return undefined;
 						}
 
-						return sos.video.play.apply(sos.video, currentVideo.arguments).then(function () {
+						if (realCurrentVideoIndex < 0) {
+							// Unknown uid — never fall through: (-1 + 1) % length is 0 and would silently restart this screen at the first segment.
+							log('Out of sync — the group chose "' + realCurrentVideoUid + '", which is not in this screen\'s `items`. Every screen must list the same uids in the same order.', 'warn');
+							realCurrentVideoIndex = currentVideoIndex;
+							return undefined;
+						}
+
+						// Adopt the group's choice (wait() resolves with the MASTER's data) instead of sitting out a round; this also heals a restart instruction that never arrived.
+						if (realCurrentVideoIndex !== currentVideoIndex) {
+							log('Out of sync — expected ' + currentVideo.uid + ', group chose ' + realCurrentVideoUid + '; adopting it.', 'warn');
+							currentVideoIndex = realCurrentVideoIndex;
+							currentVideo = videos[currentVideoIndex];
+						}
+
+						// A restart onto the on-screen video keeps it playing through the barrier (see applyRestart) and stops it only here, at the release, so play() starts from frame 0; consumed on the first play either way.
+						var mustStopBeforePlay = stopBeforePlayIndex === realCurrentVideoIndex;
+						stopBeforePlayIndex = -1;
+						var playStarted;
+						if (mustStopBeforePlay) {
+							swallowEndedRejection(currentVideo);
+							playStarted = sos.video.stop.apply(sos.video, currentVideo.arguments).catch(function (error) {
+								log('Could not stop ' + currentVideo.uid + ' for its fresh start: ' + errorMessage(error) + ' (probably already stopped).', 'warn');
+							}).then(function () {
+								return sos.video.play.apply(sos.video, currentVideo.arguments);
+							});
+						} else {
+							playStarted = sos.video.play.apply(sos.video, currentVideo.arguments);
+						}
+						return playStarted.then(function () {
+							// FIRST, ahead of every guard: from the instant play() resolves, stop() rejects the "ended" deferred, and an unobserved rejection surfaces as an uncaught AppletVideoError.
+							endedPromise = sos.video.onceEnded.apply(sos.video, currentVideo.arguments).catch(function (error) {
+								if (isCurrentPass(generation)) {
+									log('Playback of ' + currentVideo.uid + ' ended early: ' + errorMessage(error) + '.', 'warn');
+								}
+								return undefined;
+							});
+
+							if (!isCurrentPass(generation)) {
+								// A restart landed mid-play(), so nothing tracks this now-on-screen video: stop it if it collides
+								// with the new generation's video, otherwise hand it over as the on-screen video and stop what it covered.
+								if (previousVideoIndex === currentVideoIndex && currentVideoIndex !== realCurrentVideoIndex) {
+									swallowEndedRejection(currentVideo);
+									return sos.video.stop.apply(sos.video, currentVideo.arguments).catch(function (error) {
+										log('Could not stop ' + currentVideo.uid + ': ' + errorMessage(error) + ' (probably already stopped).', 'warn');
+									});
+								}
+								var coveredVideoIndex = previousVideoIndex;
+								previousVideoIndex = realCurrentVideoIndex;
+								if (currentVideoIndex === realCurrentVideoIndex) {
+									stopBeforePlayIndex = realCurrentVideoIndex;
+								}
+								if (typeof coveredVideoIndex !== 'undefined' && coveredVideoIndex !== realCurrentVideoIndex) {
+									var coveredVideo = videos[coveredVideoIndex];
+									swallowEndedRejection(coveredVideo);
+									return sos.video.stop.apply(sos.video, coveredVideo.arguments).catch(function (error) {
+										log('Could not stop ' + coveredVideo.uid + ': ' + errorMessage(error) + ' (probably already stopped).', 'warn');
+									});
+								}
+								return undefined;
+							}
+
+							markVideoOnScreen();
 							nowPlayingEl.textContent = currentVideo.uid;
 							log('Playing ' + currentVideo.uid + ' (sync→play ' + (new Date().getTime() - syncedAt) + 'ms).');
 
-							if (previousVideo && previousVideoIndex !== currentVideoIndex) {
-								return sos.video.stop.apply(sos.video, previousVideo.arguments);
+							// Guarded so an abandoned pass cannot stop what a restart just put on screen; re-read and caught, since a mid-play() handover may have retargeted or already stopped it.
+							if (typeof previousVideoIndex !== 'undefined' && previousVideoIndex !== currentVideoIndex) {
+								var previousVideo = videos[previousVideoIndex];
+								swallowEndedRejection(previousVideo);
+								return sos.video.stop.apply(sos.video, previousVideo.arguments).catch(function (error) {
+									log('Could not stop ' + previousVideo.uid + ': ' + errorMessage(error) + ' (probably already stopped).', 'warn');
+								});
 							}
 							return undefined;
 						}).then(function () {
-							previousVideoIndex = currentVideoIndex;
+							if (!isCurrentPass(generation)) {
+								return undefined;
+							}
 
-							// https://developers.signageos.io/sdk/sos/video#onceended
-							endedPromise = sos.video.onceEnded.apply(sos.video, currentVideo.arguments);
+							previousVideoIndex = currentVideoIndex;
+							return undefined;
 						});
 					}).then(function () {
+						if (!isCurrentPass(generation)) {
+							return undefined;
+						}
+
 						nextVideoIndex = (realCurrentVideoIndex + 1) % videos.length;
 						var nextVideo = videos[nextVideoIndex];
 						log('Preparing ' + nextVideo.uid + '.');
 						return sos.video.prepare.apply(sos.video, nextVideo.arguments);
 					}).then(function () {
+						if (!isCurrentPass(generation)) {
+							return undefined;
+						}
+
 						preparedVideoIndex = nextVideoIndex;
+						// Carries its own catch, so a restart's stop() releases it early instead of rejecting here.
 						return endedPromise;
 					}).then(function () {
+						if (!isCurrentPass(generation)) {
+							return undefined;
+						}
+
 						currentVideoIndex = nextVideoIndex;
-						setTimeout(playPass, 0);
+						// The playback generation, not a pass counter — a normal iteration carries it forward unchanged.
+						setTimeout(function () {
+							playPass(generation);
+						}, 0);
+						return undefined;
+					}).catch(function (error) {
+						// Expected for an abandoned pass — a restart's cancelWait() rejects the pending wait() by design; never put "Error" on the wall for it.
+						if (!isCurrentPass(generation)) {
+							log('Abandoned pass ended: ' + errorMessage(error) + ' (restarting).');
+							return;
+						}
+
+						// Never let the loop die: sos.sync.wait() REJECTS on its routine timeout, and without this reschedule the
+						// screen stays stuck until reload. A warning, not an error, so it does not pull the debug dashboard over the video.
+						setStatus('Resyncing…', 'warn');
+						log('Playback pass failed: ' + errorMessage(error) + ' — retrying in ' + RETRY_DELAY_MS + 'ms.', 'warn');
+						setTimeout(function () {
+							playPass(generation);
+						}, RETRY_DELAY_MS);
+					});
+				}
+
+				function isCurrentPass(generation) {
+					return generation === playbackGeneration;
+				}
+
+				// The SDK reports its default group as `undefined`, so one comparison covers both the named and the default group.
+				function isOurGroup(groupName) {
+					return (groupName || undefined) === (syncGroup || undefined);
+				}
+
+				// sos.video.stop() rejects the pending "ended" deferred; call this right before every stop or the rejection
+				// surfaces as an uncaught AppletVideoError. try/catch because onceEnded() throws for a never-played video.
+				function swallowEndedRejection(video) {
+					var ended;
+					try {
+						ended = sos.video.onceEnded.apply(sos.video, video.arguments);
+					} catch (error) {
+						return;
+					}
+					ended.catch(function () {
+						return undefined;
+					});
+				}
+
+				// Only the master issues a restart, so the group has a single decision-maker. Mastership comes from the
+				// onStatus flag, NOT sos.sync.isMaster() — that round-trip hangs for ever on cores that don't implement it.
+				function requestRestart(reason) {
+					// isMasterFromStatus is false until the first status lands (~1s AFTER joinGroup()); deciding earlier would make every screen believe it is a slave, so nobody would restart.
+					if (!hasSeenStatus) {
+						deferredRestartReason = reason;
+						log('Waiting for the first sync status before deciding who restarts the wall (' + reason + ').');
+						return;
+					}
+
+					// Cheap local read that cannot hang; older cores never send the flag, so they never self-elect and realign at the next barrier instead.
+					if (!isMasterFromStatus) {
+						log('Not master — the master issues the restart (' + reason + ').');
+						return;
+					}
+					broadcastRestart(reason);
+				}
+
+
+				function broadcastRestart(reason) {
+					issuedRestartCount = issuedRestartCount + 1;
+					// Unique across the group via selfToken, with no implied ordering a just-reloaded screen would lose.
+					var instruction = { id: selfToken + ':' + issuedRestartCount, index: RESTART_VIDEO_INDEX, reason: reason };
+
+					log('Master: restarting the wall at ' + videos[instruction.index].uid + ' — ' + reason + '.');
+
+					// Broadcast first, apply second: the instruction must be on the wire before this screen tears down its own barrier; an echo, if any, is dropped by the id dedup in applyRestart.
+					return sos.sync.broadcastValue({ groupName: syncGroup, key: RESTART_KEY, value: instruction }).then(function () {
+						applyRestart(instruction);
+					}).catch(function (error) {
+						// Deliberately no local restart: the instruction reached nobody, so it would only cut this screen short — the drift branch in playPass realigns at the next barrier.
+						log('Could not broadcast restart ' + instruction.id + ': ' + errorMessage(error) + ' — the wall keeps playing and realigns at the next sync barrier.', 'warn');
+					});
+				}
+
+				// The single choke point for a restart, on the master and every slave alike.
+				function applyRestart(instruction) {
+					var generation;
+					var targetIndex;
+					var target;
+
+					if (!instruction || typeof instruction.id !== 'string') {
+						log('Ignoring a malformed restart instruction.', 'warn');
+						return;
+					}
+					// Deduplicated by id, not a counter — counters reset on reload, so long-running screens would discard a freshly refreshed screen's instruction as stale.
+					if (Object.prototype.hasOwnProperty.call(appliedRestartIds, instruction.id)) {
+						return;
+					}
+					appliedRestartIds[instruction.id] = true;
+					appliedRestartOrder.push(instruction.id);
+					// Bounded so a screen running for months cannot grow this without limit.
+					while (appliedRestartOrder.length > APPLIED_ID_HISTORY) {
+						delete appliedRestartIds[appliedRestartOrder.shift()];
+					}
+
+					targetIndex = typeof instruction.index === 'number' && instruction.index >= 0 && instruction.index < videos.length
+						? instruction.index
+						: RESTART_VIDEO_INDEX;
+					target = videos[targetIndex];
+
+					// Bump BEFORE touching the SDK: the abandoned chain must already know it is stale when cancelWait rejects its wait, or it flashes "Error" on the wall.
+					playbackGeneration = playbackGeneration + 1;
+					generation = playbackGeneration;
+
+					setStatus('Restarting…', 'warn');
+					log('Restart ' + instruction.id + ' → ' + target.uid + ' (' + (instruction.reason || 'no reason given') + ').');
+
+					// Release a pass parked in the sync barrier.
+					sos.sync.cancelWait(syncGroup).catch(function (error) {
+						// Not fatal: the generation guard keeps the parked wait from playing, and the drift branch realigns this screen one barrier later.
+						log('cancelWait failed: ' + errorMessage(error) + '; this screen realigns at the next sync barrier.', 'warn');
+					}).then(function () {
+						if (!isCurrentPass(generation)) {
+							log('Restart ' + instruction.id + ' was superseded.', 'warn');
+							return undefined;
+						}
+
+						currentVideoIndex = targetIndex;
+
+						// Stop the outgoing loop's prepared video BEFORE dropping the only reference to it, or its decoder leaks and preparing the target can fail on two-decoder devices.
+						var stalePreparedIndex = preparedVideoIndex;
+						preparedVideoIndex = -1;
+
+						// previousVideoIndex is left alone so the on-screen video KEEPS PLAYING while this screen waits at the barrier — stopping it here would blank the wall for up to the whole wait.
+						// Even when it IS the target (play() would not restart it), playPass stops it only at the barrier's release; every screen showing the target does the same, so they start together.
+						stopBeforePlayIndex = previousVideoIndex === targetIndex ? targetIndex : -1;
+						if (stopBeforePlayIndex === targetIndex) {
+							log('Restart target ' + target.uid + ' is already on screen — it keeps playing until the group is ready, then starts over.');
+						}
+
+						if (stalePreparedIndex >= 0 && stalePreparedIndex !== previousVideoIndex) {
+							var stalePrepared = videos[stalePreparedIndex];
+							log('Stopping stale prepared video ' + stalePrepared.uid + '.');
+							swallowEndedRejection(stalePrepared);
+							return sos.video.stop.apply(sos.video, stalePrepared.arguments).catch(function (error) {
+								log('Could not stop ' + stalePrepared.uid + ': ' + errorMessage(error) + ' (probably already stopped).', 'warn');
+							});
+						}
+						return undefined;
+					}).then(function () {
+						if (!isCurrentPass(generation)) {
+							return undefined;
+						}
+
+						// A still-playing target cannot be prepared; playPass stops and cold-starts it at the release instead.
+						if (stopBeforePlayIndex === targetIndex) {
+							return undefined;
+						}
+
+						// Prepare before the barrier: the gap between the release and the first frame IS the visible misalignment.
+						return sos.video.prepare.apply(sos.video, target.arguments).then(function () {
+							if (isCurrentPass(generation)) {
+								preparedVideoIndex = targetIndex;
+							}
+							return undefined;
+						}).catch(function (error) {
+							log('Could not prepare ' + target.uid + ': ' + errorMessage(error) + '; playing it without prepare.', 'warn');
+						});
+					}).then(function () {
+						if (!isCurrentPass(generation)) {
+							return undefined;
+						}
+
+						setStatus('Playing');
+						playPass(generation);
+						return undefined;
 					}).catch(handleError);
+				}
+
+				function handleSyncValue(key, value, groupName) {
+					if (!isOurGroup(groupName)) {
+						return;
+					}
+					if (key === RESTART_KEY) {
+						applyRestart(value);
+					}
+				}
+
+				// THE join trigger: the sync server silently drops broadcasts from non-masters, so a joiner cannot announce
+				// itself — but a peer-set diff reaches everyone. Only a set that GREW is a join; onStatus also fires every 30s unchanged.
+				function handleSyncStatus(status) {
+					var peers = (status && status.connectedPeers) || [];
+					var nextPeers = {};
+					var added = [];
+					var i;
+					var id;
+
+					if (!isOurGroup(status && status.groupName)) {
+						return;
+					}
+
+					// Recorded before the peer check's early return — requestRestart must not depend on the core reporting peer names.
+					isMasterFromStatus = !!(status && status.isMaster);
+					hasSeenStatus = true;
+					if (deferredRestartReason !== null) {
+						var deferred = deferredRestartReason;
+						deferredRestartReason = null;
+						requestRestart(deferred);
+					}
+
+					if (!peers.length) {
+						// Warn once, not once every 30s.
+						if (!warnedAboutPeers) {
+							warnedAboutPeers = true;
+							log('Sync status reports no peer identifications, so a screen joining the group cannot be detected — the wall will not realign until a screen is refreshed manually.', 'error');
+						}
+						return;
+					}
+
+					for (i = 0; i < peers.length; i++) {
+						id = String(peers[i]);
+						nextPeers[id] = true;
+						// hasOwnProperty, not `knownPeers[id]` — an id like "constructor" inherits a truthy value off Object.prototype.
+						if (knownPeers !== null && !Object.prototype.hasOwnProperty.call(knownPeers, id)) {
+							added.push(id);
+						}
+					}
+
+					if (knownPeers === null) {
+						// First status: everything in it predates this screen, so nothing counts as an addition.
+						log('Sync group has ' + peers.length + ' peer(s).');
+					} else if (added.length) {
+						log('Sync group now has ' + peers.length + ' peer(s); joined: ' + added.join(', ') + '.');
+						requestRestart(added.length + ' screen(s) joined');
+					}
+
+					knownPeers = nextPeers;
+				}
+
+				// connect() can resolve while the connection goes on to fail — a dead sync server is only ever reported here.
+				function handleSyncClosed(error) {
+					if (error) {
+						setStatus('Sync lost', 'error');
+						log('Synchronizer closed: ' + errorMessage(error) + '. Screens play on independently until the sync server is reachable again.', 'error');
+						return;
+					}
+					setStatus('Sync closed', 'warn');
+					log('Synchronizer closed.', 'warn');
+				}
+
+
+				// The peer-set diff cannot see this screen's own join (its first status seeds the baseline) — and when the restarted screen IS the master, nobody else is allowed to act.
+				function evaluateOwnJoin() {
+					requestRestart('this screen joined the group');
 				}
 
 				sos.onReady().then(function () {
@@ -649,7 +1005,6 @@
 					var cacheChain = sos.onReady();
 					videos.forEach(function (video) {
 						cacheChain = cacheChain.then(function () {
-							// Store video to offline storage
 							log('Caching ' + video.uid + '…');
 							return sos.offline.cache.loadOrSaveFile(video.uid, video.uri);
 						}).then(function (cachedFile) {
@@ -661,23 +1016,41 @@
 				}).then(function () {
 					log('All videos cached.');
 
-					document.documentElement.className = debugMode ? 'mode-debug is-playing' : 'is-playing';
-
-					// Connect to the sync server and join the sync group
 					setStatus('Syncing…');
 					log('Connecting to sync server…');
 					var syncServerUri = sos.config.sync_server || undefined;
 					syncGroup = sos.config.sync_group || undefined;
-					return sos.sync.connect(syncServerUri ? { engine: 'sync-server', uri: syncServerUri } : undefined);
+					// allowSlaveBroadcast lifts the server's master-only broadcastValue restriction — without it a restart issued
+					// on a stale mastership view vanishes silently. Since front-applet 8.6.0; older players just ignore it.
+					var connectOptions = { engine: 'sync-server', config: { allowSlaveBroadcast: true } };
+					if (syncServerUri) {
+						connectOptions.uri = syncServerUri;
+					}
+					return sos.sync.connect(connectOptions);
 				}).then(function () {
-					return sos.sync.joinGroup({ groupName: syncGroup });
+					// The serial number gives `connectedPeers` a stable name across reboots; without one the join diff has nothing to compare.
+					return sos.management.getSerialNumber().then(function (serial) {
+						deviceIdentification = serial || undefined;
+					}).catch(function (error) {
+						log('Could not read serial number (' + errorMessage(error) + '); joining the group unnamed.', 'warn');
+					});
+				}).then(function () {
+					return sos.sync.joinGroup({ groupName: syncGroup, deviceIdentification: deviceIdentification });
 				}).then(function () {
 					log('Synchronized (group: ' + (syncGroup || 'default') + ').');
+
+					// Registered before the first status can arrive — the status driving join detection must not land without a listener.
+					sos.sync.onValue(handleSyncValue);
+					sos.sync.onStatus(handleSyncStatus);
+					sos.sync.onClosed(handleSyncClosed);
 
 					setStatus('Playing');
 					log('Playing at ' + document.documentElement.clientWidth + '×' + document.documentElement.clientHeight + '.');
 
-					playPass();
+					playPass(playbackGeneration);
+
+					evaluateOwnJoin();
+					return undefined;
 				}).catch(handleError);
 			}
 

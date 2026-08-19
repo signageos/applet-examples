@@ -9,6 +9,7 @@ Supports any grid arrangement — 2x1, 3x1, 2x2, 3x3, or custom layouts.
 ## Highlights
 
 - **Frame-accurate sync** — all screens stay perfectly aligned via sync server
+- **Instant realignment** — a screen joining or rebooting restarts the whole wall in step, with no waiting out a loop
 - **Flexible grid** — supports any screen count and arrangement
 - **Configurable content** — provide your own video segments per screen
 - **Continuous loop** — video wall content plays 24/7
@@ -37,4 +38,4 @@ Install on each device in your wall. Set the same `sync_server` and `sync_group`
 
 ## Synchronization
 
-> ⚠️ **A screen that starts after the others needs one loop to sync up.** Every device in a `sync_group` plays in lockstep by waiting for the rest of the group at each video boundary. Follower (“slave”) screens align to the lead (“master”) screen, so one that joins the wall late — newly assigned, rebooted, or simply slower to boot — can’t drop into the middle of a video without breaking alignment. Instead it holds at the shared sync point and waits for the master to come back around: it sits out the current round and begins playing in sync from the next video. Expect up to one full video loop of catch-up after powering on the wall or adding/restarting a screen.
+> ℹ️ **A screen joining the wall restarts the whole group.** Every device in a `sync_group` plays in lockstep by waiting for the rest of the group at each video boundary. When a screen joins — newly assigned, rebooted, or simply slower to boot — the lead (“master”) screen notices it join and restarts the wall from the first video so every screen begins the same segment together, rather than the joining screen sitting out a loop. Each screen keeps showing its current segment until the whole group is ready and then they all switch at once, so the wall never blanks while it waits for a slow device. Screens joining in quick succession — a whole wall powering on, for instance — each trigger a restart until the group settles.

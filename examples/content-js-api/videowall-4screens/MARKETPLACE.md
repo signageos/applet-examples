@@ -8,6 +8,7 @@ Build a 2x2 video wall from four signageOS devices. Each screen plays its assign
 
 - **2x2 grid layout** — designed specifically for four-screen configurations
 - **Frame-accurate sync** — all four quadrants stay perfectly aligned
+- **Instant realignment** — a screen joining or rebooting restarts all four quadrants in step, with no waiting out a loop
 - **Quadrant selection** — each screen picks its position in the grid
 - **Continuous loop** — video wall content plays 24/7
 - **On-screen diagnostics** — `debug` mode reveals a live log console and playback-status readout for troubleshooting
@@ -36,4 +37,4 @@ Install on all four devices. Set the same `sync_server` and `sync_group` on each
 
 ## Synchronization
 
-> ⚠️ **A screen that starts after the others needs one loop to sync up.** Every device in a `sync_group` plays in lockstep by waiting for the rest of the group at each video boundary. Follower (“slave”) screens align to the lead (“master”) screen, so one that joins the wall late — newly assigned, rebooted, or simply slower to boot — can’t drop into the middle of a video without breaking alignment. Instead it holds at the shared sync point and waits for the master to come back around: it sits out the current round and begins playing in sync from the next video. Expect up to one full video loop of catch-up after powering on the wall or adding/restarting a screen.
+> ℹ️ **A screen joining the grid restarts all four.** Every device in a `sync_group` plays in lockstep by waiting for the rest of the group at each video boundary. When a screen joins — newly assigned, rebooted, or simply slower to boot — the lead (“master”) screen notices it join and restarts the grid from the first video so all four quadrants begin the same segment together, rather than the joining screen sitting out a loop. Each screen keeps showing its current segment until the whole grid is ready and then they all switch at once, so the grid never blanks while it waits for a slow device. Screens joining in quick succession — the whole grid powering on, for instance — each trigger a restart until the group settles.

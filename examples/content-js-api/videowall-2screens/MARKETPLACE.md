@@ -7,6 +7,7 @@ Create a side-by-side video wall from two signageOS devices. Each screen plays i
 ## Highlights
 
 - **Two-screen sync** — frame-accurate coordination between both devices
+- **Instant realignment** — a screen joining or rebooting restarts both halves in step, with no waiting out a loop
 - **Left/right placement** — each screen knows which half it displays
 - **Easy setup** — simpler configuration than the general-purpose video wall applet
 - **Continuous loop** — synchronized content plays 24/7
@@ -35,4 +36,4 @@ Install on both devices. Set the same `sync_server` and `sync_group` on each, th
 
 ## Synchronization
 
-> ⚠️ **A screen that starts after the others needs one loop to sync up.** Every device in a `sync_group` plays in lockstep by waiting for the rest of the group at each video boundary. Follower (“slave”) screens align to the lead (“master”) screen, so one that joins the wall late — newly assigned, rebooted, or simply slower to boot — can’t drop into the middle of a video without breaking alignment. Instead it holds at the shared sync point and waits for the master to come back around: it sits out the current round and begins playing in sync from the next video. Expect up to one full video loop of catch-up after powering on the wall or adding/restarting a screen.
+> ℹ️ **A screen joining the pair restarts both.** Every device in a `sync_group` plays in lockstep by waiting for the rest of the group at each video boundary. When a screen joins — newly assigned, rebooted, or simply slower to boot — the lead (“master”) screen notices it join and restarts both devices from the first video so the two halves begin the same segment together, rather than the joining screen sitting out a loop. Each screen keeps showing its current segment until both are ready and then they switch at once, so the pair never blanks while it waits for a slow device.

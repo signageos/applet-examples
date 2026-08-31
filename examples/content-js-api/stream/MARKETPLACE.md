@@ -6,6 +6,8 @@ Display live content — IPTV channels, camera feeds, event broadcasts — direc
 
 Supports HTTP-based streaming (HLS, DASH), UDP and RTP transport streams, and RTSP for direct camera and encoder feeds.
 
+> ℹ️ Tizen devices requires different Core App version for streaming. Core App versions which supports stream are in Box marked as `x.x.x-streams.yyyy`, for example: `2.12.0-streams.5944`.
+
 ## Highlights
 
 - **Multi-protocol support** — HTTP (HLS/DASH), UDP, RTP, and RTSP out of the box

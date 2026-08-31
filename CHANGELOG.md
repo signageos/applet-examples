@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - udpated `examples/framework-examples/vue-example/cli-applet` startup script
 
+### Fixed
+- video wall single-file applets (`videowall`, `videowall-2screens`, `videowall-4screens`) now restart the whole sync group from the first video when a screen joins, instead of letting the late screen sit out a loop
+
 ## [Unreleased]
 ### Added
 - new Benchmark test for mixed playback of 4k and FHD videos

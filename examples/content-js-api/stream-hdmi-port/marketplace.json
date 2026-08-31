@@ -1,7 +1,7 @@
 {
 	"eligible": true,
 	"id": "applet-stream-hdmi-port",
-	"name": "Picture-in-Picture",
+	"name": "Stream HDMI port",
 	"version": "1.0.0",
 	"description": "Display a live feed from an external video input — HDMI, DisplayPort, DVI, or PC/VGA — directly on screen. Perfect for routing a set-top box, media player, or camera through your signage with native hardware playback.",
 	"category": "content-playback",

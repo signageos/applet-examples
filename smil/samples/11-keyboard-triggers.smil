@@ -70,7 +70,7 @@
             </par>
 
             <par>
-                <!-- referencing <trigger id="trigger2"> defined in <head>  -->
+                <!-- referencing <trigger id="trigger3"> defined in <head>  -->
                 <seq begin="trigger3"> 
                     <video src="ccccc.mp4" 
                         region="trigger-region"> <!-- As a region you always set the parent of the sub-regions -->

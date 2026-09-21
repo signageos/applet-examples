@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<meta name="theme-color" content="#0b3d20" />
+	<title>Sync Ping-Pong</title>
+	<style>
+		html, body {
+			margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
+			/* Dark green "table" background. */
+			background-color: #0b3d20;
+		}
+		/* Soft ground shadow under the ball (flattened ellipse). */
+		#shadow {
+			position: absolute; top: 0; left: 0;
+			border-radius: 50%; background: rgba(0, 0, 0, 0.35);
+			will-change: transform, opacity;
+		}
+		/* White, shaded ball. */
+		#ball {
+			position: absolute; top: 0; left: 0; border-radius: 50%;
+			background: radial-gradient(circle at 35% 30%, #ffffff, #dfe3e6 55%, #a7adb3 100%);
+			box-shadow: inset -0.6vh -0.6vh 1.6vh rgba(0, 0, 0, 0.25);
+			will-change: transform;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="shadow"></div>
+	<div id="ball"></div>
+</body>
+
+</html>

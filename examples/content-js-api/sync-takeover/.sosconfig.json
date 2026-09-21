@@ -1,0 +1,51 @@
+{
+  "configDefinition": [
+    {
+      "name": "sync_group",
+      "valueType": "string",
+      "description": "Group identifier — screens sharing the same group take over together."
+    },
+    {
+      "name": "sync_server",
+      "valueType": "url",
+      "description": "URI of the synchronization server. Leave empty to use the signageOS default server."
+    },
+    {
+      "name": "sync_engine",
+      "valueType": "enum",
+      "list": ["sync-server", "p2p-local"],
+      "description": "Sync engine: \"sync-server\" (default) or \"p2p-local\" for LAN-only. All screens in a group must match.",
+      "placeholder": "sync-server"
+    },
+    {
+      "name": "interval_ms",
+      "valueType": "number",
+      "description": "How long the menuboard shows between takeovers, in milliseconds (default 15000).",
+      "placeholder": "15000",
+      "min": 1000,
+      "max": 3600000
+    },
+    {
+      "name": "takeover_ms",
+      "valueType": "number",
+      "description": "How long each takeover shows, in milliseconds (default 6000).",
+      "placeholder": "6000",
+      "min": 1000,
+      "max": 600000
+    },
+    {
+      "name": "menuboard_items",
+      "valueType": "string",
+      "description": "JSON array of menuboard rows: [{name, price}]. Falls back to a demo menu when empty.",
+      "placeholder": "[{\"name\":\"Espresso\",\"price\":\"$3.0\"}]"
+    },
+    {
+      "name": "wait_timeout_ms",
+      "valueType": "number",
+      "description": "Barrier wait timeout in milliseconds; on timeout the loop retries instead of stalling (default 15000).",
+      "placeholder": "15000",
+      "min": 1000,
+      "max": 120000
+    }
+  ]
+}

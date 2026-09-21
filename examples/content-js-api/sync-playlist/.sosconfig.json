@@ -1,0 +1,35 @@
+{
+  "configDefinition": [
+    {
+      "name": "sync_group",
+      "valueType": "string",
+      "description": "Group identifier — screens sharing the same group play the playlist in sync."
+    },
+    {
+      "name": "sync_server",
+      "valueType": "url",
+      "description": "URI of the synchronization server. Leave empty to use the signageOS default server."
+    },
+    {
+      "name": "sync_engine",
+      "valueType": "enum",
+      "list": ["sync-server", "p2p-local"],
+      "description": "Sync engine: \"sync-server\" (default) or \"p2p-local\" for LAN-only. All screens in a group must match.",
+      "placeholder": "sync-server"
+    },
+    {
+      "name": "items",
+      "valueType": "string",
+      "description": "JSON array of media to play in sync: [{type:\"video\"|\"image\", uid, uri, duration?}]. duration (ms) applies to images; videos play to their end. Falls back to a demo playlist when empty.",
+      "placeholder": "[{\"type\":\"video\",\"uid\":\"v1\",\"uri\":\"https://example.com/clip.mp4\"},{\"type\":\"image\",\"uid\":\"i1\",\"uri\":\"https://example.com/promo.png\",\"duration\":8000}]"
+    },
+    {
+      "name": "wait_timeout_ms",
+      "valueType": "number",
+      "description": "Barrier wait timeout in milliseconds; on timeout the loop retries instead of stalling (default 15000).",
+      "placeholder": "15000",
+      "min": 1000,
+      "max": 120000
+    }
+  ]
+}

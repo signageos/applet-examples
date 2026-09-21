@@ -1,0 +1,37 @@
+{
+  "configDefinition": [
+    {
+      "name": "sync_group",
+      "valueType": "string",
+      "description": "Group identifier — screens sharing the same group tick together."
+    },
+    {
+      "name": "sync_server",
+      "valueType": "url",
+      "description": "URI of the synchronization server. Leave empty to use the signageOS default server."
+    },
+    {
+      "name": "sync_engine",
+      "valueType": "enum",
+      "list": ["sync-server", "p2p-local"],
+      "description": "Sync engine: \"sync-server\" (default) or \"p2p-local\" for LAN-only. All screens in a group must match.",
+      "placeholder": "sync-server"
+    },
+    {
+      "name": "tick_ms",
+      "valueType": "number",
+      "description": "Dwell time on each step, in milliseconds (default 1000).",
+      "placeholder": "1000",
+      "min": 100,
+      "max": 600000
+    },
+    {
+      "name": "wait_timeout_ms",
+      "valueType": "number",
+      "description": "Barrier wait timeout in milliseconds; on timeout the tick retries instead of stalling (default 15000).",
+      "placeholder": "15000",
+      "min": 1000,
+      "max": 120000
+    }
+  ]
+}

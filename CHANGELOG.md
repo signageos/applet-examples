@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Supra Android apps launcher example using one launcher screen that switches Android app rendered objects
 - Vue3 (@vue/cli) example project `examples/framework-examples/vue-example/vue3-cli-applet` 
 - Vue3 (vite) example project `examples/framework-examples/vue-example/vue3-vite-applet` 
+- Synced playlist master example project `examples/content-js-api/sync-playlist`
+- Synced takeover menuboard master example project `examples/content-js-api/sync-takeover`
+- Sync barrier demo example projects `examples/content-js-api/sync-demo` and `examples/content-js-api/sync-pingpong`
 
 ### Changed
 - udpated `examples/framework-examples/vue-example/cli-applet` startup script

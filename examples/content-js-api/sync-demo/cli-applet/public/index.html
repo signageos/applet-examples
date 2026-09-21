@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<meta name="theme-color" content="#000000" />
+	<title>Sync Demo</title>
+	<style>
+		html, body {
+			margin: 0; padding: 0; width: 100%; height: 100%;
+			font-family: 'Segoe UI', system-ui, sans-serif; color: #fff;
+			background-color: #1e1e1e; overflow: hidden;
+		}
+		/* Narrow top band: this is the only element whose background flips colour each tick. */
+		#band {
+			position: absolute; top: 0; left: 0; width: 100%; height: 14vh;
+			display: flex; align-items: center; justify-content: center;
+			background-color: #333; font-size: 4.5vh; font-weight: 600; letter-spacing: 0.04em;
+			box-sizing: border-box; padding: 0 4vw;
+		}
+		#wrap {
+			position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+			display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+		}
+		/* Big number: its text colour flips together with the band. */
+		#step { font-size: 38vh; font-weight: 800; line-height: 1; color: #888; }
+		#clock { font-size: 8vh; font-variant-numeric: tabular-nums; opacity: 0.55; margin-top: 2vh; }
+		#meta { position: absolute; bottom: 4vh; width: 100%; text-align: center; font-size: 3.5vh; opacity: 0.55; }
+	</style>
+</head>
+
+<body>
+	<div id="band"><span id="group">connecting…</span></div>
+	<div id="wrap">
+		<div id="step">–</div>
+		<div id="clock">--:--:--.---</div>
+	</div>
+	<div id="meta"></div>
+</body>
+
+</html>

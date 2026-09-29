@@ -1,797 +1,183 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-	<meta name="theme-color" content="#13132a" />
 	<title>Video and Images</title>
-	<style>
-		/* Target: Chrome 28 (oldest supported signage webview).
-		   Three modern features are therefore avoided throughout:
-		     - CSS custom properties (Chrome 49+) — the palette below is inlined.
-		     - clamp() (Chrome 79+) — sizes step at a 1280px media query instead.
-		     - flexbox gap (Chrome 84+) — every gap is a margin on the child.
-		   Flex properties also need the -webkit- prefix, which Chrome 21-28 requires.
-
-		   Palette: bg #13132a · surface #1e1e3d · accent #fdc400 · text #f4f4f8
-		            muted #a6a6c8 · border rgba(255,255,255,.08) · warn #f5a623 · error #ff6b6b */
-
-		*,
-		*::before,
-		*::after {
-			-webkit-box-sizing: border-box;
-			box-sizing: border-box;
-		}
-
-		html,
-		body {
-			margin: 0;
-			padding: 0;
-		}
-
-		body {
-			min-height: 100vh;
-			background-color: #13132a;
-			color: #f4f4f8;
-			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-			font-size: 16px;
-			line-height: 1.5;
-			-webkit-font-smoothing: antialiased;
-			text-rendering: optimizeLegibility;
-		}
-
-		/* ---------- Content layer ---------- */
-		/* The playlist fills the display once playback starts. Images render in these
-		   full-screen <img> elements; videos play in the platform's native layer.
-		   Hidden until then (see the Mode section) so the startup header/dashboard has
-		   a clean, opaque backdrop. */
-		.content {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-		}
-
-		.content__media {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-		}
-
-		/* ---------- Dashboard ---------- */
-		/* The startup panel. Shown by default while the applet caches and prepares
-		   content — production shows only its header (title + device info); debug adds
-		   the stage and log (see the Mode section). Hidden once playback starts. Sits
-		   on the opaque page background. */
-		.app {
-			display: -webkit-flex;
-			display: flex;
-			-webkit-flex-direction: column;
-			flex-direction: column;
-			position: relative;
-			height: 100vh;
-			max-width: 1800px;
-			margin: 0 auto;
-			padding: 1.5rem;
-			padding-bottom: 2.5rem;
-		}
-
-		/* Stands in for `.app { gap }`. */
-		.app > * + * {
-			margin-top: 1.5rem;
-		}
-
-		/* ---------- Header ---------- */
-		.app__header {
-			display: -webkit-flex;
-			display: flex;
-			-webkit-align-items: flex-start;
-			align-items: flex-start;
-			-webkit-justify-content: space-between;
-			justify-content: space-between;
-			-webkit-flex-wrap: wrap;
-			flex-wrap: wrap;
-			padding-bottom: 1rem;
-			border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-		}
-
-		.brand {
-			display: -webkit-flex;
-			display: flex;
-			-webkit-align-items: stretch;
-			align-items: stretch;
-			min-width: 0;
-			-webkit-flex: 1 1 auto;
-			flex: 1 1 auto;
-			/* Stands in for `.app__header { gap }`. Kept as padding rather than a
-			   margin so it never lands on the outside edge when the header wraps. */
-			padding-right: 1.5rem;
-		}
-
-		.brand__mark {
-			-webkit-flex: none;
-			flex: none;
-			width: 6px;
-			border-radius: 999px;
-			background-color: #fdc400;
-			/* Stands in for `.brand { gap }`. */
-			margin-right: 1rem;
-		}
-
-		.brand__text {
-			min-width: 0;
-		}
-
-		.brand__title {
-			margin: 0;
-			font-size: 1.5rem;
-			font-weight: 700;
-			letter-spacing: -0.01em;
-		}
-
-		/* ---------- Device info (top-right) ---------- */
-		.device-info {
-			-webkit-flex: none;
-			flex: none;
-			display: -webkit-flex;
-			display: flex;
-			-webkit-flex-wrap: wrap;
-			flex-wrap: wrap;
-			-webkit-justify-content: flex-end;
-			justify-content: flex-end;
-		}
-
-		.device-info__item {
-			text-align: right;
-		}
-
-		/* Stands in for `.device-info { gap }`. Without it the firmware, model and
-		   type values render as one unbroken string. */
-		.device-info__item + .device-info__item {
-			margin-left: 1.25rem;
-		}
-
-		.device-info__label {
-			margin: 0 0 0.35rem;
-			font-size: 0.75rem;
-			font-weight: 600;
-			letter-spacing: 0.08em;
-			text-transform: uppercase;
-			color: #fdc400;
-		}
-
-		.device-info__value {
-			margin: 0;
-			font-size: 1.1rem;
-			font-weight: 700;
-			line-height: 1.2;
-			-webkit-font-feature-settings: "tnum";
-			font-feature-settings: "tnum";
-		}
-
-		/* ---------- Playback status ---------- */
-		.stage {
-			-webkit-flex: none;
-			flex: none;
-			display: -webkit-flex;
-			display: flex;
-			-webkit-align-items: center;
-			align-items: center;
-			-webkit-justify-content: space-between;
-			justify-content: space-between;
-			-webkit-flex-wrap: wrap;
-			flex-wrap: wrap;
-			padding: 1.1rem 1.25rem;
-			border: 1px solid rgba(255, 255, 255, 0.08);
-			border-radius: 14px;
-			background-color: #1e1e3d;
-		}
-
-		.stage__item {
-			min-width: 0;
-		}
-
-		/* Stands in for `.stage { gap }`. */
-		.stage__item + .stage__item {
-			margin-left: 1rem;
-		}
-
-		.stage__item--end {
-			text-align: right;
-		}
-
-		.stage__label {
-			margin: 0 0 0.35rem;
-			font-size: 0.75rem;
-			font-weight: 600;
-			letter-spacing: 0.08em;
-			text-transform: uppercase;
-			color: #fdc400;
-		}
-
-		.stage__value {
-			margin: 0;
-			display: -webkit-flex;
-			display: flex;
-			-webkit-align-items: center;
-			align-items: center;
-			font-size: 1.3rem;
-			font-weight: 700;
-			line-height: 1.2;
-			-webkit-font-feature-settings: "tnum";
-			font-feature-settings: "tnum";
-			word-break: break-word;
-		}
-
-		.stage__item--end .stage__value {
-			-webkit-justify-content: flex-end;
-			justify-content: flex-end;
-		}
-
-		.stage__dot {
-			-webkit-flex: none;
-			flex: none;
-			width: 0.85rem;
-			height: 0.85rem;
-			border-radius: 50%;
-			background-color: #fdc400;
-			/* Stands in for `.stage__value { gap }`. */
-			margin-right: 0.7rem;
-		}
-
-		.stage__dot--warn {
-			background-color: #f5a623;
-		}
-
-		.stage__dot--error {
-			background-color: #ff6b6b;
-		}
-
-		/* ---------- System log ---------- */
-		.log {
-			display: -webkit-flex;
-			display: flex;
-			-webkit-flex-direction: column;
-			flex-direction: column;
-			-webkit-flex: 1 1 auto;
-			flex: 1 1 auto;
-			min-height: 220px;
-			border: 1px solid rgba(255, 255, 255, 0.08);
-			border-radius: 14px;
-			background-color: #1e1e3d;
-			overflow: hidden;
-		}
-
-		.log__header {
-			display: -webkit-flex;
-			display: flex;
-			-webkit-align-items: center;
-			align-items: center;
-			padding: 0.9rem 1.25rem;
-			border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-			font-size: 0.8rem;
-			font-weight: 600;
-			letter-spacing: 0.08em;
-			text-transform: uppercase;
-			color: #a6a6c8;
-		}
-
-		.log__header::before {
-			content: "";
-			width: 0.55rem;
-			height: 0.55rem;
-			border-radius: 50%;
-			background-color: #fdc400;
-			/* Stands in for `.log__header { gap }`. */
-			margin-right: 0.6rem;
-		}
-
-		.log__body {
-			-webkit-flex: 1 1 auto;
-			flex: 1 1 auto;
-			min-height: 0;
-			margin: 0;
-			padding: 1rem 1.25rem;
-			overflow-y: auto;
-			font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-			font-size: 0.9rem;
-			line-height: 1.7;
-			list-style: none;
-		}
-
-		.log__line {
-			display: -webkit-flex;
-			display: flex;
-			white-space: pre-wrap;
-			word-break: break-word;
-		}
-
-		.log__time {
-			-webkit-flex: none;
-			flex: none;
-			color: #a6a6c8;
-			/* Stands in for `.log__line { gap }`. */
-			margin-right: 0.85rem;
-		}
-
-		.log__message {
-			-webkit-flex: 1 1 auto;
-			flex: 1 1 auto;
-			min-width: 0;
-			color: #f4f4f8;
-		}
-
-		.log__message--warn {
-			color: #f5a623;
-		}
-
-		.log__message--error {
-			color: #ff6b6b;
-		}
-
-		/* ---------- Mode / phase ---------- */
-		/* Startup view (while caching and preparing content). The .app container — and
-		   with it the header (title + device info) — is shown by default (see the .app
-		   rule above), in both production and debug. Production shows ONLY the header;
-		   the stage and log are debug-only. */
-		.stage,
-		.log {
-			display: none;
-		}
-
-		.mode-debug .stage,
-		.mode-debug .log {
-			display: -webkit-flex;
-			display: flex;
-		}
-
-		/* Content is hidden until playback starts, so the startup header/dashboard has
-		   a clean, opaque backdrop. */
-		.content {
-			display: none;
-		}
-
-		/* Once playback starts (production and debug alike), hide the whole dashboard
-		   and play content full-screen. In debug, an error removes `is-playing` (see
-		   log()), bringing the dashboard back so the failure is never hidden. */
-		.is-playing .app {
-			display: none;
-		}
-
-		.is-playing body {
-			background-color: transparent;
-		}
-
-		.is-playing .content {
-			display: block;
-		}
-
-		/* ---------- Large displays ---------- */
-		/* Stands in for the upper bound of the clamp() sizes this design started
-		   from. Below 1280px the base sizes above apply. */
-		@media (min-width: 1280px) {
-			.app {
-				padding: 3rem;
-				padding-bottom: 4rem;
-			}
-
-			.app > * + * {
-				margin-top: 2.5rem;
-			}
-
-			.app__header {
-				padding-bottom: 1.75rem;
-			}
-
-			.brand {
-				padding-right: 3rem;
-			}
-
-			.brand__title {
-				font-size: 2.5rem;
-			}
-
-			.device-info__item + .device-info__item {
-				margin-left: 2.5rem;
-			}
-
-			.device-info__value {
-				font-size: 1.4rem;
-			}
-
-			.stage {
-				padding: 1.75rem 1.9rem;
-			}
-
-			.stage__item + .stage__item {
-				margin-left: 2.5rem;
-			}
-
-			.stage__value {
-				font-size: 2rem;
-			}
-		}
-	</style>
 </head>
 
-<body>
-	<div class="content" aria-hidden="true">
-		<img id="image-1" class="content__media" style="display: none;" alt="" />
-		<img id="image-2" class="content__media" style="display: none;" alt="" />
-	</div>
+<body style="text-align: center; background-color: #F4D03F; color: #333;margin: 0; padding: 0;position: absolute;width: 100%;height: 100%;">
+	<h1>Video and Images</h1>
+	<p id="index">... loading ...</p>
+	<img id="image-1" style="position: absolute; display: none; width: 100%; height: 100%; left: 0; top: 0" />
+	<img id="image-2" style="position: absolute; display: none; width: 100%; height: 100%; left: 0; top: 0" />
 
-	<div class="app">
-		<header class="app__header">
-			<div class="brand">
-				<span class="brand__mark" aria-hidden="true"></span>
-				<div class="brand__text">
-					<h1 class="brand__title">Video and Images</h1>
-				</div>
-			</div>
-
-			<div class="device-info" aria-label="Device information">
-				<div class="device-info__item">
-					<p class="device-info__label">Firmware version</p>
-					<p class="device-info__value" id="firmware-version">—</p>
-				</div>
-				<div class="device-info__item">
-					<p class="device-info__label">Model</p>
-					<p class="device-info__value" id="device-model">—</p>
-				</div>
-				<div class="device-info__item">
-					<p class="device-info__label">Type</p>
-					<p class="device-info__value" id="device-type">—</p>
-				</div>
-			</div>
-		</header>
-
-		<section class="stage" aria-label="Playback status">
-			<div class="stage__item">
-				<p class="stage__label">Status</p>
-				<p class="stage__value">
-					<span class="stage__dot" id="status-dot" aria-hidden="true"></span>
-					<span id="status-text">Starting…</span>
-				</p>
-			</div>
-			<div class="stage__item stage__item--end">
-				<p class="stage__label">Now playing</p>
-				<p class="stage__value" id="now-playing">—</p>
-			</div>
-		</section>
-
-		<section class="log" aria-label="Log">
-			<div class="log__header">Log</div>
-			<ul class="log__body" id="log"></ul>
-		</section>
-	</div>
 
 	<script type="application/ecmascript">
-		// ES5 only — Chrome 28 has no async/await, arrow functions, template
-		// literals, let/const, spread or destructuring. Promises come from the
-		// signageOS SDK and are chained with .then(); the Promise constructor is
-		// never used, since Chrome gained it only in 32.
-		(function () {
-			var logEl = document.getElementById('log');
-			var firmwareEl = document.getElementById('firmware-version');
-			var modelEl = document.getElementById('device-model');
-			var typeEl = document.getElementById('device-type');
-			var statusEl = document.getElementById('status-text');
-			var dotEl = document.getElementById('status-dot');
-			var nowPlayingEl = document.getElementById('now-playing');
-			var imgElements = [document.getElementById('image-1'), document.getElementById('image-2')];
-			var started = false;
-			var debugMode = false;
+		async function startApplet() {
+			const contentElement = document.getElementById('index');
+			const imgElements = [document.getElementById('image-1'), document.getElementById('image-2')]
 
-			// How long a still image stays on screen before the next item.
-			var IMAGE_DURATION_MS = 3e3;
+			function getImgElement(...args) {
+				return imgElements.find((imgElement) => imgElement.getAttribute('data-args') === JSON.stringify(args)) ||
+					imgElements.find((imgElement) => imgElement.style.display === 'none');
+			}
+			await sos.onReady();
 
-			function errorMessage(error) {
-				return error && error.message ? error.message : String(error);
+			const contents = sos.config.contents ? JSON.parse(sos.config.contents) : [{
+					uid: 'video-1.mp4',
+					uri: 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4'
+				},
+				{
+				uid: 'video-1.mp4',
+				uri: 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4'
+				},
+				{
+					uid: 'image-1.png',
+					uri: 'https://static.signageos.io/assets/android-benq-amy_bbd9afbc0655ceb6da790a80fbd90290.png'
+				},
+				{
+					uid: 'image-2.png',
+					uri: 'https://static.signageos.io/assets/android-nec-roberto_3f9b985e2214b59e3d1f296e69e86fdd.png'
+				},
+				{
+					uid: 'image-3.png',
+					uri: 'https://static.signageos.io/assets/android-panasonic-pikachu_347af960f123f7c56f5f967882108bdf.png'
+				},
+				{
+					uid: 'image-4.png',
+					uri: 'https://static.signageos.io/assets/brightsign-4.7-nelson_9fed77987aac013a712eed87adbcf0d9.png'
+				},
+				{
+					uid: 'image-5.png',
+					uri: 'https://static.signageos.io/assets/chrome-os-krusty_99c97ad4680ccf06517b220b61327a5c.png'
+				},
+				{
+					uid: 'video-2.mp4',
+					uri: 'https://static.signageos.io/assets/video-test-2_e2ffa51f6a4473b815f39e7fb39239da.mp4'
+				},
+				{
+					uid: 'image-6.png',
+					uri: 'https://static.signageos.io/assets/sssp-2.0-burns_2a17095aec4332358d91b47999862647.png'
+				},
+				{
+					uid: 'image-7.png',
+					uri: 'https://static.signageos.io/assets/sssp-3.0-maggie_47dfc4c8c21b49c5d6f0ef1505ece49c.png'
+				},
+				{
+					uid: 'image-8.png',
+					uri: 'https://static.signageos.io/assets/tizen-2.4-bart_96c02fbd2df936e8bdd0b345f8874224.png'
+				},
+				{
+					uid: 'image-9.png',
+					uri: 'https://static.signageos.io/assets/tizen-3.0-apu_e300ee67c93b616ee36f51202234d429.png'
+				},
+				{
+					uid: 'video-3.mp4',
+					uri: 'https://static.signageos.io/assets/video-test-3_5cfd717df750e5b1d5dd8384c194a92d.mp4'
+				},
+				{
+					uid: 'image-10.png',
+					uri: 'https://static.signageos.io/assets/webos-1.0-krabappel_60b520b38756789dce877dc2feac92fb.png'
+				},
+				{
+					uid: 'image-11.png',
+					uri: 'https://static.signageos.io/assets/webos-2.0-farnsworth_413fc194707fdeb82052b3e2541fb50a.png'
+				},
+				{
+					uid: 'image-12.png',
+					uri: 'https://static.signageos.io/assets/webos-3.0-zapp_951665bdb0a145befd8cf9382c93bd77.png'
+				},
+				{
+					uid: 'image-13.png',
+					uri: 'https://static.signageos.io/assets/webos-3.2-bender_19043283cc5147bf441265fc494a0505.png'
+				},
+			];
+
+			// Save all files parallel
+			await Promise.all(contents.map(async (content) => {
+				// Store files to offline storage (https://developers.signageos.io/sdk/sos/offline/cache)
+				const {
+					filePath
+				} = await sos.offline.cache.loadOrSaveFile(content.uid, content.uri);
+				content.filePath = filePath;
+			}));
+
+			for (const content of contents) {
+				content.arguments = [content.filePath, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
 			}
 
-			// A settled promise borrowed from the SDK's own implementation — there is
-			// no Promise constructor to build one with on Chrome 28.
-			function resolved() {
-				return sos.onReady();
-			}
+			contentElement.innerHTML = '';
 
-			// Append a timestamped line to the on-screen log (visible in debug mode).
-			function log(message, level) {
-				var line = document.createElement('li');
-				line.className = 'log__line';
-
-				var time = document.createElement('span');
-				time.className = 'log__time';
-				time.textContent = new Date().toTimeString().slice(0, 8);
-
-				var text = document.createElement('span');
-				text.className = level ? 'log__message log__message--' + level : 'log__message';
-				text.textContent = message;
-
-				line.appendChild(time);
-				line.appendChild(text);
-				logEl.appendChild(line);
-
-				// An error must never stay hidden: if the dashboard was hidden once
-				// playback started, an error-level line brings it back into view.
-				if (debugMode && level === 'error') {
-					document.documentElement.className = 'mode-debug';
+			async function playContent(content) {
+				if (content.uid.indexOf('video-') === 0) {
+					await sos.video.play(...content.arguments);
 				}
-
-				while (logEl.childNodes.length > 200) {
-					logEl.removeChild(logEl.firstChild);
-				}
-
-				logEl.scrollTop = logEl.scrollHeight;
-			}
-
-			function setStatus(text, level) {
-				statusEl.textContent = text;
-				dotEl.className = level ? 'stage__dot stage__dot--' + level : 'stage__dot';
-			}
-
-			function setNowPlaying(text) {
-				nowPlayingEl.textContent = text;
-			}
-
-			function handleError(error) {
-				setStatus('Error', 'error');
-				log('Error: ' + errorMessage(error), 'error');
-			}
-
-			// Classify a content item as 'video' or 'image'. Prefer the file extension
-			// (of the uid, then the uri); fall back to the legacy `video-` / `image-`
-			// uid prefix. Returns '' when the type can't be determined.
-			function mediaType(content) {
-				function fromExtension(value) {
-					var path = String(value || '').split(/[?#]/)[0];
-					if (/\.(mp4|m4v|mov|webm|ogv|ogg|avi|mkv|ts|m2ts)$/i.test(path)) {
-						return 'video';
-					}
-					if (/\.(png|jpe?g|gif|webp|bmp|svg|avif)$/i.test(path)) {
-						return 'image';
-					}
-					return '';
-				}
-				var uid = String(content.uid || '');
-				return fromExtension(uid) || fromExtension(content.uri) ||
-					(uid.indexOf('video-') === 0 ? 'video' : '') ||
-					(uid.indexOf('image-') === 0 ? 'image' : '');
-			}
-
-			// Reuse the <img> already bound to these arguments, otherwise take a free
-			// (hidden) one. Stands in for Array.prototype.find (Chrome 45+).
-			function getImgElement(args) {
-				var key = JSON.stringify(args);
-				var i;
-				for (i = 0; i < imgElements.length; i++) {
-					if (imgElements[i].getAttribute('data-args') === key) {
-						return imgElements[i];
-					}
-				}
-				for (i = 0; i < imgElements.length; i++) {
-					if (imgElements[i].style.display === 'none') {
-						return imgElements[i];
-					}
-				}
-				return undefined;
-			}
-
-			function playContent(content) {
-				if (content.type === 'video') {
-					return sos.video.play.apply(sos.video, content.arguments).then(function () {
-						content.playing = true;
-					});
-				}
-				if (content.type === 'image') {
-					getImgElement(content.arguments).style.display = 'block';
+				if (content.uid.indexOf('image-') === 0) {
+					getImgElement(...content.arguments).style.display = 'block';
 				}
 				content.playing = true;
-				return resolved();
 			}
 
-			function stopContent(content) {
-				if (!content.playing) {
-					return resolved();
+			async function stopContent(content) {
+				if (content.playing) {
+					if (content.uid.indexOf('video-') === 0) {
+						await sos.video.stop(...content.arguments);
+					}
+					if (content.uid.indexOf('image-') === 0) {
+						const imgElement = getImgElement(...content.arguments);
+						imgElement.src = '';
+						imgElement.setAttribute('data-args', '');
+						imgElement.style.display = 'none';
+					}
+					content.playing = false;
 				}
-				if (content.type === 'video') {
-					return sos.video.stop.apply(sos.video, content.arguments).then(function () {
-						content.playing = false;
-					});
-				}
-				if (content.type === 'image') {
-					var imgElement = getImgElement(content.arguments);
-					imgElement.src = '';
-					imgElement.setAttribute('data-args', '');
-					imgElement.style.display = 'none';
-				}
-				content.playing = false;
-				return resolved();
 			}
 
-			function prepareContent(content) {
-				if (content.type === 'video') {
-					return sos.video.prepare.apply(sos.video, content.arguments);
+			async function prepareContent(content) {
+				if (content.uid.indexOf('video-') === 0) {
+					await sos.video.prepare(...content.arguments);
 				}
-				if (content.type === 'image') {
-					var imgElement = getImgElement(content.arguments);
+				if (content.uid.indexOf('image-') === 0) {
+					const imgElement = getImgElement(...content.arguments);
 					imgElement.src = content.filePath;
 					imgElement.setAttribute('data-args', JSON.stringify(content.arguments));
 				}
-				return resolved();
 			}
 
-			// Videos signal completion through onceEnded; images simply dwell. Takes a
-			// callback rather than returning a promise so no Promise constructor is
-			// needed to wrap setTimeout.
-			function waitEndedContent(content, done) {
-				if (content.type === 'video') {
-					sos.video.onceEnded.apply(sos.video, content.arguments).then(done, handleError);
-					return;
+			async function waitEndedContent(content) {
+				if (content.uid.indexOf('video-') === 0) {
+					await sos.video.onceEnded(...content.arguments);
 				}
-				setTimeout(done, IMAGE_DURATION_MS);
-			}
-
-			function loadDeviceInfo() {
-				var firmware;
-				var model;
-
-				return sos.management.firmware.getVersion().then(function (version) {
-					firmware = version;
-					firmwareEl.textContent = firmware;
-					return sos.management.supports('MODEL');
-				}).then(function (isModelSupported) {
-					return isModelSupported ? sos.management.getModel() : 'Not supported';
-				}).then(function (deviceModel) {
-					model = deviceModel;
-					modelEl.textContent = model;
-					return sos.management.app.getType();
-				}).then(function (type) {
-					typeEl.textContent = type;
-					log('Device: ' + model + ' · firmware ' + firmware + ' · ' + type);
-				}).catch(function (error) {
-					log('Could not read device information: ' + errorMessage(error), 'warn');
-				});
-			}
-
-			function startApplet() {
-				if (started) {
-					return;
+				if (content.uid.indexOf('image-') === 0) {
+					await new Promise((resolve) => setTimeout(resolve, 3e3));
 				}
-				started = true;
+			}
 
-				var contents;
-				var playIndex = 0;
+			await prepareContent(contents[0]);
 
-				// One pass of the playlist. The original `for (;;)` with awaits is not
-				// available on ES5; chaining `return playPass()` instead would leave one
-				// pending promise per item alive for the lifetime of the applet, so each
-				// pass is scheduled detached and carries its own catch.
-				function playPass() {
-					var previousContent = contents[(playIndex + contents.length - 1) % contents.length];
-					var currentContent = contents[playIndex];
-					var nextContent = contents[(playIndex + 1) % contents.length];
-					var position = (playIndex + 1) + '/' + contents.length;
+			for (let i = 0; true; i = (i + 1) % contents.length) {
+				const previousContent = contents[(i + contents.length - 1) % contents.length];
+				const currentContent = contents[i];
+				const nextContent = contents[(i + 1) % contents.length];
 
-					setNowPlaying(currentContent.uid + ' · ' + position);
-					log('Playing ' + currentContent.type + ' ' + currentContent.uid + ' (' + position + ').');
-
-					playContent(currentContent).then(function () {
-						if (currentContent.filePath !== previousContent.filePath) {
-							// beware of stopping video in case you play the same video in a loop
-							// otherwise you might get black gap or interrupted playback
-							return stopContent(previousContent);
-						}
-						return undefined;
-					}).then(function () {
-						if (currentContent.filePath !== nextContent.filePath) {
-							// beware of preparing video in case you play the same video in a loop
-							// otherwise you might get black gap or interrupted playback
-							return prepareContent(nextContent);
-						}
-						return undefined;
-					}).then(function () {
-						waitEndedContent(currentContent, function () {
-							playIndex = (playIndex + 1) % contents.length;
-							playPass();
-						});
-					}).catch(handleError);
+				await playContent(currentContent);
+				if (currentContent.filePath !== previousContent.filePath) {
+					// beware of stopping video in case you play the same video in a loop
+					// otherwise you might get black gap or interrupted playback
+					await stopContent(previousContent);
 				}
-
-				sos.onReady().then(function () {
-					log('signageOS API ready.');
-
-					debugMode = sos.config.mode === 'debug';
-					document.documentElement.className = debugMode ? 'mode-debug' : '';
-					log('Mode: ' + (debugMode ? 'debug' : 'production') + '.');
-
-					loadDeviceInfo();
-
-					// Parse and validate the `items` config. There is no built-in
-					// playlist to fall back on, so anything missing or malformed fails
-					// loudly with a clear, logged error rather than silently doing nothing.
-					if (!sos.config.items) {
-						throw new Error('`items` is not set — configure the content to play, e.g. [{"uid":"clip.mp4","uri":"https://…/clip.mp4"}].');
-					}
-					try {
-						contents = JSON.parse(sos.config.items);
-					} catch (parseError) {
-						throw new Error('`items` is not valid JSON — use double-quoted keys and values, e.g. [{"uid":"clip.mp4","uri":"https://…/clip.mp4"}]. (' + parseError.message + ')');
-					}
-					if (!Array.isArray(contents)) {
-						throw new Error('`items` must be a JSON array, e.g. [{"uid":"clip.mp4","uri":"https://…/clip.mp4"}].');
-					}
-					if (!contents.length) {
-						throw new Error('`items` is empty — add at least one entry, e.g. [{"uid":"clip.mp4","uri":"https://…/clip.mp4"}].');
-					}
-					log('Loaded ' + contents.length + ' content item(s) from config.');
-
-					contents = contents.filter(function (content) {
-						if (!content || !content.uid || !content.uri) {
-							log('Ignoring an item missing "uid" or "uri": ' + JSON.stringify(content), 'error');
-							return false;
-						}
-						content.type = mediaType(content);
-						if (!content.type) {
-							log('Ignoring "' + content.uid + '" — cannot tell if it is a video or image. Use a .mp4 / .png / … extension, or a "video-" / "image-" uid prefix.', 'error');
-							return false;
-						}
-						return true;
-					});
-					if (!contents.length) {
-						throw new Error('No playable items — each entry in `items` needs a "uid" and "uri" pointing to a video or image file.');
-					}
-
-					// Save all files parallel: every request is started here, then joined
-					// one at a time below (Promise.all needs a Promise constructor).
-					setStatus('Caching…', 'warn');
-					log('Caching ' + contents.length + ' file(s) to offline storage…');
-
-					var pendingCaches = contents.map(function (content) {
-						// Store files to offline storage (https://developers.signageos.io/sdk/sos/offline/cache)
-						return sos.offline.cache.loadOrSaveFile(content.uid, content.uri).then(function (cachedFile) {
-							content.filePath = cachedFile.filePath;
-							log('Cached ' + content.uid);
-						});
-					});
-
-					var cacheChain = resolved();
-					pendingCaches.forEach(function (pendingCache) {
-						cacheChain = cacheChain.then(function () {
-							return pendingCache;
-						});
-					});
-					return cacheChain;
-				}).then(function () {
-					log('All files cached.');
-
-					for (var i = 0; i < contents.length; i++) {
-						contents[i].arguments = [contents[i].filePath, 0, 0, document.documentElement.clientWidth, document.documentElement.clientHeight];
-					}
-
-					return prepareContent(contents[0]);
-				}).then(function () {
-					setStatus('Playing');
-					log('Playback started — ' + contents.length + ' item(s) in rotation.');
-
-					document.documentElement.className = debugMode ? 'mode-debug is-playing' : 'is-playing';
-
-					playPass();
-				}).catch(handleError);
+				if (currentContent.filePath !== nextContent.filePath) {
+					// beware of preparing video in case you play the same video in a loop
+					// otherwise you might get black gap or interrupted playback
+					await prepareContent(nextContent);
+				}
+				await waitEndedContent(currentContent);
 			}
-
-			log('Applet loaded.');
-
-			if (typeof sos !== 'undefined') {
-				startApplet();
-			} else {
-				window.addEventListener('sos.loaded', startApplet);
-			}
-		})();
+		}
+		// Needed check for distinction between sos open and platform in box
+		typeof sos !== 'undefined' ?
+			startApplet() :
+			window.addEventListener('sos.loaded', startApplet);
 	</script>
 </body>
 

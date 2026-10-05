@@ -12,7 +12,7 @@ sos.onReady().then(async function () {
 			imgElements.find((imgElement) => imgElement.style.display === 'none');
 	}
 
-	const contents = sos.config.items ? JSON.parse(sos.config.items) : [{
+	const contents = sos.config.contents ? JSON.parse(sos.config.contents) : [{
 		uid: 'video-1.mp4',
 		uri: 'https://static.signageos.io/assets/video-test-1_e07fc21a7a72e3d33478243bd75d7743.mp4'
 		},

@@ -9,7 +9,6 @@
   "devDependencies": {
     "@signageos/sdk": "1.27.2",
     "@types/mocha": "9.1.0",
-    "acorn": "^8.18.0",
     "mocha": "9.1.3",
     "should": "13.2.3",
     "ts-node": "^10.4.0",
@@ -22,8 +21,7 @@
     "upload-tests-ci": "sos applet test upload --yes",
     "test": "mocha --timeout 120000",
     "test-sos": "sos applet test run --yes --device-uid",
-    "build-all": "./tools/build-cli-examples.sh",
-    "check-es5": "node tools/check-es5.js"
+    "build-all": "./tools/build-cli-examples.sh"
   },
   "repository": {
     "type": "git",
